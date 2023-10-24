@@ -8,8 +8,7 @@
 	<form class="flex items-end gap-3 p-8 pt-[1.5rem] pb-[2rem] sticky bottom-0 self-end w-full bg-[--tblr-body-bg] max-md:p-4" id="chat_form">
 		<input type="hidden" value="{{$category->id}}" id="category_id">
 		<input type="hidden" value="{{$chat->id}}" id="chat_id">
-{{--		<input class="form-control min-h-[52px] rounded-full" name="prompt" id="prompt" type="text" @if($setting->openai_api_secret == null)  placeholder="{{__('Please ask system administrator to add API key to the system.')}}" disabled @else  placeholder="{{__('Your Message')}}" @endif/>--}}
-                <textarea tabindex="0" name="prompt" id="prompt" rows="3" @if($setting->openai_api_secret == null)  placeholder="{{__('Please ask system administrator to add API key to the system.')}}" disabled @else  placeholder="{{__('Your Message')}}" @endif class="form-control auto-expanding-textarea min-h-[52px] " style=" min-height: 45px; resize: none;border-radius:5px;"></textarea>
+		<input class="form-control min-h-[52px] rounded-full" name="prompt" id="prompt" type="text" @if($setting->openai_api_secret == null)  placeholder="{{__('Please ask system administrator to add API key to the system.')}}" disabled @else  placeholder="{{__('Your Message')}}" @endif/>
         @if($setting->hosting_type == 'high')
         <button class="btn btn-primary w-[52px] h-[52px] rounded-full shrink-0" id="send_message_button" form="chat_form">
 			<svg class="rtl:-scale-x-100" width="16" height="14" viewBox="0 0 16 14" fill="currentColor" xmlns="http://www.w3.org/2000/svg"> <path d="M0.125 14V8.76172L11.375 7.25L0.125 5.73828V0.5L15.875 7.25L0.125 14Z"/> </svg>

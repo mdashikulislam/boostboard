@@ -196,4 +196,10 @@ class User extends Authenticatable
             return  ' <span class="avatar" style="background-image: url(' . $avatar . ')"></span>';
         }
     }
+
+    public function couponsUsed()
+    {
+        return $this->belongsToMany(Coupon::class, 'coupon_users')
+                    ->withTimestamps();
+    }
 }

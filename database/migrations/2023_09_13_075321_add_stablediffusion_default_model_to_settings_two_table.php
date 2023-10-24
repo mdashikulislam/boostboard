@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::table('settings_two', function (Blueprint $table) {
@@ -14,14 +17,16 @@ return new class extends Migration
             } else {
                 $table->string('stablediffusion_default_model')->default('stable-diffusion-512-v2-1');
             }
-
         });
     }
+
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::table('settings_two', function (Blueprint $table) {
             $table->string('stablediffusion_default_model')->default('stable-diffusion-512-v2-1')->change();
-
         });
     }
 };

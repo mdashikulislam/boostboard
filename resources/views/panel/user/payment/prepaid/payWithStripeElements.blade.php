@@ -5,19 +5,15 @@
 <style>
 
 #payment-form {
-  width: 30vw;
-  min-width: 500px;
+  width: 100%;
+  /* min-width: 500px; */
   align-self: center;
   box-shadow: 0px 0px 0px 0.5px rgba(50, 50, 93, 0.1),
     0px 2px 5px 0px rgba(50, 50, 93, 0.1), 0px 1px 1.5px 0px rgba(0, 0, 0, 0.07);
   border-radius: 7px;
   padding: 40px;
 }
-@media screen and (max-width:790px){
-  #payment-form {
-  min-width: 100%;
-    }  
-}
+
 .hidden {
   display: none;
 }
@@ -167,35 +163,48 @@ button:disabled {
         <div class="row row-cards">
 
             <div class="col-sm-8 col-lg-8">
+              @include('panel.user.payment.coupon.index')
 				<form id="payment-form" action="{{ route('dashboard.user.payment.stripePrepaidPay') }}" method="post" >
 					@csrf
 					<input type="hidden" name="plan" id="plan" value="{{ $plan->id }}">
 					<input type="hidden" name="payment_method" class="payment-method">
 					<div class="row">
 						<div class="col-md-12 col-xl-12">
+              <div id="link-authentication-element">
+                  <!--Stripe.js injects the Link Authentication Element-->
+              </div>
 
-                            <div id="link-authentication-element">
-                                <!--Stripe.js injects the Link Authentication Element-->
-                            </div>
+              <div id="payment-element">
+                  <!--Stripe.js injects the Payment Element-->
+              </div>
+              
+              <button @if(env('APP_STATUS') == 'Demo') type="button" onclick="return toastr.info('This feature is disabled in Demo version.')" @else id="submit" @endif>
+                  <div class="spinner hidden" id="spinner"></div>
+                  <span id="button-text">{{ __('Pay') }}
+                    @if (currencyShouldDisplayOnRight(currency()->symbol))
 
-                            <div id="payment-element">
-                                <!--Stripe.js injects the Payment Element-->
-                            </div>
-                            
-                            <button id="submit">
-                                <div class="spinner hidden" id="spinner"></div>
-                                <span id="button-text">
-                                  {{__('Pay')}} 
-                                  @if(currencyShouldDisplayOnRight(currency()->symbol))
-                                      {{$plan->price}}{{ currency()->symbol }}
-                                  @else
-                                      {{currency()->symbol}}{{$plan->price}} 
-                                  @endif  
-                                  {{__('with')}}
-                                  <img src="/images/payment/stripe.svg" height="29px" alt="Stripe"></span>
-                            </button>
-                            <div id="payment-message" class="hidden"></div>
+                      @if ($plan->price !== $newDiscountedPrice)
+                        <span style="text-decoration: line-through;">{{ $plan->price }}</span>{{ currency()->symbol }}
+                        {{$newDiscountedPrice}}{{ currency()->symbol }}
+                      @else
+                        <span>{{ $plan->price }}</span>{{ currency()->symbol }}
+                      @endif
 
+                    @else
+
+                      @if ($plan->price !== $newDiscountedPrice)
+                        {{ currency()->symbol }}<span style="text-decoration: line-through;">{{ $plan->price }}</span>
+                        {{ currency()->symbol }}{{$newDiscountedPrice}}
+                      @else
+                        {{ currency()->symbol }}{{ $plan->price }}
+                      @endif
+                      
+                    @endif
+                    {{ __('with') }}<img src="/images/payment/stripe.svg" height="29px"
+                        alt="Stripe">
+                </span>
+              </button>
+              <div id="payment-message" class="hidden"></div>
 						</div>
 					</div>
 				</form>
@@ -210,14 +219,29 @@ button:disabled {
                     </div>
                     @endif
                     <div class="card-body flex flex-col !p-[45px_50px_50px] text-center">
-                        <div class="text-heading flex items-end justify-center mt-0 mb-[15px] w-full text-[60px] leading-none">
+                        <div class="text-heading flex items-end justify-center mt-0 mb-[15px] w-full text-[50px] leading-none">
 							
-                          @if(currencyShouldDisplayOnRight(currency()->symbol))
-                          {{$plan->price}}
-                          <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{currency()->symbol}}</small>
+                          @if (currencyShouldDisplayOnRight(currency()->symbol))
+
+                            @if ($plan->price !== $newDiscountedPrice)
+                              <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]"><span style="text-decoration: line-through;">{{ $plan->price }}</span>{{ currency()->symbol }}</small>
+                              &nbsp;
+                              {{$newDiscountedPrice}}<small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}</small>
+                            @else
+                              {{ $plan->price }}
+                              <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}</small>
+                            @endif
+                              
                           @else
-                          <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{currency()->symbol}}</small>
-                          {{$plan->price}}
+
+                            @if ($plan->price !== $newDiscountedPrice)
+                              <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}<span style="text-decoration: line-through;">{{ $plan->price }}</span></small>
+                              &nbsp;
+                              <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}</small>{{$newDiscountedPrice}}
+                            @else
+                              <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}</small>{{ $plan->price }}
+                            @endif
+
                           @endif
                           
 							<small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">/ {{__('One time')}}</small>
@@ -229,6 +253,7 @@ button:disabled {
 								<span class="inline-flex items-center justify-center w-[19px] h-[19px] mr-1 bg-[rgba(28,166,133,0.15)] text-green-500 rounded-xl align-middle">
 									<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10" /></svg>
 								</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon me-1 text-success" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10" /></svg>
                                 {{__('Access')}} <strong>{{__($plan->plan_type)}}</strong> {{__('Templates')}}
                             </li>
                             @foreach(explode(',', $plan->features) as $item)
@@ -236,6 +261,7 @@ button:disabled {
 								<span class="inline-flex items-center justify-center w-[19px] h-[19px] mr-1 bg-[rgba(28,166,133,0.15)] text-green-500 rounded-xl align-middle">
 									<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10" /></svg>
 								</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon me-1 text-success" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10" /></svg>
                                 {{$item}}
                             </li>
                             @endforeach

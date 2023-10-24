@@ -48,23 +48,23 @@
                 @foreach(json_decode($openai->questions) as $question)
                     <div class="mb-[20px]">
                         @if($question->type == 'text')
-                            <label class="form-label">{{$question->question}}</label>
+                            <label class="form-label">{{__($question->question)}}</label>
                             <input type="{{$question->type}}" class="form-control" id="{{$question->name}}"
-                                   name="{{$question->name}}" placeholder="{{$question->question}}"
+                                   name="{{$question->name}}" placeholder="{{__($question->question)}}"
                                    required="required">
                         @elseif($question->type == 'textarea')
-                            <label class="form-label">{{$question->question}}</label>
+                            <label class="form-label">{{__($question->question)}}</label>
                             <textarea class="form-control" id="{{$question->name}}"
                                       name="{{$question->name}}" rows="8"
-                                      placeholder="{{$question->question}}" required="required"></textarea>
+                                      placeholder="{{__($question->question)}}" required="required"></textarea>
                         @elseif($question->type == 'select')
-                            <div class="form-label">{{$question->question}}</div>
+                            <div class="form-label">{{__($question->question)}}</div>
                             <select class="form-select" id="{{$question->name}}" name="{{$question->name}}"
                                     required="required">
                                 {!! $question->select !!}
                             </select>
                         @elseif($question->type == 'file')
-                            <div class="form-label">{{$question->question}}</div>
+                            <div class="form-label">{{__($question->question)}}</div>
                             <input type="file" class="form-control" id="{{$question->name}}"
                                    name="{{$question->name}}" required="required">
                         @endif

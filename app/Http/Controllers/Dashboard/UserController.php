@@ -54,13 +54,8 @@ class UserController extends Controller
         // $ongoingPayments = self::prepareOngoingPaymentsWarning();
         // $user = Auth::user();
         $tmp = PaymentController::checkUnmatchingSubscriptions();
-        $userId  = Auth::user()->id;
-        $activeSub = SubscriptionsModel::where([['stripe_status', '=', 'active'], ['user_id', '=', $userId]])->orWhere([['stripe_status', '=', 'trialing'], ['user_id', '=', $userId]])->first();
-        $isDelete = 0;
-        if ($activeSub != null) {
-            $isDelete = $activeSub->cancel_by_user;
-        }
-        return view('panel.user.dashboard', compact('ongoingPayments','isDelete')); //
+
+        return view('panel.user.dashboard', compact('ongoingPayments')); //
     }
 
     public function prepareOngoingPaymentsWarning()
@@ -220,6 +215,7 @@ class UserController extends Controller
     //Purchase
     public function subscriptionPlans()
     {
+
         //check if any payment gateway enabled
         $activeGateways = Gateways::where("is_active", 1)->get();
         if ($activeGateways->count() > 0) {
@@ -231,14 +227,12 @@ class UserController extends Controller
         //check if any subscription is active
         $userId = Auth::user()->id;
         // Get current active subscription
-
         $activeSub = SubscriptionsModel::where([['stripe_status', '=', 'active'], ['user_id', '=', $userId]])->orWhere([['stripe_status', '=', 'trialing'], ['user_id', '=', $userId]])->first();
         $activesubid = 0; //id can't be zero, so this will be easy to check
-        $isDelete = 0;
         if ($activeSub != null) {
             $activesubid = $activeSub->plan_id;
-            $isDelete = $activeSub->cancel_by_user;
         }
+
         $activeSub_yokassa = YokassaSubscriptionsModel::where([['subscription_status', '=', 'active'],['user_id','=', $userId]])->first();
         if($activeSub_yokassa != null) {
             $activesubid = $activeSub_yokassa->plan_id;
@@ -246,7 +240,7 @@ class UserController extends Controller
 
         $plans = PaymentPlans::where('type', 'subscription')->where('active', 1)->get();
         $prepaidplans = PaymentPlans::where('type', 'prepaid')->where('active', 1)->get();
-        return view('panel.user.payment.subscriptionPlans', compact('plans', 'prepaidplans', 'is_active_gateway', 'activeGateways', 'activesubid','isDelete'));
+        return view('panel.user.payment.subscriptionPlans', compact('plans', 'prepaidplans', 'is_active_gateway', 'activeGateways', 'activesubid'));
     }
 
     //Invoice - Billing
@@ -285,6 +279,13 @@ class UserController extends Controller
     public function documentsDelete($slug)
     {
         $workbook = UserOpenai::where('slug', $slug)->first();
+        $image = $workbook->response;
+        $storage = $workbook->storage;
+        if($storage == 's3') {
+            Storage::disk('s3')->delete(basename($image));
+        } else {
+            unlink(substr($image, 1));
+        }
         $workbook->delete();
         return redirect()->route('dashboard.user.openai.documents.all')->with(['message' => 'Document deleted successfuly', 'type' => 'success']);
     }

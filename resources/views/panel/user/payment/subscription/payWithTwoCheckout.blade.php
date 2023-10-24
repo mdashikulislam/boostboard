@@ -29,35 +29,36 @@
             <h2 class="text-danger">{{ $exception }}</h2>
         @else
         <div class="row row-cards">
-            <div class=" text-center">
-                <div class="row d-flex justify-content-center text-center">
-                    <div class="" style="width: 360px;">
-                        <div id="twocheckout-button-container"></div>
+ 
+           
+            <div class="justify-content-md-center col-sm-8 col-lg-8">
+                {{-- @include('panel.user.payment.coupon.index') --}}
+                <div class="card">
+                    <div class="card-body">
+                        <form type="post" id="payment-form" class="text-center" action="{{ route('dashboard.user.payment.twocheckoutPrepaidPay') }}">
+                            @csrf
+                            <div class="form-group text-start me-3 mb-2">
+                                <label for="name" class="label control-label">{{__('Card Holder Name')}}</label>
+                                <input type="text" id="name" class="field form-control">
+                            </div>
+                
+                            <div id="card-element">
+                            <!-- A TCO IFRAME will be inserted here. -->
+                            </div>
+                            {{-- <input id="token" name="token" type="hidden" value=""> --}}
+                            <button class="btn btn-primary mt-4 submit" type="submit">{{__('Pay with 2checkout')}}</button>
+                        </form>
                     </div>
-                    <p class="mt-3">{{__('By purchase you confirm our')}} <a href="{{ url('/').'/terms' }}">{{__('Terms and Conditions')}}</a> </p>
+                </div>
+                <div class=" text-center">
+                    <div class="row d-flex justify-content-center text-center">
+                        <div class="" style="width: 100%;">
+                            <div id="twocheckout-button-container"></div>
+                        </div>
+                        <p class="mt-3">{{__('By purchase you confirm our')}} <a href="{{ url('/').'/terms' }}">{{__('Terms and Conditions')}}</a> </p>
+                    </div>
                 </div>
             </div>
-            <div class="row justify-content-md-center mt-3">
-                <div class="col-12">
-                  <div class="card">
-                    <div class="card-body">
-                      <form type="post" id="payment-form" action="{{ route('dashboard.user.payment.twocheckoutPrepaidPay') }}">
-                        @csrf
-                        <div class="form-group">
-                          <label for="name" class="label control-label">{{__('Name')}}</label>
-                          <input type="text" id="name" class="field form-control">
-                        </div>
-            
-                        <div id="card-element">
-                          <!-- A TCO IFRAME will be inserted here. -->
-                        </div>
-                        {{-- <input id="token" name="token" type="hidden" value=""> --}}
-                        <button class="btn btn-primary" type="submit">{{__('Pay with 2checkout')}}</button>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
             <div class="col-sm-4 col-lg-4">
                 <div class="card card-md w-full bg-[#f3f5f8] text-center border-0 text-heading group-[.theme-dark]/body:!bg-[rgba(255,255,255,0.02)]">
                     @if($plan->is_featured == 1)
@@ -66,15 +67,32 @@
                     </div>
                     @endif
                     <div class="card-body flex flex-col !p-[45px_50px_50px] text-center">
-                        <div class="text-heading flex items-end justify-center mt-0 mb-[15px] w-full text-[60px] leading-none">
-							@if(currencyShouldDisplayOnRight(currency()->symbol))
-                            {{$plan->price}}
-                            <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{currency()->symbol}}</small>
-                            @else
-                            <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{currency()->symbol}}</small>
-							{{$plan->price}} 
-                            @endif
+                        <div class="text-heading flex items-end justify-center mt-0 mb-[15px] w-full text-[50px] leading-none">
                             
+                            @if (currencyShouldDisplayOnRight(currency()->symbol))
+
+                                @if ($plan->price !== ($newDiscountedPrice?? $plan->price))
+                                  <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]"><span style="text-decoration: line-through;">{{ $plan->price }}</span>{{ currency()->symbol }}</small>
+                                  &nbsp;
+                                  {{$newDiscountedPrice}}<small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}</small>
+                                @else
+                                  {{ $plan->price }}
+                                  <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}</small>
+                                @endif
+
+                                
+                            @else
+
+                                @if ($plan->price !== ($newDiscountedPrice?? $plan->price))
+                                  <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}<span style="text-decoration: line-through;">{{ $plan->price }}</span></small>
+                                  &nbsp;
+                                  <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}</small>{{$newDiscountedPrice}}
+                                @else
+                                  <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}</small>{{ $plan->price }}
+                                @endif
+
+                            @endif
+
 							<small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">/ {{$plan->frequency}}</small>
 						</div>
 						<div class="inline-flex mx-auto p-[0.85em_1.2em] bg-white rounded-full font-medium text-[15px] leading-none text-[#2D3136]">{{$plan->name}}</div>
@@ -150,6 +168,9 @@
         document.getElementById('payment-form').addEventListener('submit', (event) => {
             event.preventDefault();
             
+            const submitButton = document.querySelector('.submit');
+            submitButton.disabled = true;
+
             // Extract the Name field value
             const billingDetails = {
                 name: document.querySelector('#name').value
@@ -175,7 +196,7 @@
                     processData: false,
                     success: function ( data ) {
                         console.log(data);
-
+                        submitButton.disabled = false;
                         if (data['status'] == 'error')
                             toastr.error(data['message']);
                         else {
@@ -187,11 +208,13 @@
                         }
                     },
                     error: function ( data ) {
+                        submitButton.disabled = false;
                         var err = data.responseJSON.errors;
                         toastr.error( err );
                     }
                 } );
             }).catch((error) => {
+                submitButton.disabled = false;
                 console.error(error);
                 toastr.error(error);
             });

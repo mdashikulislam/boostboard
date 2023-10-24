@@ -66,9 +66,29 @@
                     @endif
                     <div class="card-body flex flex-col !p-[45px_50px_50px] text-center">
                         <div class="text-heading flex items-end justify-center mt-0 mb-[15px] w-full text-[60px] leading-none">
-							<small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{currency()->symbol}}</small>
-							{{$plan->price}}
-							<small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">/ {{__('One time')}}</small>
+							@if (currencyShouldDisplayOnRight(currency()->symbol))
+
+                                @if ($plan->price !== $newDiscountedPrice)
+                                <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]"><span style="text-decoration: line-through;">{{ $plan->price }}</span>{{ currency()->symbol }}</small>
+                                &nbsp;
+                                {{$newDiscountedPrice}}<small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}</small>
+                                @else
+                                {{ $plan->price }}
+                                <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}</small>
+                                @endif
+                                
+                            @else
+
+                                @if ($plan->price !== $newDiscountedPrice)
+                                <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}<span style="text-decoration: line-through;">{{ $plan->price }}</span></small>
+                                &nbsp;
+                                <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}</small>{{$newDiscountedPrice}}
+                                @else
+                                <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}</small>{{ $plan->price }}
+                                @endif
+
+                            @endif
+							<small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">/ {{$plan->frequency}}</small>
 						</div>
 						<div class="inline-flex mx-auto p-[0.85em_1.2em] bg-white rounded-full font-medium text-[15px] leading-none text-[#2D3136]">{{$plan->name}}</div>
 

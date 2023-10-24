@@ -55,10 +55,10 @@
 						</span>
                         <div>
                             <h4 class="text-[17px] font-semibold mb-[0.85em]">
-                                {{$item->title}}
+                                {{__($item->title)}}
                             </h4>
                             <div class="text-muted">
-                                {{$item->description}}
+                                {{__($item->description)}}
                             </div>
                         </div>
                         @if($item->active == 1)

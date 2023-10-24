@@ -68,10 +68,32 @@
 					<li class="nav-item">
 						<a class="nav-link {{ route('dashboard.user.openai.generator', 'ai_image_generator') == url()->current() ? 'active' : '' }}" href="{{route('dashboard.user.openai.generator', 'ai_image_generator')}}" >
 							<span class="nav-link-icon">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path d="M15 8h.01"></path> <path d="M3 6a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v12a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3v-12z"></path> <path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l5 5"></path> <path d="M14 14l1 -1c.928 -.893 2.072 -.893 3 0l3 3"></path> </svg>
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"> 
+									<path d="M15 8h.01"></path> <path d="M3 6a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v12a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3v-12z"></path> 
+									<path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l5 5"></path> <path d="M14 14l1 -1c.928 -.893 2.072 -.893 3 0l3 3"></path> 
+								</svg>
 							</span>
 							<span class="flex items-center transition-[opacity,transform] nav-link-title grow">
 								{{__('AI Image')}}
+							</span>
+						</a>
+					</li>
+					@endif
+					@if ( $setting->feature_ai_article_wizard )
+					<li class="nav-item">
+						<a class="nav-link {{ route('dashboard.user.openai.articlewizard.new') == url()->current() ? 'active' : '' }}" href="{{route('dashboard.user.openai.articlewizard.new')}}">
+							<span class="nav-link-icon">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+									<path d="M11.933,5H5V21H18V13" />
+									<path d="M14,17H9"/>
+									<path d="M9,13h5V9H9Z"/>
+									<path d="M15,5V3"/>
+									<path d="M18,6l2-2"/>
+									<path d="M19,9h2"/>
+								</svg>
+							</span>
+							<span class="flex items-center transition-[opacity,transform] nav-link-title grow">
+								{{__('AI Article Wizard')}}
 							</span>
 						</a>
 					</li>
@@ -135,9 +157,9 @@
 							</span>
                         </a>
                     </li>
-					
 					@endif
-					 <li class="nav-item">
+
+					<li class="nav-item">
                         <a class="nav-link {{activeRoute('dashboard.support.list')}}" href="{{route('dashboard.support.list')}}" >
 						<span class="nav-link-icon">
 							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path> <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path> <path d="M15 15l3.35 3.35"></path> <path d="M9 15l-3.35 3.35"></path> <path d="M5.65 5.65l3.35 3.35"></path> <path d="M18.35 5.65l-3.35 3.35"></path> </svg>
@@ -215,10 +237,32 @@
 								</span>
                             </a>
                         </li>
+						{{-- <li class="nav-item">
+                            <a class="nav-link {{activeRoute('dashboard.admin.marketplace.index')}}" href="{{route('dashboard.admin.marketplace.index')}}" >
+								<span class="nav-link-icon">
+									 <svg xmlns="http://www.w3.org/2000/svg"   width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+										<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+										<path d="M3 21l18 0"></path>
+										<path d="M3 7v1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1h-18l2 -4h14l2 4"></path>
+										<path d="M5 21l0 -10.15"></path>
+										<path d="M19 21l0 -10.15"></path>
+										<path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4"></path>
+									 </svg>									
+								</span>
+                                <span class="flex items-center transition-[opacity,transform] nav-link-title grow">
+									{{__('Merketplace')}}
+								</span>
+                            </a>
+                        </li> --}}
                         <li class="nav-item">
                             <a class="nav-link {{activeRoute('dashboard.admin.users.index')}}" href="{{route('dashboard.admin.users.index')}}" >
 								<span class="nav-link-icon">
-									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path> <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path> <path d="M16 3.13a4 4 0 0 1 0 7.75"></path> <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path> </svg>
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"> 
+										<path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path> 
+										<path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path> 
+										<path d="M16 3.13a4 4 0 0 1 0 7.75"></path> 
+										<path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path> 
+									</svg>
 								</span>
                                 <span class="flex items-center transition-[opacity,transform] nav-link-title grow">
 									{{__('User Management')}}
@@ -360,7 +404,7 @@
 								</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+						<li class="nav-item">
                             <a class="nav-link {{activeRoute('dashboard.admin.affiliates.index')}}" href="{{route('dashboard.admin.affiliates.index')}}" >
 								<span class="nav-link-icon">
 									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path d="M14 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path> <path d="M12 9.765a3 3 0 1 0 0 4.47"></path> <path d="M3 5m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path> </svg>
@@ -370,6 +414,23 @@
 								</span>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{activeRoute('dashboard.admin.coupons.index')}}" href="{{route('dashboard.admin.coupons.index')}}">
+								<span class="nav-link-icon">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5"  fill="none" stroke-linecap="round" stroke-linejoin="round">
+										<path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+										<path d="M15 5l0 2" />
+										<path d="M15 11l0 2" />
+										<path d="M15 17l0 2" />
+										<path d="M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-3a2 2 0 0 0 0 -4v-3a2 2 0 0 1 2 -2" />
+									</svg>
+								</span>
+									<span class="flex items-center transition-[opacity,transform] nav-link-title grow">
+									{{__('Coupons')}}
+								</span>
+                            </a>
+                        </li>
+						
 
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle {{activeRouteBulk(['dashboard.admin.settings.general', 'dashboard.admin.settings.invoice', 'dashboard.admin.settings.payment', 'dashboard.admin.settings.openai', 'dashboard.admin.settings.affiliate'])}}" href="#navbar-help" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false" >
@@ -395,6 +456,9 @@
                                 </a>
 								<a class="dropdown-item {{activeRoute('dashboard.admin.settings.stablediffusion')}}" href="{{route('dashboard.admin.settings.stablediffusion')}}">
                                     {{__('StableDiffusion')}}
+                                </a>
+								<a class="dropdown-item {{activeRoute('dashboard.admin.settings.unsplashapi')}}" href="{{route('dashboard.admin.settings.unsplashapi')}}">
+                                    {{__('Unsplash API')}}
                                 </a>
                                 <a class="dropdown-item {{activeRoute('dashboard.admin.settings.tts')}}" href="{{route('dashboard.admin.settings.tts')}}">
                                     {{__('Google TTS')}}
@@ -505,7 +569,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="hideMe nav-item h-[auto] transition-all group-[.navbar-shrinked]/body:opacity-0 group-[.navbar-shrinked]/body:translate-x-3 group-[.navbar-shrinked]/body:h-0 group-[.navbar-shrinked]/body:overflow-hidden">
+                    <li class="nav-item h-[auto] transition-all group-[.navbar-shrinked]/body:opacity-0 group-[.navbar-shrinked]/body:translate-x-3 group-[.navbar-shrinked]/body:h-0 group-[.navbar-shrinked]/body:overflow-hidden">
                         <hr>
                         <div class="nav-link-label transition-all">
 							<span class="inline-block text-[10px] font-medium uppercase tracking-widest px-[0.5em] py-[0.35em] rounded-[3px]">
@@ -699,7 +763,7 @@
 		</li>
 		<li class="w-full">
 			<button class="flex flex-col items-center w-full h-auto p-0 collapsed bg-none bg-transparent rounded-full text-inherit border-none group outline-none translate-x-0 transform-gpu" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-templates" aria-controls="navbar-templates" aria-expanded="false" aria-label="Toggle templates">
-				<span class="inline-flex items-center justify-center w-[30px] h-[30px] mb-1 relative rounded-full overflow-hidden before:w-full before:h-full before:absolute before:top-0 before:left-0 before:rounded-full before:bg-gradient-to-r before:from-[#8d65e9] before:via-[#5391e4] before:to-[#6bcd94] before:animate-spin-grow">
+				<span style="background: linear-gradient(to right, #8d65e9, #5391e4, #6bcd94);"  class="inline-flex items-center justify-center w-[30px] h-[30px] mb-1 relative rounded-full overflow-hidden before:w-full before:h-full before:absolute before:top-0 before:left-0 before:rounded-full before:bg-gradient-to-r before:from-[#8d65e9] before:via-[#5391e4] before:to-[#6bcd94] before:animate-spin-grow">
 					<svg class="relative rotate-[135deg] group-[.collapsed]:rotate-0 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#fff" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path d="M12 5l0 14"></path> <path d="M5 12l14 0"></path> </svg>
 				</span>
 			</button>
@@ -736,7 +800,7 @@
 <!-- Desktop floating add button -->
 <div class="fixed bottom-20 end-12 z-50 hidden group lg:block">
 	<button class="bg-transparent border-none !outline-none rounded-full w-14 h-14 p-0 overflow-hidden !shadow-lg collapsed translate-x-0 transform-gpu peer" type="button">
-		<span class="inline-flex items-center justify-center w-full h-full mb-1 relative rounded-full overflow-hidden before:w-full before:h-full before:absolute before:top-0 before:left-0 before:rounded-full before:bg-gradient-to-r before:from-[#8d65e9] before:via-[#5391e4] before:to-[#6bcd94] before:animate-spin-grow">
+		<span class="inline-flex items-center justify-center w-full h-full mb-1 relative rounded-full overflow-hidden before:w-full before:h-full before:absolute before:top-0 before:left-0 before:rounded-full spinner_button before:animate-spin-grow">
 			<svg class="relative group-hover:rotate-[135deg] transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24" stroke-width="3" stroke="#fff" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path d="M12 5l0 14"></path> <path d="M5 12l14 0"></path> </svg>
 		</span>
 	</button>

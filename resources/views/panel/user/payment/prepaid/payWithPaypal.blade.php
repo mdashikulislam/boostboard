@@ -31,15 +31,11 @@
         <div class="row row-cards">
 
             <div class="col-sm-8 col-lg-8">
+                @include('panel.user.payment.coupon.index')
 
-                <div class="row d-flex justify-content-center text-center">
-                    <div class="" style="width: 360px;">
-                        <div id="paypal-button-container"></div>
-                    </div>
-
-                    <p class="mt-3">{{__('By purchase you confirm our')}} <a href="{{ url('/').'/terms' }}">{{__('Terms and Conditions')}}</a> </p>
-                </div>
-
+                <div id="paypal-button-container"></div>
+                <p class="mt-3">{{__('By purchase you confirm our')}} <a href="{{ url('/').'/terms' }}">{{__('Terms and Conditions')}}</a> </p>
+            
             </div>
             <div class="col-sm-4 col-lg-4">
                 <div class="card card-md w-full bg-[#f3f5f8] text-center border-0 text-heading group-[.theme-dark]/body:!bg-[rgba(255,255,255,0.02)]">
@@ -50,12 +46,27 @@
                     @endif
                     <div class="card-body flex flex-col !p-[45px_50px_50px] text-center">
                         <div class="text-heading flex items-end justify-center mt-0 mb-[15px] w-full text-[60px] leading-none">
-							@if(currencyShouldDisplayOnRight(currency()->symbol))
-                                {{$plan->price}}
-                                <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{currency()->symbol}}</small>
+							@if (currencyShouldDisplayOnRight(currency()->symbol))
+
+                                @if ($plan->price !== $newDiscountedPrice)
+                                  <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]"><span style="text-decoration: line-through;">{{ $plan->price }}</span>{{ currency()->symbol }}</small>
+                                  &nbsp;
+                                  {{$newDiscountedPrice}}<small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}</small>
+                                @else
+                                  {{ $plan->price }}
+                                  <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}</small>
+                                @endif
+                                  
                             @else
-                                <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{currency()->symbol}}</small>
-                                {{$plan->price}}
+
+                                @if ($plan->price !== $newDiscountedPrice)
+                                  <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}<span style="text-decoration: line-through;">{{ $plan->price }}</span></small>
+                                  &nbsp;
+                                  <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}</small>{{$newDiscountedPrice}}
+                                @else
+                                  <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}</small>{{ $plan->price }}
+                                @endif
+
                             @endif
 							<small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">/ {{__('One time')}}</small>
 						</div>

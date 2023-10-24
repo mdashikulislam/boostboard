@@ -9,6 +9,5 @@ class Subscriptions extends Model
 {
     use HasFactory;
     protected $table = 'subscriptions';
-    protected $fillable = ['cancel_by_user'];
 
 }

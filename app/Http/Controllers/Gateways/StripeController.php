@@ -63,7 +63,6 @@ class StripeController extends Controller
      */
     public static function subscribe($planId, $plan)
     {
-
         $gateway = Gateways::where("code", "stripe")->first();
         if ($gateway == null) {
             abort(404);
@@ -135,7 +134,7 @@ class StripeController extends Controller
 
     /**
      * Handles payment action of Stripe.
-     *
+     * 
      * Subscribe payment page posts here.
      */
     public function subscribePay(Request $request)
@@ -286,7 +285,7 @@ class StripeController extends Controller
 
             return back()->with(['message' => 'Your subscription is cancelled succesfully.', 'type' => 'success']);
         }
-        dd('ashik 288');
+
         return back()->with(['message' => 'Could not find active subscription. Nothing changed!', 'type' => 'error']);
     }
 
@@ -315,7 +314,6 @@ class StripeController extends Controller
         }
 
         $user = Auth::user();
-
         $activesubs = $user->subscriptions()->where('stripe_status', 'active')->orWhere('stripe_status', 'trialing')->get();
         $intent = null;
         try {
@@ -334,7 +332,7 @@ class StripeController extends Controller
 
     /**
      * Handles payment action of Stripe.
-     *
+     * 
      * Prepaid payment page posts here.
      */
     public function prepaidPay(Request $request)
@@ -632,7 +630,6 @@ class StripeController extends Controller
             config(['cashier.currency' => $currency]); //currency()->code
         }
 
-
         $sub = $user->subscriptions()->where('stripe_status', 'active')->orWhere('stripe_status', 'trialing')->first();
         $activeSub = $sub->asStripeSubscription();
 
@@ -671,7 +668,6 @@ class StripeController extends Controller
             config(['cashier.secret' => $gateway->live_client_secret]); //$settings->stripe_secret
             config(['cashier.currency' => $currency]); //currency()->code
         }
-
 
         $activeSub = $user->subscriptions()->where('stripe_status', 'active')->orWhere('stripe_status', 'trialing')->first()->asStripeSubscription();
 
@@ -717,8 +713,7 @@ class StripeController extends Controller
                 if ($activeSub->status == 'active' or $activeSub->status == 'trialing') {
                     return true;
                 } else {
-
-                    //$activeSub->stripe_status = 'cancelled';
+                    $activeSub->stripe_status = 'cancelled';
                     $activeSub->ends_at = \Carbon\Carbon::now();
                     $activeSub->save();
                     return false;
@@ -753,7 +748,6 @@ class StripeController extends Controller
             config(['cashier.secret' => $gateway->live_client_secret]); //$settings->stripe_secret
             config(['cashier.currency' => $currency]); //currency()->code
         }
-
 
         $sub = $user->subscriptions()->where('stripe_status', 'active')->orWhere('stripe_status', 'trialing')->first();
         if ($sub != null) {
@@ -822,7 +816,7 @@ class StripeController extends Controller
                             $user->subscription($sub->name)->cancelNow();
 
                             // cancel subscription from our database
-                            //$sub->stripe_status = 'cancelled';
+                            $sub->stripe_status = 'cancelled';
                             $sub->ends_at = \Carbon\Carbon::now();
                             $sub->save();
                         }
@@ -930,9 +924,9 @@ class StripeController extends Controller
 
             // Fire the event with the payload
             event(new StripeWebhookEvent($payload));
-
+        
             return response()->json(['success' => true]);
-
+        
         }else{
             // Incoming json is NOT verified
             abort(404);

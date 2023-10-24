@@ -1,36 +1,13 @@
-<style>
-        .hiddeMee{
-            display: none !important;
-        }
-    @media screen and (max-width:790px){
-        .apexcharts-canvas{
-            width: 310px !important;
-        }
-        .btnbelow{
-            margin-top: 20px;
-            margin-right: 0 !important;
-        }
-        .btnright{
-            margin-right: 0 !important;
-        }
-        .hiddeMee{
-            display: block !important;
-        }
-    }
-</style>
 <div class="card max-md:text-center">
     <div class="card-body py-8 px-10">
         <div class="row align-items-center subheader font-medium text-[1em] leading-[1.5em]">
             <div class="col-12 col-md-6 col-lg-5 max-md:mb-4">
                 <h2 class="mb-[1em]">{{ __('Upgrade') }}</h2>
                 @if (Auth::user()->activePlan() != null)
-                    @php
-                        $subscription = getSubscription();
-                    @endphp
                     <p class="mb-3">
                         {{ __('You have currently') }}
                         <strong class="text-heading">{{ getSubscriptionName() }}</strong> {{ __('plan.') }}
-                       @if($subscription->cancel_by_user ==  1) {{ __('Your subscription will end in') }} @else {{ __('Will automatically renew in') }} @endif  {{ getSubscriptionDaysLeft() }} {{ __('Days.') }}
+                        {{ __('Will refill automatically in') }} {{ getSubscriptionDaysLeft() }} {{ __('Days.') }}
                         {{ checkIfTrial() == true ? __('You are in Trial time.') : '' }}
                         <br>
                         <br>
@@ -90,7 +67,7 @@
                         @endif
                     </p>
                 @endif
-                <a class="btnright btn me-4 hover:bg-green-500 hover:text-white dark:!bg-[rgba(255,255,255,0.2)]"
+                <a class="btn me-4 hover:bg-green-500 hover:text-white dark:!bg-[rgba(255,255,255,0.2)]"
                     href="{{ LaravelLocalization::localizeUrl(route('dashboard.user.payment.subscription')) }}">
                     <svg xmlns="http://www.w3.org/2000/svg" class="!me-2" width="18" height="18"
                         viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
@@ -100,11 +77,10 @@
                         <path d="M5 12l14 0"></path>
                     </svg>
                     {{ __('Select a Plan') }}
-                </a><br class="hiddeMee">
+                </a>
                 @if (getSubscriptionStatus())
-                    @if(@$isDelete == 0)
-                    <a class="btnbelow btn me-4 hover:bg-red-500 hover:text-white group-[.theme-dark]/body:!bg-[rgba(255,255,255,0.2)]"
-                        onclick="return confirm('Weet je zeker dat je je abonnement wilt opzeggen? Tot het einde van je abonnementsperiode heb je nog steeds toegang tot alle functies van je abonnement.');"
+                    <a class="btn me-4 hover:bg-red-500 hover:text-white group-[.theme-dark]/body:!bg-[rgba(255,255,255,0.2)]"
+                        onclick="return confirm('Are you sure to cancel your plan? You will lose your remaining usage.');"
                         href="{{ LaravelLocalization::localizeUrl(route('dashboard.user.payment.cancelActiveSubscription')) }}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="!me-2" width="18" height="18"
                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -115,7 +91,6 @@
                         </svg>
                         {{ __('Cancel My Plan') }}
                     </a>
-                    @endif
                 @endif
             </div>
             <div class="col-12 col-md-6 col-lg-6 ms-auto">

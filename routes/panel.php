@@ -2,9 +2,11 @@
 
 use App\Models\Setting;
 use App\Http\Controllers\AdvertisController;
+use App\Http\Controllers\AIArticleWizardController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\AdminController;
+use App\Http\Controllers\Market\MarketPlaceController; 
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\AIController;
 use App\Http\Controllers\PaymentController;
@@ -31,11 +33,15 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\Gateways\WalletmaxpayController;
 use App\Http\Controllers\GoogleTTSController;
 use App\Http\Controllers\AdsController;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\File;
 
+use App\Models\SettingTwo;
 
 Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']], function () {
     
-    Route::prefix('dashboard')->middleware(['auth'])->name('dashboard.')->group(function () {
+    Route::prefix('dashboard')->middleware('auth')->name('dashboard.')->group(function () {
 
         Route::get('/', [UserController::class, 'redirect'])->name('index');
 
@@ -93,6 +99,23 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
                         Route::post('/low/chat_save', [AIChatController::class, 'lowChatSave']);
                     });
                 });
+
+                Route::middleware('hasTokens')->group(function () {
+                    Route::prefix('articlewizard')->name('articlewizard.')->group(function () {
+                        Route::get('/new', [AIArticleWizardController::class, 'newArticle'])->name('new');
+                        Route::get('/genarticle', [AIArticleWizardController::class, 'generateArticle'])->name('genarticle');
+                        Route::post('/update', [AIArticleWizardController::class, 'updateArticle'])->name('update');
+                        Route::post('/clear', [AIArticleWizardController::class, 'clearArticle'])->name('clear');
+                        Route::post('/genkeywords', [AIArticleWizardController::class, 'generateKeywords'])->name('genkeywords');
+                        Route::post('/gentitles', [AIArticleWizardController::class, 'generateTitles'])->name('gentitles');
+                        Route::post('/genoutlines', [AIArticleWizardController::class, 'generateOutlines'])->name('genoutlines');
+                        Route::post('/genimages', [AIArticleWizardController::class, 'generateImages'])->name('genimages');
+                        Route::post('/remains', [AIArticleWizardController::class, 'userRemaining'])->name('remains');
+                        Route::get('/{uid}', [AIArticleWizardController::class, 'editArticle'])->name('edit');
+                        Route::resource('/', AIArticleWizardController::class);
+                    });
+                });
+
             });
 
             // user profile settings
@@ -165,6 +188,12 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
         //Admin Area
         Route::prefix('admin')->middleware('admin')->name('admin.')->group(function () {
             Route::get('/', [AdminController::class, 'index'])->name('index');
+
+            //Marketplace
+            Route::prefix('marketplace')->name('marketplace.')->group(function () {
+                Route::get('/', [MarketPlaceController::class, 'index'])->name('index');
+
+            });
 
             //User Management
             Route::prefix('users')->name('users.')->group(function () {
@@ -269,6 +298,10 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
                 Route::get('/stablediffusion/test', [SettingsController::class, 'stablediffusionTest'])->name('stablediffusion.test');
                 Route::post('/stablediffusion-save', [SettingsController::class, 'stablediffusionSave']);
 
+                Route::get('/unsplashapi', [SettingsController::class, 'unsplashapi'])->name('unsplashapi');
+                Route::get('/unsplashapi/test', [SettingsController::class, 'unsplashapiTest'])->name('unsplashapi.test');
+                Route::post('/unsplashapi-save', [SettingsController::class, 'unsplashapiSave']);
+
                 Route::get('/tts', [SettingsController::class, 'tts'])->name('tts');
                 Route::post('/tts-save', [SettingsController::class, 'ttsSave']);
 
@@ -302,6 +335,15 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
             Route::prefix('affiliates')->name('affiliates.')->group(function () {
                 Route::get('/', [AdminController::class, 'affiliatesList'])->name('index');
                 Route::get('/sent/{id}', [AdminController::class, 'affiliatesListSent'])->name('sent');
+            });
+
+            //Coupons
+            Route::prefix('coupons')->name('coupons.')->group(function () {
+                Route::get('/', [AdminController::class, 'couponsList'])->name('index');
+                Route::get('/used/{id}', [AdminController::class, 'couponsListUsed'])->name('used');
+                Route::get('/delete/{id}', [AdminController::class, 'couponsDelete'])->name('delete');
+                Route::post('/edit/{id}', [AdminController::class, 'couponsEdit'])->name('edit');
+                Route::post('/add', [AdminController::class, 'couponsAdd'])->name('add');           
             });
 
             //Frontend
@@ -402,6 +444,11 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
                     return view('panel.admin.license.index');
                 })->name('index');
             });
+        });
+
+        //Coupons
+        Route::prefix('coupons')->name('coupons.')->group(function () {
+            Route::post('/validate-coupon', [AdminController::class, 'couponsValidate'])->name('validate');                
         });
 
         //Support Area
@@ -529,6 +576,36 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
         $settings_two->save();
         return response()->json(['code' => 200], 200);
     })->name('amamarul.translations.lang.lang-save');
+
+    Route::post('image/upload', function (\Illuminate\Http\Request $request) {
+        $image = $request->file('image');
+        $title = $request->input('title');
+
+        $imageContent = file_get_contents($image->getRealPath());
+        $base64Image = base64_encode($imageContent);
+        $nameOfImage = Str::random(12) . ".png";
+
+        //save file on local storage or aws s3
+        Storage::disk('public')->put($nameOfImage, base64_decode($base64Image)); 
+        $path = '/uploads/' . $nameOfImage;
+        error_log('1');
+        $uploadedFile = new File(substr($path, 1));
+
+        if(SettingTwo::first()->ai_image_storage == "s3") {
+            try {
+                error_log('1');
+                $aws_path = Storage::disk('s3')->put('', $uploadedFile);
+                error_log('1');
+                unlink(substr($path, 1));
+                error_log('1');
+                $path = Storage::disk('s3')->url($aws_path);
+            } catch (\Exception $e) {
+                return response()->json(["status" => "error", "message" => "AWS Error - ".$e->getMessage()]);
+            }
+        }
+        return response()->json(['path' => "$path"]);
+
+    })->name('upload.image');
 
 
 

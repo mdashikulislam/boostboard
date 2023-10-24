@@ -56,7 +56,7 @@
 							</div>
 
 							<div class="pt-2 !text-end">
-								<button type="submit" id="card-button" data-secret="{{ $intent->client_secret }}" class="btn btn-success">
+								<button @if(env('APP_STATUS') == 'Demo') type="button" onclick="return toastr.info('This feature is disabled in Demo version.')" @else type="submit" @endif id="card-button" data-secret="{{ $intent->client_secret }}" class="btn btn-success">
 									{{__('Pay')}} 
                                     @if(currencyShouldDisplayOnRight(currency()->symbol))
                                         {{$plan->price}}{{ currency()->symbol }}

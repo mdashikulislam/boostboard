@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
 use Brick\Math\BigDecimal;
-
+use App\Models\Coupon;
 use App\Http\Controllers\Gateways\IyzicoActions;
 use App\Events\IyzicoWebhookEvent;
 
@@ -75,7 +75,7 @@ class IyzicoController extends Controller
             'baseUrl' =>  $gateway->mode == 'live' ? $gateway->base_url : $gateway->sandbox_url,
             'currency' => $currency,
         ];
-        return new iyzipayActions($settings['apiKey'], $settings['apiSecretKey'], $settings['baseUrl'], $settings['currency']);
+        return new iyzipayActions($settings['apiKey'], $settings['apiSecretKey'], $settings['baseUrl'], \Iyzipay\Model\Locale::TR ,$settings['currency']);
     }
 
 
@@ -183,8 +183,13 @@ class IyzicoController extends Controller
                 // One-Time price
                 if($type == "o"){
                     // iyzico handles one time prices with payments, so we do not need to set anything for one-time payments.
-                    $productData->product_id = __('Not Needed');
-                    $productData->save();
+                    $product = new GatewayProducts();
+                    $product->plan_id = $planId;
+                    $product->plan_name = $productName;
+                    $product->gateway_code = "iyzico";
+                    $product->gateway_title = "iyzico";
+                    $product->product_id = __('Not Needed');
+                    $product->save();
                 }else{
                     $prd = json_decode(json_encode([
                         "name"          => $productName,
@@ -396,6 +401,21 @@ class IyzicoController extends Controller
      */
     public static function prepaid($planId, $plan, $incomingException = null){
 
+        $couponCode = request()->input('coupon');
+        if($couponCode){
+            $coupone = Coupon::where('code', $couponCode)->first();
+        }else{
+            $coupone = null;
+        }
+
+        $newDiscountedPrice = $plan->price;
+        if($coupone){
+            $newDiscountedPrice  = $plan->price - ($plan->price * ($coupone->discount / 100));
+            if ($newDiscountedPrice != floor($newDiscountedPrice)) {
+                $newDiscountedPrice = number_format($newDiscountedPrice, 2);
+            }
+        }
+
         $gateway = Gateways::where("code", "iyzico")->first();
         if($gateway == null) { abort(404); } 
 
@@ -412,7 +432,7 @@ class IyzicoController extends Controller
             $exception = Str::before($th->getMessage(),':');
         }
         
-        return view('panel.user.payment.prepaid.payWithIyzicoPrepare', compact('plan', 'gateway', 'exception', 'currency'));
+        return view('panel.user.payment.prepaid.payWithIyzicoPrepare', compact('plan', 'newDiscountedPrice','gateway', 'exception', 'currency'));
     }
 
 
@@ -420,6 +440,8 @@ class IyzicoController extends Controller
      * Displays Payment Page (checkoutform) of iyzico gateway for prepaid plans.
      */
     public static function prepaidPay(Request $request){
+
+        $previousRequest = app('request')->create(url()->previous());
 
         $gateway = Gateways::where("code", "iyzico")->first();
         if($gateway == null) { abort(404); } 
@@ -508,20 +530,35 @@ class IyzicoController extends Controller
 
                 $basketItemsArray = array();
 
+                $newDiscountedPrice = $plan->price;
+                if ($previousRequest->has('coupon')) {
+                    $coupon = Coupon::where('code', $previousRequest->input('coupon'))->first();
+                    if($coupon){
+                        $newDiscountedPrice  = $plan->price - ($plan->price * ($coupon->discount / 100));
+
+                        session_start(); // Start the session if not already started
+                        $_SESSION['applied_coupon'] = [
+                            'coupon' => $coupon,
+                            'plan_id' => $plan->id,
+                        ];
+                        session_write_close(); // Close the session
+                    }
+                }
+
                 $basketItems = 
                     [
                         "basketItemId" => $plan->id,
                         "name" => $plan->name,
                         "category1" => "Token Packs",
                         "itemType" => "VIRTUAL",
-                        "price" => $plan->price,
+                        "price" => $newDiscountedPrice,
                     ];
                 $basketItem_0 = $iyzipayActions->createBasketItem($basketItems);
 
                 // now we have everthing to create one time payment. Sum them to one request
                 $paymentRequest = json_decode(json_encode([
-                    "price" => $plan->price,
-                    "paidPrice" => $plan->price,
+                    "price" => $newDiscountedPrice,
+                    "paidPrice" => $newDiscountedPrice,
                     "paymentGroup" => "PRODUCT",
                     "callbackUrl" => route('dashboard.user.payment.iyzico.prepaid.callback'),
                     "enabledInstallments" => [1, 2, 3, 6, 9],
@@ -534,8 +571,8 @@ class IyzicoController extends Controller
                 // create checkout form for one time payment with paymentRequest
                 $requestOneTimePayment = new \Iyzipay\Request\CreateCheckoutFormInitializeRequest();
 
-                $requestOneTimePayment->setPrice($plan->price);
-                $requestOneTimePayment->setPaidPrice($plan->price);
+                $requestOneTimePayment->setPrice($newDiscountedPrice);
+                $requestOneTimePayment->setPaidPrice($newDiscountedPrice);
                 $requestOneTimePayment->setCallbackUrl(route('dashboard.user.payment.iyzico.prepaid.callback'));
                 $requestOneTimePayment->setEnabledInstallments(array(1, 2, 3, 6, 9));
                 $requestOneTimePayment->setBuyer($buyer);
@@ -543,8 +580,19 @@ class IyzicoController extends Controller
                 $requestOneTimePayment->setBillingAddress($address);
                 $requestOneTimePayment->setBasketItems(array($basketItem_0));
 
+                
+
                 $checkoutform = \Iyzipay\Model\CheckoutFormInitialize::create($requestOneTimePayment, $iyzipayActions->getConfig());
 
+                if ($checkoutform->getStatus() === 'failure') {
+                    $errorCode = $checkoutform->getErrorCode();
+                    $errorMessage = $checkoutform->getErrorMessage();
+                    return back()->with([
+                        'message' => __('Please enter valid information!') . " Error Code: $errorCode - $errorMessage",
+                        'type' => 'error',
+                    ]);
+                }
+                
                 // function did not work out for now. may be we can turn back after
                 //$checkoutform = $iyzipayActions->createOneTimePayment($paymentRequest);
 
@@ -563,7 +611,7 @@ class IyzicoController extends Controller
             $exception = Str::before($th->getMessage(),':');
         }
         
-        return view('panel.user.payment.prepaid.payWithIyzico', compact('plan', 'gateway', 'exception', 'currency', 'checkoutform'));
+        return view('panel.user.payment.prepaid.payWithIyzico', compact('plan','newDiscountedPrice', 'gateway', 'exception', 'currency', 'checkoutform'));
     }
 
 
@@ -572,6 +620,7 @@ class IyzicoController extends Controller
      * Displays result of payment and saves payment data to database if payment is successful.
      */
     public static function prepaidCallback(Request $request){
+
 
         $gateway = Gateways::where("code", "iyzico")->first();
         if($gateway == null) { abort(404); } 
@@ -598,6 +647,9 @@ class IyzicoController extends Controller
         $checkoutresult = $iyzipayActions->retrieveOneTimePayment($checkoutRequest);
 
         if($checkoutresult->getStatus() == 'success' && ($checkoutresult->getPaymentStatus() == 'SUCCESS' || $checkoutresult->getPaymentStatus() == 'success')){
+
+
+
 
             // get settings
             $settings = Setting::first();
@@ -629,6 +681,19 @@ class IyzicoController extends Controller
             // get plan
             $plan = PaymentPlans::where('id', $planId)->first();
 
+
+            $newDiscountedPrice = $plan->price;
+            session_start(); // Start the session if not already started
+            if (isset($_SESSION['applied_coupon'])) {
+                $appliedCouponData = $_SESSION['applied_coupon'];
+                if ($appliedCouponData['plan_id'] == $planId) {
+                    $appliedCoupon = $appliedCouponData['coupon'];
+                    $newDiscountedPrice = $plan->price - ($plan->price * ($appliedCoupon->discount / 100));
+                }
+                unset($_SESSION['applied_coupon']);
+            }
+            session_write_close();
+
             // save checkout to orders
             $payment = new UserOrder();
             $payment->order_id = $checkoutresult->getPaymentId();
@@ -636,8 +701,8 @@ class IyzicoController extends Controller
             $payment->type = 'prepaid';
             $payment->user_id = $user->id;
             $payment->payment_type = 'iyzico';
-            $payment->price = $plan->price;
-            $payment->affiliate_earnings = ($plan->price*$settings->affiliate_commission_percentage)/100;
+            $payment->price = $newDiscountedPrice;
+            $payment->affiliate_earnings = ($newDiscountedPrice*$settings->affiliate_commission_percentage)/100;
             $payment->status = 'Success';
             $payment->country = $user->country ?? 'Unknown';
             $payment->save();
@@ -664,25 +729,37 @@ class IyzicoController extends Controller
      */
     public static function subscribe($planId, $plan, $incomingException = null){
 
+        $couponCode = request()->input('coupon');
+        if($couponCode){
+            $coupone = Coupon::where('code', $couponCode)->first();
+        }else{
+            $coupone = null;
+        }
+
+        $newDiscountedPrice = $plan->price;
+        if($coupone){
+            $newDiscountedPrice  = $plan->price - ($plan->price * ($coupone->discount / 100));
+            if ($newDiscountedPrice != floor($newDiscountedPrice)) {
+                $newDiscountedPrice = number_format($newDiscountedPrice, 2);
+            }
+        }
+
+
         $gateway = Gateways::where("code", "iyzico")->first();
         if($gateway == null) { abort(404); } 
 
         $currency = Currency::where('id', $gateway->currency)->first()->code;
-
         $exception = $incomingException;
-
         $iyzicoPriceId = self::getIyzicoPriceId($planId);
-
         try {
             if($iyzicoPriceId == null){
                 $exception = "Product ID is not set! Please save Membership Plan again.";
             }
-
         } catch (\Exception $th) {
             $exception = Str::before($th->getMessage(),':');
         }
         
-        return view('panel.user.payment.subscription.payWithIyzicoPrepare', compact('plan', 'gateway', 'exception', 'currency', 'iyzicoPriceId'));
+        return view('panel.user.payment.subscription.payWithIyzicoPrepare', compact('plan','newDiscountedPrice', 'gateway', 'exception', 'currency', 'iyzicoPriceId'));
 
     }
 
@@ -690,6 +767,8 @@ class IyzicoController extends Controller
      * Displays Payment Page (checkoutform) of iyzico gateway for subscription plans.
      */
     public static function subscribePay(Request $request){
+        $previousRequest = app('request')->create(url()->previous());
+
         $gateway = Gateways::where("code", "iyzico")->first();
         if($gateway == null) { abort(404); } 
 
@@ -703,11 +782,9 @@ class IyzicoController extends Controller
         //Log::info(json_encode($request->all()));
 
         try {
-
             if($request == null){
                 return back()->with(['message' => __('Please fill all fields'), 'type' => 'error']);
             }
-
             // check request data for form data for buyer and address and planid
             if(
                 $request->planId == null || 
@@ -725,12 +802,13 @@ class IyzicoController extends Controller
             {
                 return back()->with(['message' => __('Please fill all fields'), 'type' => 'error']);
             }
+
+            $plan = PaymentPlans::where('id', $request->planId)->first();
             
             // create iyzipayActions class
             $iyzipayActions = self::getIyzipayActions();
 
             $user = Auth::user();
-
 
             // create a new instance of incoming $request for subscription customer
             $customerRequest = json_decode(json_encode([
@@ -751,7 +829,7 @@ class IyzicoController extends Controller
                 "billingAddress" => $request->registrationAddress,
                 "billingZipCode" => $request->zipCode,
             ]));
-
+            
             if($user->iyzico_id != null){
                 // retrieve customer from iyzico
                 $cst = json_decode(json_encode([
@@ -773,21 +851,83 @@ class IyzicoController extends Controller
                 Log::info("iyzico customer does not exist");
                 $customer = $iyzipayActions->createCustomer($customerRequest);
             }
-
             // check if customer set
             if($customer == null){
                 return back()->with(['message' => __('Customer could not set'), 'type' => 'error']); 
             }
 
+            $newDPriceID = $request->iyzicoPriceId;
+            $newDiscountedPrice  = $plan->price;
+            if ($previousRequest->has('coupon')) 
+            {
+                $coupon = Coupon::where('code', $previousRequest->input('coupon'))->first();
+                if($coupon){
+                    $prd = json_decode(json_encode([
+                        "name"          => "discount_" . $coupon->code . "_" . $user->id . "_" . $plan->id . "_" . time(),
+                    ]));
+
+                    $newProduct = $iyzipayActions->createSubscriptionProduct($prd);
+
+                    if($newProduct->getReferenceCode() != null)
+                    {
+                        $newDiscountedPrice  = $plan->price - ($plan->price * ($coupon->discount / 100));
+                        $interval = $plan->frequency == "monthly" ? 'MONTHLY' : 'YEARLY';
+
+                        if($plan->trial_days != "undefined"){
+                            $trials = $plan->trial_days ?? 0;
+                        }else{
+                            $trials = 0;
+                        }
+
+                        $pricingPlan = json_decode(json_encode([
+                            'paymentInterval' => $interval,
+                            'paymentIntervalCount' => 1,
+                            'paymentType' => 'RECURRING',
+                            'trialPeriodDays' => $trials,
+                            'productReferenceCode' => $newProduct->getReferenceCode(),
+                            'price' => BigDecimal::of($newDiscountedPrice)->toScale(2),
+                            'name' => $prd->name,
+                        ]));
+
+                        $subscriptionPricingPlan = $iyzipayActions->createSubscriptionPricingPlan($pricingPlan);
+
+                        if($subscriptionPricingPlan->getReferenceCode() == null){
+                            Log::error("IyzicoController::saveProduct() - Pricing Plan could not be created. Pricing Plan : " . json_encode($subscriptionPricingPlan));
+                        }
+
+                        $newDPriceID = $subscriptionPricingPlan->getReferenceCode();
+                    }
+
+                    session_start(); 
+                    $_SESSION['applied_coupon'] = [
+                        'coupon' => $coupon,
+                        'plan_id' => $plan->id,
+                    ];
+                    session_write_close(); 
+
+                }
+            }
+
+
             $checkoutFormRequest = new \Iyzipay\Request\Subscription\SubscriptionCreateCheckoutFormRequest();
             $checkoutFormRequest->setConversationId($iyzipayActions->generateRandomNumber());
             $checkoutFormRequest->setLocale($iyzipayActions->getLocale());
-            $checkoutFormRequest->setPricingPlanReferenceCode($request->iyzicoPriceId);
+            $checkoutFormRequest->setPricingPlanReferenceCode($newDPriceID);
             $checkoutFormRequest->setSubscriptionInitialStatus("ACTIVE");
             $checkoutFormRequest->setCallbackUrl(route('dashboard.user.payment.iyzico.subscribe.callback'));
             $checkoutFormRequest->setCustomer($customer);
 
+
             $checkoutform = \Iyzipay\Model\Subscription\SubscriptionCreateCheckoutForm::create($checkoutFormRequest, $iyzipayActions->getConfig());
+
+            if ($checkoutform->getStatus() === 'failure') {
+                $errorCode = $checkoutform->getErrorCode();
+                $errorMessage = $checkoutform->getErrorMessage();
+                return back()->with([
+                    'message' => __('Please enter valid information!') . " Error Code: $errorCode - $errorMessage",
+                    'type' => 'error',
+                ]);
+            }
 
             Log::info("checkoutform : " . json_encode($checkoutform));
 
@@ -796,8 +936,8 @@ class IyzicoController extends Controller
                 return back()->with(['message' => __('Please enter valid information!'), 'type' => 'error']);
             }
 
-            $plan = PaymentPlans::where('id', $request->planId)->first();
-
+            
+   
             //Since we can not transfer anything except token id to callback page we must use a middle step
             // We are going to save token id to CustomSettings table and retrieve it from callback page.
             $customSettings = new CustomSettings();
@@ -810,7 +950,7 @@ class IyzicoController extends Controller
             //$exception = Str::before($th->getMessage(),':');
         }
         
-        return view('panel.user.payment.subscription.payWithIyzico', compact('plan', 'gateway', 'exception', 'currency', 'checkoutform'));
+        return view('panel.user.payment.subscription.payWithIyzico', compact('plan', 'newDiscountedPrice','gateway', 'exception', 'currency', 'checkoutform'));
 
     }
 
@@ -874,6 +1014,18 @@ class IyzicoController extends Controller
             // get plan
             $plan = PaymentPlans::where('id', $planId)->first();
 
+            $newDiscountedPrice = $plan->price;
+            session_start(); // Start the session if not already started
+            if (isset($_SESSION['applied_coupon'])) {
+                $appliedCouponData = $_SESSION['applied_coupon'];
+                if ($appliedCouponData['plan_id'] == $planId) {
+                    $appliedCoupon = $appliedCouponData['coupon'];
+                    $newDiscountedPrice = $plan->price - ($plan->price * ($appliedCoupon->discount / 100));
+                }
+                unset($_SESSION['applied_coupon']);
+            }
+            session_write_close();
+
             // save checkout to orders
             $payment = new UserOrder();
             $payment->order_id = $request->token;
@@ -881,8 +1033,8 @@ class IyzicoController extends Controller
             $payment->type = 'subscription';
             $payment->user_id = $user->id;
             $payment->payment_type = 'iyzico';
-            $payment->price = $plan->price;
-            $payment->affiliate_earnings = ($plan->price*$settings->affiliate_commission_percentage)/100;
+            $payment->price = $newDiscountedPrice;
+            $payment->affiliate_earnings = ($newDiscountedPrice*$settings->affiliate_commission_percentage)/100;
             $payment->status = 'Success';
             $payment->country = $user->country ?? 'Unknown';
             $payment->save();
@@ -944,7 +1096,7 @@ class IyzicoController extends Controller
         $userId=$user->id;
 
         $gateway = Gateways::where("code", "iyzico")->first();
-        if($gateway == null) { abort(404); }
+        if($gateway == null) { abort(404); } 
 
         // Get current active subscription
         $activeSub = SubscriptionsModel::where([['stripe_status', '=', 'active'], ['user_id', '=', $userId]])->orWhere([['stripe_status', '=', 'trialing'], ['user_id', '=', $userId]])->first();
@@ -963,7 +1115,6 @@ class IyzicoController extends Controller
             $cancelSubscription = $iyzipayActions->cancelSubscription($cancelSubscriptionRequest);
 
             if($cancelSubscription != null){
-
                 $activeSub->stripe_status = "cancelled";
                 $activeSub->ends_at = \Carbon\Carbon::now();
                 $activeSub->save();
@@ -1144,7 +1295,7 @@ class IyzicoController extends Controller
                 
 
             }else{
-               // $activeSub->stripe_status = "cancelled";
+                $activeSub->stripe_status = "cancelled";
                 $activeSub->ends_at = \Carbon\Carbon::now();
                 $activeSub->save();
                 return \Carbon\Carbon::now()->format('F jS, Y');

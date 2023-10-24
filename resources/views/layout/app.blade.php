@@ -21,6 +21,7 @@
     <link href="/assets/css/frontend/fonts.css" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/frontend/flickity.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.0.47/jquery.fancybox.min.css" />
+    <link href="/assets/css/toastr.min.css" rel="stylesheet"/>
 
 	@vite('resources/css/frontend.scss')
 
@@ -79,12 +80,14 @@
 	<script src="/assets/libs/flickity.pkgd.min.js"></script>
 	<script src="/assets/js/frontend.js"></script>
 	<script src="/assets/js/frontend/frontend-animations.js"></script>
+
 	@if($setting->gdpr_status == 1)
 	<script src="/assets/js/gdpr.js"></script>
 	@endif
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.0.47/jquery.fancybox.min.js"></script>
+	<script src="/assets/openai/js/toastr.min.js"></script>
 
 	<script>
 		let mybutton = document.getElementById("myBtn");
@@ -102,6 +105,10 @@
 		  }
 		}
 	</script>
-
+	@if(\Session::has('message'))
+	<script>
+		toastr.{{\Session::get('type')}}('{{\Session::get('message')}}')
+	</script>
+	@endif
 </body>
 </html>

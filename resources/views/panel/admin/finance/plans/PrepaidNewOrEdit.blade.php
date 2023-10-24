@@ -55,7 +55,7 @@
 									<div class="col-md-6">
 										<div class="mb-3">
 											<label class="form-label">{{__('Price')}}</label>
-											<input type="number" class="form-control" id="price" step="0.01" name="price" value="{{isset($subscription) ? $subscription->price : null}}" required>
+											<input type="number" class="form-control" min="0.01" id="price" step="0.01" name="price" value="{{isset($subscription) ? $subscription->price : null}}" required>
 										</div>
 									</div>
 								</div>

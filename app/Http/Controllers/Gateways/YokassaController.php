@@ -52,17 +52,18 @@ class YokassaController extends Controller
             $shop_id = $gateway->sandbox_client_id;
             $key = $gateway->sandbox_client_secret;
         } else {
-            $shop_id = $gateway->sandbox_client_id;
+            $shop_id = $gateway->live_client_id;
             $key = $gateway->live_client_secret;
         }
 
         $client = new Client();
         $client->setAuth($shop_id, $key);
+        error_log($currency);
         $payment = $client->createPayment(
             array(
                 'amount' => array(
                     'value' => $plan->price,
-                    'currency' => $plan->currency,
+                    'currency' => $currency,
                 ),
                 'confirmation' => array(
                     'type' => 'embedded'
@@ -103,7 +104,7 @@ class YokassaController extends Controller
             $shop_id = $gateway->sandbox_client_id;
             $key = $gateway->sandbox_client_secret;
         } else {
-            $shop_id = $gateway->sandbox_client_id;
+            $shop_id = $gateway->live_client_id;
             $key = $gateway->live_client_secret;
         }
 
@@ -164,20 +165,28 @@ class YokassaController extends Controller
         $plan = PaymentPlans::where('id', $plan_id)->first();
 
         $payment_method_id = $activeSub->$payment_method_id;
+
+        $gateway = Gateways::where("code", "yokassa")->first();
+        if ($gateway == null) {
+            abort(404);
+        }
+
         if ($gateway->mode == 'sandbox') {
             $shop_id = $gateway->sandbox_client_id;
             $key = $gateway->sandbox_client_secret;
         } else {
-            $shop_id = $gateway->sandbox_client_id;
+            $shop_id = $gateway->live_client_id;
             $key = $gateway->live_client_secret;
         }
+
+        $currency = Currency::where('id', $gateway->currency)->first()->code;
 
         $client = new Client();
         $payment = $client->createPayment(
             array(
                 'amount' => array(
                     'value' => $plan->price,
-                    'currency' => $plan->currency,
+                    'currency' => $currency,
                 ),
                 'capture' => true,
                 'payment_method_id' => $payment_method_id,
@@ -253,7 +262,6 @@ class YokassaController extends Controller
 
             return back()->with(['message' => 'Your subscription is cancelled succesfully on the server. Please check your wallet and stop auto payment', 'type' => 'success']);
         }
-        dd('as');
         return back()->with(['message' => 'Could not find active subscription. Nothing changed!', 'type' => 'error']);
     }
 
@@ -275,17 +283,18 @@ class YokassaController extends Controller
             $shop_id = $gateway->sandbox_client_id;
             $key = $gateway->sandbox_client_secret;
         } else {
-            $shop_id = $gateway->sandbox_client_id;
+            $shop_id = $gateway->live_client_id;
             $key = $gateway->live_client_secret;
         }
         
         $client = new Client();
         $client->setAuth($shop_id, $key);
+        error_log($currency);
         $payment = $client->createPayment(
             array(
                 'amount' => array(
                     'value' => $plan->price,
-                    'currency' => $plan->currency,
+                    'currency' => $currency,
                 ),
                 'confirmation' => array(
                     'type' => 'embedded'
@@ -322,7 +331,7 @@ class YokassaController extends Controller
             $shop_id = $gateway->sandbox_client_id;
             $key = $gateway->sandbox_client_secret;
         } else {
-            $shop_id = $gateway->sandbox_client_id;
+            $shop_id = $gateway->live_client_id;
             $key = $gateway->live_client_secret;
         }
 		
@@ -441,13 +450,12 @@ class YokassaController extends Controller
             if ($activeSub['subscription_status'] == 'active'){
                 return true;
             }else{
-                //$activeSub->subscription_status = 'cancelled';
+                $activeSub->subscription_status = 'cancelled';
                 $activeSub->ends_at = \Carbon\Carbon::now();
                 $activeSub->save();
                 return back()->with(['message' => 'Your subscription is cancelled succesfully.', 'type' => 'success']);
             }
         }
-        dd('ask');
         return back()->with(['message' => 'Could not find active subscription. Nothing changed!', 'type' => 'error']);
     }
 

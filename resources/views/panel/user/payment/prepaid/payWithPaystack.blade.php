@@ -31,25 +31,44 @@
         <div class="row row-cards">
 
             <div class="col-sm-8 col-lg-8">
+                @include('panel.user.payment.coupon.index')
 
                 <div class="row d-flex justify-content-center text-center">
-                    <div class="" style="width: 360px;">
-                        <form id="paymentForm" action="{{ route('dashboard.user.payment.paystackPrepaidPay') }}" method="post" >
-                            @csrf
-                            <input type="hidden" name="plan" value="{{ $planId }}">
-                            <div class="form-submit">
-                                <button type="submit" class="btn btn-info">
-                                {{__('Pay')}} 
-                                @if(currencyShouldDisplayOnRight(currency()->symbol))
-                                    {{$plan->price}}{{ currency()->symbol }}
+                  
+                    <form id="paymentForm" action="{{ route('dashboard.user.payment.paystackPrepaidPay') }}" method="post" >
+                        @csrf
+                        <input type="hidden" name="plan" value="{{ $planId }}">
+                        <div class="form-submit">
+                            <button  @if(env('APP_STATUS') == 'Demo') type="button" onclick="return toastr.info('This feature is disabled in Demo version.')" @else type="submit" @endif class="btn btn-info">
+                            {{__('Pay')}} 
+                            &nbsp;
+
+                            @if (currencyShouldDisplayOnRight(currency()->symbol))
+
+                                @if ($plan->price !== $newDiscountedPrice)
+                                    <span style="text-decoration: line-through;">{{ $plan->price }}</span>{{ currency()->symbol }}
+                                    &nbsp;
+                                    {{$newDiscountedPrice}} {{ currency()->symbol }}
                                 @else
-                                    {{currency()->symbol}}{{$plan->price}} 
+                                    {{ $plan->price }} {{ currency()->symbol }}
                                 @endif
-                                {{__('with')}} &nbsp;&nbsp; <img src="/images/payment/paystack-2.svg" height="70px" alt="Paystack">
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+                                  
+                            @else
+
+                                @if ($plan->price !== $newDiscountedPrice)
+                                    <span style="text-decoration: line-through;">{{ currency()->symbol }} {{ $plan->price }}</span>
+                                    &nbsp;
+                                    {{ currency()->symbol }} {{$newDiscountedPrice}}
+                                @else
+                                    {{ currency()->symbol }} {{ $plan->price }}
+                                @endif
+
+                            @endif
+
+                            {{__('with')}} &nbsp;&nbsp; <img src="/images/payment/paystack-2.svg" height="70px" alt="Paystack">
+                            </button>
+                        </div>
+                    </form>
 
                     <p class="mt-3">{{__('By purchase you confirm our')}} <a href="{{ url('/').'/terms' }}">{{__('Terms and Conditions')}}</a> </p>
                 </div>
@@ -64,12 +83,27 @@
                     @endif
                     <div class="card-body flex flex-col !p-[45px_50px_50px] text-center">
                         <div class="text-heading flex items-end justify-center mt-0 mb-[15px] w-full text-[60px] leading-none">
-							@if(currencyShouldDisplayOnRight(currency()->symbol))
-                                {{$plan->price}} 
-                                <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{currency()->symbol}}</small>
+							@if (currencyShouldDisplayOnRight(currency()->symbol))
+
+                                @if ($plan->price !== $newDiscountedPrice)
+                                  <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]"><span style="text-decoration: line-through;">{{ $plan->price }}</span>{{ currency()->symbol }}</small>
+                                  &nbsp;
+                                  {{$newDiscountedPrice}}<small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}</small>
+                                @else
+                                  {{ $plan->price }}
+                                  <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}</small>
+                                @endif
+                                  
                             @else
-                                <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{currency()->symbol}}</small>
-							    {{$plan->price}}
+
+                                @if ($plan->price !== $newDiscountedPrice)
+                                  <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}<span style="text-decoration: line-through;">{{ $plan->price }}</span></small>
+                                  &nbsp;
+                                  <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}</small>{{$newDiscountedPrice}}
+                                @else
+                                  <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}</small>{{ $plan->price }}
+                                @endif
+
                             @endif
                             
 							<small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">/ {{__('One time')}}</small>
@@ -142,7 +176,7 @@
             let handler = PaystackPop.setup({
                 key: "{{ $gateway->live_client_id }}", // Replace with your public key
                 email: "{{ Auth::user()->email }}",
-                amount: "{{ $plan->price * 100 }}", 
+                amount: "{{ $newDiscountedPrice * 100 }}", 
                 currency: "{{currency()->code}}",
                 // label: "Optional string that replaces customer email",
                 onClose: function(){
@@ -171,7 +205,7 @@
             let handler = PaystackPop.setup({
                 key: "{{ $gateway->sandbox_client_id }}", // Replace with your public key
                 email: "{{ Auth::user()->email }}",
-                amount: "{{ $plan->price * 100 }}", 
+                amount: "{{ $newDiscountedPrice * 100 }}", 
                 currency: "{{currency()->code}}",
                 // label: "Optional string that replaces customer email",
                 onClose: function(){

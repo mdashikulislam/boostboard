@@ -36,7 +36,7 @@ class AIController extends Controller
         $apiKeys = explode(',', $this->settings->openai_api_secret);
         $apiKey = $apiKeys[array_rand($apiKeys)];
         config(['openai.api_key' => $apiKey]);
-        //$this->client = FacadesOpenAI::client($this->settings->openai_api_secret);
+        set_time_limit(120);
     }
 
     public function buildOutput(Request $request)
@@ -339,7 +339,7 @@ class AIController extends Controller
         $post = OpenAIGenerator::where('slug', $post_type)->first();
 
         if ($post->custom_template == 1) {
-            $custom_template = OpenAIGenerator::where('id', $request->openai_id)->first();
+            $custom_template = OpenAIGenerator::find($request->openai_id);
             $prompt = $custom_template->prompt;
             foreach (json_decode($custom_template->questions) as $question) {
                 $question_name = '**' . $question->name . '**';
@@ -741,9 +741,9 @@ class AIController extends Controller
                         break;
                     case "upscale":
                         $stable_url = "image-to-image/upscale";
+                        $engine = "esrgan-v1-x2plus";
                         $payload = [];
                         $payload['image'] = $init_image->get();
-                        $payload['width'] = $width;
                         $prompt = [
                             array(
                                 "text" => $prompt."-".Str::random(16),
@@ -803,7 +803,24 @@ class AIController extends Controller
                         $content_type => $payload
                     ]);
 
-                } catch (\Exception $e) {
+                } catch (RequestException $e) {
+                    if ($e->hasResponse()) {
+                        $response = $e->getResponse();
+                        $statusCode = $response->getStatusCode();
+                        // Custom handling for specific status codes here...
+                        
+                        if ($statusCode == '404') {
+                            // Handle a not found error
+                        } elseif ($statusCode == '500') {
+                            // Handle a server error
+                        }
+                
+                        $errorMessage = $response->getBody()->getContents();
+                        return response()->json(["status" => "error", "message" => json_decode($errorMessage)->message]);
+                        // Log the error message or handle it as required
+                    }
+                    return response()->json(["status" => "error", "message" => $e->getMessage()]);
+                } catch (Exception $e) {
                     return response()->json(["status" => "error", "message" => $e->getMessage()]);
                 }
                 $body = $response->getBody();
@@ -863,7 +880,7 @@ class AIController extends Controller
                 $user->remaining_images = 0;
                 $user->save();
                 $userOpenai = UserOpenai::where('user_id', Auth::id())->where('openai_id', $post->id)->orderBy('created_at', 'desc')->get();
-                $openai = OpenAIGenerator::where('id', $post->id)->first();
+                $openai = OpenAIGenerator::find($post->id);
                 return response()->json(["status" => "success", "images" => $entries, "image_storage" => $image_storage]);
             }
 
@@ -947,7 +964,7 @@ class AIController extends Controller
         $workbook = $entry;
 
         $userOpenai = UserOpenai::where('user_id', Auth::id())->where('openai_id', $post->id)->orderBy('created_at', 'desc')->get();
-        $openai = OpenAIGenerator::where('id', $post->id)->first();
+        $openai = OpenAIGenerator::find($post->id);
         $html2 = view('panel.user.openai.generator_components.generator_sidebar_table', compact('userOpenai', 'openai'))->render();
         return response()->json(compact('html2'));
     }
@@ -959,7 +976,7 @@ class AIController extends Controller
 
         $html = view('panel.user.openai.documents_workbook_textarea', compact('workbook'))->render();
         $userOpenai = UserOpenai::where('user_id', Auth::id())->where('openai_id', $post->id)->orderBy('created_at', 'desc')->get();
-        $openai = OpenAIGenerator::where('id', $post->id)->first();
+        $openai = OpenAIGenerator::find($post->id);
         $html2 = view('panel.user.openai.generator_components.generator_sidebar_table', compact('userOpenai', 'openai'))->render();
         return response()->json(compact('html', 'html2'));
     }
@@ -968,7 +985,7 @@ class AIController extends Controller
     {
         $response = $request->response;
         $total_user_tokens = countWords($response);
-        $entry = UserOpenai::where('id', $request->message_id)->first();
+        $entry = UserOpenai::find($request->message_id);
 
         $entry->credits = $total_user_tokens;
         $entry->words = $total_user_tokens;

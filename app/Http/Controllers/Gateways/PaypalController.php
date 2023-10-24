@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
+use App\Models\Coupon;
 
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 
@@ -265,168 +266,168 @@ class PaypalController extends Controller
 
         try{
 
-        $gateway = Gateways::where("code", "paypal")->first();
-        if($gateway == null) { abort(404); } 
-        $currency = Currency::where('id', $gateway->currency)->first()->code;
+            $gateway = Gateways::where("code", "paypal")->first();
+            if($gateway == null) { abort(404); } 
+            $currency = Currency::where('id', $gateway->currency)->first()->code;
 
-        $provider = $incomingProvider ?? self::getPaypalProvider();
+            $provider = $incomingProvider ?? self::getPaypalProvider();
 
-        $plan = PaymentPlans::where('id', $planId)->first();
+            $plan = PaymentPlans::where('id', $planId)->first();
 
-        $product = null;
+            $product = null;
 
-        // if($gateway->mode == 'sandbox'){
-        //     if(env('APP_ENV') != 'development'){
-        //         return back()->with(['message' => 'Paypal Save cancelled! Please set mode to development!', 'type' => 'error']);
-        //     }
-        // }
-        
-        $oldProductId = null;
+            // if($gateway->mode == 'sandbox'){
+            //     if(env('APP_ENV') != 'development'){
+            //         return back()->with(['message' => 'Paypal Save cancelled! Please set mode to development!', 'type' => 'error']);
+            //     }
+            // }
+            
+            $oldProductId = null;
 
-        //check if product exists
-        $productData = GatewayProducts::where(["plan_id" => $planId, "gateway_code" => "paypal"])->first();
-        if($productData != null){
+            //check if product exists
+            $productData = GatewayProducts::where(["plan_id" => $planId, "gateway_code" => "paypal"])->first();
+            if($productData != null){
 
-            // Create product in every situation. maybe user updated paypal credentials.
+                // Create product in every situation. maybe user updated paypal credentials.
 
-            if($productData->product_id != null){ // && $productName != null
-                //Product has been created before
-                $oldProductId = $productData->product_id;
-            }else{
-                //Product has NOT been created before but record exists. Create new product and update record.
-            }
-
-            $data = [
-                "name"          => $productName,
-                "description"   => $productName,
-                "type"          => "SERVICE",
-                "category"      => "SOFTWARE"
-            ];
-                
-            $request_id = 'create-product-'.time();
-                
-            $newProduct = $provider->createProduct($data, $request_id);
-
-            $productData->product_id = $newProduct['id'];
-            $productData->plan_name = $productName;
-            $productData->save();
-
-
-            $product = $productData;
-        }else{
-
-            $data = [
-                "name"          => $productName,
-                "description"   => $productName,
-                "type"          => "SERVICE",
-                "category"      => "SOFTWARE"
-            ];
-              
-            $request_id = 'create-product-'.time();
-              
-            $newProduct = $provider->createProduct($data, $request_id);
-
-            $product = new GatewayProducts();
-            $product->plan_id = $planId;
-            $product->plan_name = $productName;
-            $product->gateway_code = "paypal";
-            $product->gateway_title = "PayPal";
-            $product->product_id = $newProduct['id'];
-            $product->save();
-        }
-
-        //check if price exists
-        if($product->price_id != null){
-            //Price exists - here price_id is plan_id in PayPal ( Billing plans id )
-
-            // One-Time price
-            if($type == "o"){
-                
-                // Paypal handles one time prices with orders, so we do not need to set anything for one-time payments.
-                $product->price_id = __('Not Needed');
-                $product->save();
-                
-            }else{
-                // Subscription
-
-                
-                // Deactivate old billing plan --> Moved to updateUserData()
-                $oldBillingPlanId = $product->price_id;
-                // $oldBillingPlan = $provider->deactivatePlan($oldBillingPlanId);
-
-                // create new billing plan with new values
-                $interval = $frequency == "m" ? 'MONTH' : 'YEAR';
-
-                if($plan->trial_days != "undefined"){
-                    $trials = $plan->trial_days ?? 0;
+                if($productData->product_id != null){ // && $productName != null
+                    //Product has been created before
+                    $oldProductId = $productData->product_id;
                 }else{
-                    $trials = 0;
+                    //Product has NOT been created before but record exists. Create new product and update record.
                 }
 
-                $planData = self::createBillingPlanData($product->product_id, $productName, $trials, $currency, $interval, $price);
+                $data = [
+                    "name"          => $productName,
+                    "description"   => $productName,
+                    "type"          => "SERVICE",
+                    "category"      => "SOFTWARE"
+                ];
+                    
+                $request_id = 'create-product-'.time();
+                    
+                $newProduct = $provider->createProduct($data, $request_id);
 
-                // This line is not in docs. but required in execution. Needed ~5 hours to fix.
-                $request_id = 'create-plan-'.time();
+                $productData->product_id = $newProduct['id'];
+                $productData->plan_name = $productName;
+                $productData->save();
 
-                $billingPlan = $provider->createPlan($planData, $request_id);
 
-                $product->price_id = $billingPlan['id'];
-                $product->save();
-
-                $history = new OldGatewayProducts();
-                $history->plan_id = $planId;
-                $history->plan_name = $productName;
-                $history->gateway_code = 'paypal';
-                $history->product_id = $product->product_id;
-                $history->old_product_id = $oldProductId;
-                $history->old_price_id = $oldBillingPlanId;
-                $history->new_price_id = $billingPlan['id'];
-                $history->status = 'check';
-                $history->save();
-
-                $tmp = self::updateUserData();
-
-                ///////////// To support old entries and prevent update issues on trial and non-trial areas
-                ///////////// update system is cancelled. instead we are going to create new ones, deactivate old ones and replace them.
-
-            }
-
-        }else{
-            // price_id is null so we need to create plans
-
-            // One-Time price
-            if($type == "o"){
-                
-                // Paypal handles one time prices with orders, so we do not need to set anything for one-time payments.
-                $product->price_id = __('Not Needed');
-                $product->save();
-                
+                $product = $productData;
             }else{
-                // Subscription
 
-                // to subscribe, first create billing plan. then subscribe with it. so price_id is billing_plan_id
-                // subscribe has different id and logic in paypal
-
-                $interval = $frequency == "m" ? 'MONTH' : 'YEAR';
-
-                $trials = $plan->trial_days ?? 0;
+                $data = [
+                    "name"          => $productName,
+                    "description"   => $productName,
+                    "type"          => "SERVICE",
+                    "category"      => "SOFTWARE"
+                ];
                 
-                $planData = self::createBillingPlanData($product->product_id, $productName, $trials, $currency, $interval, $price);
+                $request_id = 'create-product-'.time();
+                
+                $newProduct = $provider->createProduct($data, $request_id);
 
-                // This line is not in docs. but required in execution. Needed ~5 hours to fix.
-                $request_id = 'create-plan-'.time();
-
-                $billingPlan = $provider->createPlan($planData, $request_id);
-
-                $product->price_id = $billingPlan['id'];
+                $product = new GatewayProducts();
+                $product->plan_id = $planId;
+                $product->plan_name = $productName;
+                $product->gateway_code = "paypal";
+                $product->gateway_title = "PayPal";
+                $product->product_id = $newProduct['id'];
                 $product->save();
             }
-        }
 
-    }catch(\Exception $ex){
-        error_log("PaypalController::saveProduct()\n".$ex->getMessage());
-        return back()->with(['message' => $ex->getMessage(), 'type' => 'error']);
-    }
+            //check if price exists
+            if($product->price_id != null){
+                //Price exists - here price_id is plan_id in PayPal ( Billing plans id )
+
+                // One-Time price
+                if($type == "o"){
+                    
+                    // Paypal handles one time prices with orders, so we do not need to set anything for one-time payments.
+                    $product->price_id = __('Not Needed');
+                    $product->save();
+                    
+                }else{
+                    // Subscription
+
+                    
+                    // Deactivate old billing plan --> Moved to updateUserData()
+                    $oldBillingPlanId = $product->price_id;
+                    // $oldBillingPlan = $provider->deactivatePlan($oldBillingPlanId);
+
+                    // create new billing plan with new values
+                    $interval = $frequency == "m" ? 'MONTH' : 'YEAR';
+
+                    if($plan->trial_days != "undefined"){
+                        $trials = $plan->trial_days ?? 0;
+                    }else{
+                        $trials = 0;
+                    }
+
+                    $planData = self::createBillingPlanData($product->product_id, $productName, $trials, $currency, $interval, $price);
+
+                    // This line is not in docs. but required in execution. Needed ~5 hours to fix.
+                    $request_id = 'create-plan-'.time();
+
+                    $billingPlan = $provider->createPlan($planData, $request_id);
+
+                    $product->price_id = $billingPlan['id'];
+                    $product->save();
+
+                    $history = new OldGatewayProducts();
+                    $history->plan_id = $planId;
+                    $history->plan_name = $productName;
+                    $history->gateway_code = 'paypal';
+                    $history->product_id = $product->product_id;
+                    $history->old_product_id = $oldProductId;
+                    $history->old_price_id = $oldBillingPlanId;
+                    $history->new_price_id = $billingPlan['id'];
+                    $history->status = 'check';
+                    $history->save();
+
+                    $tmp = self::updateUserData();
+
+                    ///////////// To support old entries and prevent update issues on trial and non-trial areas
+                    ///////////// update system is cancelled. instead we are going to create new ones, deactivate old ones and replace them.
+
+                }
+
+            }else{
+                // price_id is null so we need to create plans
+
+                // One-Time price
+                if($type == "o"){
+                    
+                    // Paypal handles one time prices with orders, so we do not need to set anything for one-time payments.
+                    $product->price_id = __('Not Needed');
+                    $product->save();
+                    
+                }else{
+                    // Subscription
+
+                    // to subscribe, first create billing plan. then subscribe with it. so price_id is billing_plan_id
+                    // subscribe has different id and logic in paypal
+
+                    $interval = $frequency == "m" ? 'MONTH' : 'YEAR';
+
+                    $trials = $plan->trial_days ?? 0;
+                    
+                    $planData = self::createBillingPlanData($product->product_id, $productName, $trials, $currency, $interval, $price);
+
+                    // This line is not in docs. but required in execution. Needed ~5 hours to fix.
+                    $request_id = 'create-plan-'.time();
+
+                    $billingPlan = $provider->createPlan($planData, $request_id);
+
+                    $product->price_id = $billingPlan['id'];
+                    $product->save();
+                }
+            }
+
+        }catch(\Exception $ex){
+            error_log("PaypalController::saveProduct()\n".$ex->getMessage());
+            return back()->with(['message' => $ex->getMessage(), 'type' => 'error']);
+        }
 
 
     } // saveProduct()
@@ -474,6 +475,20 @@ class PaypalController extends Controller
      */
     public static function prepaid($planId, $plan, $incomingException = null){
 
+        $newDiscountedPrice = $plan->price;
+
+        $couponCode = request()->input('coupon');
+        if($couponCode){
+            $coupone = Coupon::where('code', $couponCode)->first();
+            if($coupone){
+                $newDiscountedPrice  = $plan->price - ($plan->price * ($coupone->discount / 100));   
+                if ($newDiscountedPrice != floor($newDiscountedPrice)) {
+                    $newDiscountedPrice = number_format($newDiscountedPrice, 2);
+                }
+            }
+        }
+        
+
         $gateway = Gateways::where("code", "paypal")->first();
         if($gateway == null) { abort(404); } 
 
@@ -493,7 +508,7 @@ class PaypalController extends Controller
             $exception = Str::before($th->getMessage(),':');
         }
         
-        return view('panel.user.payment.prepaid.payWithPaypal', compact('plan', 'orderId', 'gateway', 'exception', 'currency'));
+        return view('panel.user.payment.prepaid.payWithPaypal', compact('plan','newDiscountedPrice', 'orderId', 'gateway', 'exception', 'currency'));
     }
 
 
@@ -501,6 +516,16 @@ class PaypalController extends Controller
     public function createPayPalOrder(Request $request){
 
         $plan = PaymentPlans::where('id', $request->plan_id)->first();
+        $newPrice = $plan->price;
+
+        $previousRequest = app('request')->create(url()->previous());
+        if ($previousRequest->has('coupon')) {
+            $coupon = Coupon::where('code', $previousRequest->input('coupon'))->first();
+            if($coupon){
+                $newPrice  = $plan->price - ($plan->price * ($coupon->discount / 100));
+            }
+        }
+        
         $user = Auth::user();
         $settings = Setting::first();
 
@@ -514,7 +539,7 @@ class PaypalController extends Controller
                     "amount" => 
                     [
                         "currency_code" => $request->currency,
-                        "value" => strval($plan->price)
+                        "value" => strval($newPrice)
                     ]
                 ]
             ]
@@ -530,8 +555,8 @@ class PaypalController extends Controller
         $payment->type = 'prepaid';
         $payment->user_id = $user->id;
         $payment->payment_type = 'PayPal';
-        $payment->price = $plan->price;
-        $payment->affiliate_earnings = ($plan->price*$settings->affiliate_commission_percentage)/100;
+        $payment->price = $newPrice;
+        $payment->affiliate_earnings = ($newPrice*$settings->affiliate_commission_percentage)/100;
         $payment->status = 'Waiting';
         $payment->country = $user->country ?? 'Unknown';
         $payment->save();
@@ -555,6 +580,15 @@ class PaypalController extends Controller
             $payment = UserOrder::where('order_id', $orderId)->first();
 
             if($payment != null){
+
+                $previousRequest = app('request')->create(url()->previous());
+                if ($previousRequest->has('coupon')) {
+                    $coupon = Coupon::where('code', $previousRequest->input('coupon'))->first();
+                    if($coupon){
+                        $coupon->usersUsed()->attach(auth()->user()->id);
+                    }
+                }
+
 
                 $payment->status = 'Success';
                 $payment->save();
@@ -591,8 +625,11 @@ class PaypalController extends Controller
      */
     public static function subscribe($planId, $plan, $incomingException = null){
 
-        // $provider = self::getPaypalProvider();
+        $provider = self::getPaypalProvider();
         $gateway = Gateways::where("code", "paypal")->first();
+
+        $newDiscountedPrice = $plan->price;
+
         if($gateway == null) { abort(404); } 
 
         $settings = Setting::first();
@@ -604,6 +641,40 @@ class PaypalController extends Controller
         $orderId = Str::random(12);
         $productId = self::getPaypalProductId($planId);
         $billingPlanId = self::getPaypalPriceId($planId);
+
+
+
+        $couponCode = request()->input('coupon');
+        if($couponCode){
+            $coupone = Coupon::where('code', $couponCode)->first();
+            if($coupone){
+                $newDiscountedPrice  = $plan->price - ($plan->price * ($coupone->discount / 100));  
+                if ($newDiscountedPrice != floor($newDiscountedPrice)) {
+                    $newDiscountedPrice = number_format($newDiscountedPrice, 2);
+                } 
+
+
+                $currency = Currency::where('id', $gateway->currency)->first()->code;
+                $product = GatewayProducts::where(["plan_id" => $planId, "gateway_code" => "paypal"])->first();
+
+                $interval = $plan->frequency == "monthly" ? 'MONTH' : 'YEAR';
+                if($plan->trial_days != "undefined"){
+                    $trials = $plan->trial_days ?? 0;
+                }else{
+                    $trials = 0;
+                }
+
+                $planData = self::createBillingPlanData($product->product_id, $product->plan_name, $trials, $currency, $interval, $newDiscountedPrice);
+
+                // This line is not in docs. but required in execution. Needed ~5 hours to fix.
+                $request_id = 'create-plan-'.time();
+
+                $billingPlan = $provider->createPlan($planData, $request_id);
+
+                $billingPlanId = $billingPlan['id'];
+            }
+        }
+
 
         try {
             if($productId == null){
@@ -621,8 +692,8 @@ class PaypalController extends Controller
                 $payment->plan_id = $planId;
                 $payment->user_id = $user->id;
                 $payment->payment_type = 'PayPal';
-                $payment->price = $plan->price;
-                $payment->affiliate_earnings = ($plan->price*$settings->affiliate_commission_percentage)/100;
+                $payment->price = $newDiscountedPrice;
+                $payment->affiliate_earnings = ($newDiscountedPrice*$settings->affiliate_commission_percentage)/100;
                 $payment->status = 'Waiting';
                 $payment->country = $user->country ?? 'Unknown';
                 $payment->save();
@@ -632,7 +703,7 @@ class PaypalController extends Controller
             $exception = Str::before($th->getMessage(),':');
         }
         
-        return view('panel.user.payment.subscription.payWithPaypal', compact('plan', 'billingPlanId', 'exception', 'orderId', 'productId', 'gateway', 'planId'));
+        return view('panel.user.payment.subscription.payWithPaypal', compact('plan','newDiscountedPrice','billingPlanId', 'exception', 'orderId', 'productId', 'gateway', 'planId'));
     }
 
 
@@ -680,6 +751,14 @@ class PaypalController extends Controller
                 $subscriptionItem->quantity = 1;
                 $subscriptionItem->save();
 
+                $previousRequest = app('request')->create(url()->previous());
+                if ($previousRequest->has('coupon')) {
+                    $coupon = Coupon::where('code', $previousRequest->input('coupon'))->first();
+                    if($coupon){
+                        $coupon->usersUsed()->attach(auth()->user()->id);
+                    }
+                }
+
 
                 // $payment = UserOrder::where('order_id', $orderId)->first();
                 $payment->status = 'Success';
@@ -725,7 +804,6 @@ class PaypalController extends Controller
 
         $userId=$user->id;
         // Get current active subscription
-
         $activeSub = SubscriptionsModel::where([['stripe_status', '=', 'active'], ['user_id', '=', $userId]])->orWhere([['stripe_status', '=', 'trialing'], ['user_id', '=', $userId]])->first();
 
         if($activeSub != null){
@@ -734,7 +812,6 @@ class PaypalController extends Controller
             $response = $provider->cancelSubscription($activeSub->stripe_id, 'Not satisfied with the service');
 
             if($response == ""){
-
                 $activeSub->stripe_status = "cancelled";
                 $activeSub->ends_at = \Carbon\Carbon::now();
                 $activeSub->save();
@@ -758,7 +835,7 @@ class PaypalController extends Controller
 
 
         }
-        dd('asfsafas');
+        
         return back()->with(['message' => 'Could not find active subscription. Nothing changed!', 'type' => 'error']);
     }
 
@@ -768,7 +845,6 @@ class PaypalController extends Controller
         $provider = self::getPaypalProvider();
         $userId=Auth::user()->id;
         // Get current active subscription
-
         $activeSub = SubscriptionsModel::where([['stripe_status', '=', 'active'], ['user_id', '=', $userId]])->orWhere([['stripe_status', '=', 'trialing'], ['user_id', '=', $userId]])->first();
         if($activeSub != null){
             $subscription = $provider->showSubscriptionDetails($activeSub->stripe_id);
@@ -781,7 +857,6 @@ class PaypalController extends Controller
                         if(isset($subscription['billing_info']['next_billing_time'])){
                             return \Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::parse($subscription['billing_info']['next_billing_time']));
                         }else{
-
                             $activeSub->stripe_status = "cancelled";
                             $activeSub->ends_at = \Carbon\Carbon::now();
                             $activeSub->save();
@@ -801,7 +876,6 @@ class PaypalController extends Controller
         $provider = self::getPaypalProvider();
         $userId=Auth::user()->id;
         // Get current active subscription
-
         $activeSub = SubscriptionsModel::where([['stripe_status', '=', 'active'], ['user_id', '=', $userId]])->orWhere([['stripe_status', '=', 'trialing'], ['user_id', '=', $userId]])->first();
         if($activeSub != null){
             $subscription = $provider->showSubscriptionDetails($activeSub->stripe_id);
@@ -822,7 +896,6 @@ class PaypalController extends Controller
         $provider = self::getPaypalProvider();
         $userId=Auth::user()->id;
         // Get current active subscription
-
         $activeSub = SubscriptionsModel::where([['stripe_status', '=', 'active'], ['user_id', '=', $userId]])->orWhere([['stripe_status', '=', 'trialing'], ['user_id', '=', $userId]])->first();
         if($activeSub != null){
             return $provider->showSubscriptionDetails($activeSub->stripe_id);

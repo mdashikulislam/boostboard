@@ -2,44 +2,6 @@
 @section('title', 'Dashboard')
 
 @section('content')
-    <style>
-        /* Style for the closable section */
-        #closable {
-            position: relative;
-        }
-
-        /* Style for the cross icon */
-        .cross {
-            position: absolute;
-            top: 10px;
-            right: 40px;
-            width: 15px;
-            height: 15px;
-            cursor: pointer;
-            z-index: 10;
-        }
-        .cross:before, .cross:after {
-            content: '';
-            position: absolute;
-            width: 2px;
-            height: 15px;
-            background-color: #000;
-            top: 3px;
-            left: 14px;
-            transform-origin: center;
-        }
-        .cross:before {
-            transform: rotate(45deg);
-        }
-        .cross:after {
-            transform: rotate(-45deg);
-        }
-        @media screen and (max-width:799px){
-            iframe{
-                width: 100%;
-            }
-        }
-    </style>
     <div class="page-header">
         <div class="container-xl">
             <div class="row g-2 items-center justify-between max-md:flex-col max-md:items-start max-md:gap-4">
@@ -77,24 +39,6 @@
     <div class="page-body">
         <div class="container-xl">
             <div class="row row-deck row-cards">
-                <div class="col-12" id="closable">
-                    <div class="cross" id="cross"></div>
-                    <div class="card max-md:text-center">
-                        <div class="card-body py-8 px-10">
-                            <div class="row align-items-center subheader font-medium text-[1em] leading-[1.5em]">
-                                <div class="col-12 col-md-6 col-lg-5 max-md:mb-4">
-                                    <h2 class="mb-[1em]">🎥 Getting Started!</h2>
-                                    <p class="mb-3">Hey Student! Welkom bij BoostBoard! Wil je alle ins en outs van BoostBoard leren kennen? Bekijk dan onze handige introductievideo!</p>
-                                </div>
-                                <div class="col-12 col-md-6 col-lg-6 ms-auto">
-                                    <div class="relative">
-                                        <iframe style="border-radius: 15px;" width="450px" height="200px" src="https://www.youtube.com/embed/xvEQeuq_wH8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>                    
-                </div>
                 <div class="col-12">
                     @include('panel.user.payment.subscriptionStatus')
                 </div>
@@ -320,13 +264,4 @@
         </div>
     </div>
 </div>
-<script>
-    // JavaScript to hide the element when the cross icon is clicked
-    const crossIcon = document.getElementById('cross');
-    const closableElement = document.getElementById('closable');
-    
-    crossIcon.addEventListener('click', function() {
-        closableElement.style.display = 'none';
-    });
-</script>
 @endsection

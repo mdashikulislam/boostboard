@@ -24,6 +24,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@500;600;700&display=swap" rel="stylesheet">
 
     <link href="/assets/css/fonts.css" rel="stylesheet">
+    
     <!-- CSS files -->
     <link href="/assets/css/tabler.min.css" rel="stylesheet"/>
     <link href="/assets/css/tabler-flags.min.css" rel="stylesheet"/>
@@ -31,6 +32,10 @@
     <link href="/assets/css/tabler-vendors.min.css" rel="stylesheet"/>
     <link href="/assets/css/demo.min.css" rel="stylesheet"/>
     <link href="/assets/css/toastr.min.css" rel="stylesheet"/>
+
+    {{-- <link rel="stylesheet" href="https://flowbite.com/docs/flowbite.css?v=1.8.1a">
+    <link rel="stylesheet" href="https://flowbite.com/docs/docs.css?v=1.8.1a"> --}}
+
     @yield('additional_css')
     @stack('css')
     <link href="/assets/css/magic-ai.css" rel="stylesheet"/>

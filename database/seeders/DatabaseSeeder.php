@@ -58,6 +58,9 @@ class DatabaseSeeder extends Seeder
         $path15 = resource_path('/dev_tools/ads.sql');
         DB::unprepared(file_get_contents($path15));
 
+        $path16 = resource_path('/dev_tools/ai_wizard.sql');
+        DB::unprepared(file_get_contents($path16));
+
         $this->command->info('Currency table seeded!');
     }
 }
