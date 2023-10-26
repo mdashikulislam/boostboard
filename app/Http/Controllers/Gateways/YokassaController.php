@@ -450,7 +450,7 @@ class YokassaController extends Controller
             if ($activeSub['subscription_status'] == 'active'){
                 return true;
             }else{
-                $activeSub->subscription_status = 'cancelled';
+                //$activeSub->subscription_status = 'cancelled';
                 $activeSub->ends_at = \Carbon\Carbon::now();
                 $activeSub->save();
                 return back()->with(['message' => 'Your subscription is cancelled succesfully.', 'type' => 'success']);

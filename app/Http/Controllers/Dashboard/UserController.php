@@ -53,9 +53,17 @@ class UserController extends Controller
         $ongoingPayments = null;
         // $ongoingPayments = self::prepareOngoingPaymentsWarning();
         // $user = Auth::user();
+
+        $userId  = Auth::user()->id;
+        $activeSub = SubscriptionsModel::where([['stripe_status', '=', 'active'], ['user_id', '=', $userId]])->orWhere([['stripe_status', '=', 'trialing'], ['user_id', '=', $userId]])->first();
+        $isDelete = 0;
+        if ($activeSub != null) {
+            $isDelete = $activeSub->cancel_by_user;
+        }
+
         $tmp = PaymentController::checkUnmatchingSubscriptions();
 
-        return view('panel.user.dashboard', compact('ongoingPayments')); //
+        return view('panel.user.dashboard', compact('ongoingPayments','isDelete')); //
     }
 
     public function prepareOngoingPaymentsWarning()
@@ -228,9 +236,11 @@ class UserController extends Controller
         $userId = Auth::user()->id;
         // Get current active subscription
         $activeSub = SubscriptionsModel::where([['stripe_status', '=', 'active'], ['user_id', '=', $userId]])->orWhere([['stripe_status', '=', 'trialing'], ['user_id', '=', $userId]])->first();
+        $isDelete = 0;
         $activesubid = 0; //id can't be zero, so this will be easy to check
         if ($activeSub != null) {
             $activesubid = $activeSub->plan_id;
+            $isDelete = $activeSub->cancel_by_user;
         }
 
         $activeSub_yokassa = YokassaSubscriptionsModel::where([['subscription_status', '=', 'active'],['user_id','=', $userId]])->first();
@@ -240,7 +250,7 @@ class UserController extends Controller
 
         $plans = PaymentPlans::where('type', 'subscription')->where('active', 1)->get();
         $prepaidplans = PaymentPlans::where('type', 'prepaid')->where('active', 1)->get();
-        return view('panel.user.payment.subscriptionPlans', compact('plans', 'prepaidplans', 'is_active_gateway', 'activeGateways', 'activesubid'));
+        return view('panel.user.payment.subscriptionPlans', compact('plans', 'prepaidplans', 'is_active_gateway', 'activeGateways', 'activesubid','isDelete'));
     }
 
     //Invoice - Billing

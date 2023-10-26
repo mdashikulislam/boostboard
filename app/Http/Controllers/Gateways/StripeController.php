@@ -713,7 +713,7 @@ class StripeController extends Controller
                 if ($activeSub->status == 'active' or $activeSub->status == 'trialing') {
                     return true;
                 } else {
-                    $activeSub->stripe_status = 'cancelled';
+                    //$activeSub->stripe_status = 'cancelled';
                     $activeSub->ends_at = \Carbon\Carbon::now();
                     $activeSub->save();
                     return false;
@@ -816,7 +816,7 @@ class StripeController extends Controller
                             $user->subscription($sub->name)->cancelNow();
 
                             // cancel subscription from our database
-                            $sub->stripe_status = 'cancelled';
+                           // $sub->stripe_status = 'cancelled';
                             $sub->ends_at = \Carbon\Carbon::now();
                             $sub->save();
                         }

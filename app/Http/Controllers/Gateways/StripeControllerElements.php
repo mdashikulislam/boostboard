@@ -659,8 +659,8 @@ class StripeControllerElements extends Controller
         if ($activeSub != null) {
             $plan = PaymentPlans::where('id', $activeSub->plan_id)->first();
 
-            $recent_words = $user->remaining_words - $plan->total_words;
-            $recent_images = $user->remaining_images - $plan->total_images;
+//            $recent_words = $user->remaining_words - $plan->total_words;
+//            $recent_images = $user->remaining_images - $plan->total_images;
 
             //if($user->subscription($activeSub->stripe_id)){ }
 
@@ -670,14 +670,19 @@ class StripeControllerElements extends Controller
                         //$user->subscription($activeSub->stripe_id)->cancelNow();
                         $subscription = $stripe->subscriptions->retrieve($activeSub->stripe_id);
                         $subscription->delete();
+                        $sub =  Subscription::where(function ($q){
+                            $q->where('stripe_status', 'active')->orWhere('stripe_status', 'trialing');
+                        })->where('user_id',\auth()->id())->first();
+                        $sub->cancel_by_user = 1;
+                        $sub->save();
                     }catch(\Exception $ex){
                         error_log("StripeController::subscribeCancel()\n" . $ex->getMessage());
                         return back()->with(['message' => 'Could not find active subscription. Nothing changed!', 'type' => 'error']);
                     }
 
-                    $user->remaining_words = $recent_words < 0 ? 0 : $recent_words;
-                    $user->remaining_images = $recent_images < 0 ? 0 : $recent_images;
-                    $user->save();
+//                    $user->remaining_words = $recent_words < 0 ? 0 : $recent_words;
+//                    $user->remaining_images = $recent_images < 0 ? 0 : $recent_images;
+//                    $user->save();
 
                     createActivity($user->id, 'cancelled', $plan->name, null);
 
@@ -1131,10 +1136,13 @@ class StripeControllerElements extends Controller
 
         $sub = $user->subscriptions()->where('stripe_status', 'active')->orWhere('stripe_status', 'trialing')->first();
         $activeSub = $sub->asStripeSubscription();
-
+        $today = Carbon::now();
+        $ends = Carbon::parse($sub->ends_at);
         if ($activeSub->status == 'active') {
             return \Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::createFromTimeStamp($activeSub->current_period_end));
-        } else {
+        } else if ($sub->cancel_by_user == 1  && $ends->gt($today)){
+            return \Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::createFromTimeStamp($activeSub->current_period_end));
+        }else {
             error_log($sub->trial_ends_at);
             return \Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::parse($sub->trial_ends_at));
         }
@@ -1208,11 +1216,15 @@ class StripeControllerElements extends Controller
         if ($sub != null) {
             if ($sub->paid_with == 'stripe') {
                 $activeSub = $sub->asStripeSubscription();
-
+                $today = Carbon::now();
+                $ends = Carbon::parse($sub->ends_at);
                 if ($activeSub->status == 'active' or $activeSub->status == 'trialing') {
                     return true;
-                } else {
+                } elseif ($sub->cancel_by_user == 1  && $ends->gt($today)){
+                    return true;
+                }else {
                     $sub->stripe_status = 'cancelled';
+                    $sub->cancel_by_user = 0;
                     $sub->ends_at = \Carbon\Carbon::now();
                     $sub->save();
                     return false;

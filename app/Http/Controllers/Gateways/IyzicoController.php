@@ -1295,7 +1295,7 @@ class IyzicoController extends Controller
                 
 
             }else{
-                $activeSub->stripe_status = "cancelled";
+                //$activeSub->stripe_status = "cancelled";
                 $activeSub->ends_at = \Carbon\Carbon::now();
                 $activeSub->save();
                 return \Carbon\Carbon::now()->format('F jS, Y');

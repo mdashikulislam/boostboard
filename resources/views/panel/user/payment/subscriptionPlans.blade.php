@@ -102,7 +102,9 @@
 							<div class="mt-auto -mx-[1rem] mb-[1rem] text-center">
 								<div class="vstack gap-2">
 									<span class="text-success"><b>{{__('Already Subscribed')}}</b></span>
-									<a onclick="return confirm('Are you sure to cancel your plan? You will lose your remaining usage.');" href="{{ LaravelLocalization::localizeUrl( route('dashboard.user.payment.cancelActiveSubscription') ) }}" class="text-muted">{{__('Cancel Subscription')}}</a>
+									@if(@$isDelete == 0)
+										<a onclick="return confirm('Are you sure you want to cancel your subscription? You will still have access to all features in your subscription till the end of your subscription period.');" href="{{ LaravelLocalization::localizeUrl( route('dashboard.user.payment.cancelActiveSubscription') ) }}" class="text-muted">{{__('Cancel Subscription')}}</a>
+									@endif
 								</div>
 							</div>
 							@elseif($activesubid != null)

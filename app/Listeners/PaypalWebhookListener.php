@@ -98,7 +98,7 @@ class PaypalWebhookListener implements ShouldQueue
                 // $resource_id is subscription id in this event.
                 $currentSubscription = SubscriptionsModel::where('stripe_id', $resource_id)->first();
                 if($currentSubscription->stripe_status != "cancelled"){
-                    $currentSubscription->stripe_status = "cancelled";
+                    //$currentSubscription->stripe_status = "cancelled";
                     $currentSubscription->ends_at = Carbon::now();
                     $currentSubscription->save();
                     $newData->status = 'checked';

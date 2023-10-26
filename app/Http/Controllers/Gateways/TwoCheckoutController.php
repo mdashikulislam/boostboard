@@ -279,7 +279,7 @@ class TwoCheckoutController extends Controller
                 return back()->with(['message' => 'Your subscription is not cancelled. Please contact support team', 'type' => 'success']);
             }
             
-            $activeSub->stripe_status = 'cancelled';
+            //$activeSub->stripe_status = 'cancelled';
             $activeSub->ends_at = \Carbon\Carbon::now();
             $activeSub->save();
 
