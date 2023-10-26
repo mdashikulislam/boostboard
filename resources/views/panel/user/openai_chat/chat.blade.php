@@ -163,5 +163,12 @@
             });
         </script>
     @endif
-
+    <script>
+        const textarea = document.querySelector('.auto-expanding-textarea');
+        textarea.addEventListener('input', function () {
+            this.style.height = 'auto'; // Reset the height
+            this.style.height = (this.scrollHeight) + 'px'; // Set the height to fit the content
+            console.log(this.scrollHeight)
+        });
+    </script>
 @endsection
