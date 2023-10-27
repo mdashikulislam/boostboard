@@ -595,7 +595,152 @@
 </aside>
 <!-- Navbar -->
 <header class="relative navbar navbar-expand-md navbar-light flex max-lg:h-[65px]">
-    <div class="container-xl flex-nowrap !items-stretch">
+    <div class="container flex-nowrap !items-stretch">
+		<div class="hidden items-center max-lg:flex max-lg:gap-3">
+			<button class="navbar-toggler collapsed max-lg:!block" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+			<a class="hidden max-lg:flex items-center justify-center shrink-0 lg:px-2 max-md:max-w-[120px]" href="{{ LaravelLocalization::localizeUrl( route('dashboard.index') ) }}">
+				<img src="/{{$setting->logo_path}}" alt="MagicAI" class="">
+			</a>
+		</div>
+        <div class="navbar-nav flex-row justify-end max-lg:basis-[65%]">
+            <div class="flex gap-[18px] max-lg:gap-2">
+				{{-- <div class="flex items-center max-xl:gap-2 max-lg:hidden xl:gap-3">
+					@if(Auth::user()->type == 'admin')
+					<a class="btn" href="{{route('dashboard.admin.index')}}" >
+						<svg class="hidden max-lg:block" xmlns="http://www.w3.org/2000/svg" height="20" fill="currentColor" viewBox="0 96 960 960" width="20"><path d="M690.882 786q25.883 0 44-19Q753 748 753 722.118q0-25.883-18.118-44-18.117-18.118-44-18.118Q665 660 646 678.118q-19 18.117-19 44Q627 748 646 767q19 19 44.882 19ZM689.5 911q33.5 0 60.5-14t46-40q-26-14-51.962-21-25.961-7-54-7-28.038 0-54.538 7-26.5 7-51.5 21 19 26 45.5 40t60 14Zm3 65Q615 976 560 920.5T505 789q0-78.435 54.99-133.718Q614.98 600 693 600q77 0 132.5 55.282Q881 710.565 881 789q0 76-55.5 131.5t-133 55.5ZM480 976q-138-32-229-156.5T160 534V295l320-120 320 120v270q-25-12-52-18.5t-55-6.5q-102.743 0-175.371 72.921Q445 685.843 445 789q0 48 19.5 94t53.5 80q-9 5-19 7.5t-19 5.5Z"/></svg>
+						<span class="max-lg:hidden">{{__('Admin Panel')}}</span>
+					</a>
+					@endif
+					@if($settings_two->liquid_license_type == "Extended License")
+						@if(getSubscriptionStatus())
+							<a class="btn max-xl:hidden" href="{{route('dashboard.user.payment.subscription')}}">
+								{{getSubscriptionName()}} - {{getSubscriptionDaysLeft()}} {{__('Days Left')}}
+							</a>
+						@else
+							<a class="btn max-xl:hidden" href="{{route('dashboard.user.payment.subscription')}}">
+								{{__('No Active Subscription')}}
+							</a>
+						@endif
+					
+						<a class="btn btn-primary" href="{{route('dashboard.user.payment.subscription')}}">
+							<svg class="md:me-2 max-lg:w-[20px] max-lg:h-[20px]" width="11" height="15" viewBox="0 0 11 15" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+								<path d="M6.6 0L0 9.375H4.4V15L11 5.625H6.6V0Z" />
+							</svg>
+							<span class="max-lg:hidden">{{__('Upgrade')}}</span>
+						</a>
+					@endif
+				</div>
+                <div class="flex items-center">
+                    <a href="?theme=dark" class="nav-link items-center justify-center px-0 hide-theme-dark hover:!bg-transparent max-lg:w-10 max-lg:h-10 max-lg:p-0 max-lg:border max-lg:border-solid max-lg:border-[--tblr-border-color] max-lg:!rounded-full max-lg:dark:bg-white max-lg:dark:bg-opacity-[0.03]" title="{{__('Enable dark mode')}}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" /></svg>
+                    </a>
+                    <a href="?theme=light" class="nav-link items-center justify-center px-0 hide-theme-light hover:!bg-transparent max-lg:w-10 max-lg:h-10 max-lg:p-0 max-lg:border max-lg:border-solid max-lg:border-[--tblr-border-color] max-lg:!rounded-full max-lg:dark:bg-white max-lg:dark:bg-opacity-[0.03]" title="{{__('Enable light mode')}}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" /></svg>
+                    </a>
+                </div>
+				@if(count( explode(',', $settings_two->languages) ) > 1)
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link px-0 hover:!bg-transparent max-lg:w-10 max-lg:h-10 max-lg:p-0 max-lg:border max-lg:border-solid max-lg:border-[--tblr-border-color] max-lg:!rounded-full max-lg:dark:bg-white max-lg:dark:bg-opacity-[0.03]" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show notifications">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"></path> <path d="M3.6 9h16.8"></path> <path d="M3.6 15h16.8"></path> <path d="M11.5 3a17 17 0 0 0 0 18"></path> <path d="M12.5 3a17 17 0 0 1 0 18"></path> </svg>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end">
+						<div class="flex flex-col">
+                            @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+								@if(in_array( $localeCode, explode(',', $settings_two->languages) ))
+									<a rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}" class="flex items-center px-3 py-2 border-solid border-[--tblr-border-color] border-t-0 border-r-0 border-l-0 last:border-b-0 text-heading transition-colors hover:no-underline hover:bg-[--tblr-border-color]">
+										<span class="text-[21px] !me-2">{{ country2flag(substr($properties['regional'], strrpos($properties['regional'], '_') + 1)) }} </span>{{$properties['native']}}
+									</a>
+								@endif
+                            @endforeach
+						</div>
+                    </div>
+                </div>
+				@endif
+				<div class="hidden items-center max-lg:flex">
+					<a href="{{route('dashboard.user.payment.subscription')}}" class="inline-flex items-center justify-center text-current w-10 h-10 p-0 border border-solid !border-[--tblr-border-color] !rounded-full dark:bg-white dark:bg-opacity-[0.03]">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11"></path></svg>
+					</a>
+				</div> --}}
+				<div class="nav-item dropdown">
+					<a href="#" class="p-0 nav-link d-flex lh-1 text-reset" data-bs-toggle="dropdown" aria-label="Open user menu">
+						<span class="avatar avatar-sm max-lg:w-10 max-lg:h-10" style="background-image: url(@if(!Auth::user()->github_token && !Auth::user()->google_token && !Auth::user()->facebook_token)/@endif{{Auth::user()->avatar}})"></span>
+					</a>
+					<div class="dropdown-menu dropdown-menu-end">
+						<div class="dropdown-item disabled">
+							<div>
+								<div>{{Auth::user()->fullName()}}</div>
+								<div class="mt-1 small text-muted">{{Auth::user()->email}}</div>
+							</div>
+						</div>
+						<div class="dropdown-divider"></div>
+						<div class="dropdown-item disabled">
+							<li class="nav-item">
+								<div class="mb-3 progress progress-separated">
+									@if((int)Auth::user()->remaining_words+(int)Auth::user()->remaining_images != 0)
+										<div class="progress-bar grow-0 shrink-0 basis-auto bg-primary" role="progressbar" style="width: {{(int)Auth::user()->remaining_words/((int)Auth::user()->remaining_words+(int)Auth::user()->remaining_images)*100}}%" aria-label="Text"></div>
+									@endif
+									@if((int)Auth::user()->remaining_words+(int)Auth::user()->remaining_images != 0)
+										<div class="progress-bar grow-0 shrink-0 basis-auto bg-[#9E9EFF]" role="progressbar" style="width: {{(int)Auth::user()->remaining_images/((int)Auth::user()->remaining_words+(int)Auth::user()->remaining_images)*100}}%" aria-label="Images"></div>
+									@endif
+								</div>
+								<div class="row">
+									<div class="col-auto d-flex align-items-center">
+										<span class="legend !me-2 rounded-full bg-primary"></span>
+										<span>{{__('Word Credits')}}</span>
+										<span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">{{ (int)Auth::user()->remaining_words != -1 ? number_format((int)Auth::user()->remaining_words) : __('Unlimited') }}</span>
+									</div>
+									<div class="col-auto d-flex align-items-center">
+										<span class="legend !me-2 rounded-full bg-[#9E9EFF]"></span>
+										<span>{{__('Image Credits')}}</span>
+										<span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">{{ (int)Auth::user()->remaining_images != -1 ? number_format((int)Auth::user()->remaining_images) : __('Unlimited') }}</span>
+									</div>
+								</div>
+							</li>
+						</div>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item {{activeRoute('dashboard.user.payment.subscription')}}" href="{{route('dashboard.user.payment.subscription')}}" >
+							{{__('Plan')}}
+						</a>
+						<a class="dropdown-item {{activeRoute('dashboard.user.orders.index')}}" href="{{route('dashboard.user.orders.index')}}" >
+							{{__('Orders')}}
+						</a>
+						<a class="dropdown-item {{activeRouteBulk(['dashboard.user.settings.index'])}}" href="{{route('dashboard.user.settings.index')}}" >
+							{{__('Settings')}}
+						</a>
+						<form id="logout" method="POST" action="{{ route('logout') }}">
+							@csrf
+						</form>
+						<a href="javascript:;" onclick="document.getElementById('logout').submit();" class="dropdown-item">{{__('Logout')}}</a>
+					</div>
+				</div>
+            </div>
+        </div>
+		<div class="flex items-center lg:-order-1 max-lg:w-full max-lg:fixed max-lg:bottom-16 max-lg:left-0 max-lg:z-50">
+			<form class="navbar-search group !me-2 max-lg:hidden max-lg:[&.show]:flex max-lg:[&.collapsing]:flex max-lg:m-0 max-lg:w-full max-lg:!me-0" id="navbar-search" autocomplete="off" novalidate>
+				<div class="w-full input-icon max-lg:p-3 max-lg:bg-[#fff] max-lg:dark:bg-zinc-800">
+					<span class="input-icon-addon">
+						<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>
+					</span>
+					<input type="search" class="form-control navbar-search-input peer max-lg:!rounded-md dark:!bg-zinc-900" id="top_search_word" onkeydown="return event.key != 'Enter';" placeholder="{{__('Search for templates and documents...')}}" aria-label="Search in website">
+					<kbd class="inline-block absolute top-1/2 !end-[12px] -translate-y-1/2 bg-[var(--tblr-bg-surface)] transition-all pointer-events-none peer-focus:opacity-0 peer-focus:invisible peer-focus:scale-70 group-[.is-searching]:opacity-0 group-[.is-searching]:invisible max-lg:hidden opacity-0"><span id="search-shortcut-key"></span> + K</kbd>
+					<span class="absolute top-1/2 -translate-y-1/2 !end-[20px]">
+						<span class="spinner-border spinner-border-sm text-muted hidden group-[.is-searching]:block" role="status"></span>
+					</span>
+					<span class="absolute !end-3 top-1/2 -translate-y-1/2 -translate-x-2 transition-all opacity-0 pointer-events-none peer-focus:!opacity-100 peer-focus:translate-x-0  group-[.is-searching]:hidden group-[.done-searching]:hidden rtl:-scale-x-100">
+						<svg xmlns="http://www.w3.org/2000/svg" height="25" viewBox="0 96 960 960" width="25" fill="currentColor"><path d="m375 816-43-43 198-198-198-198 43-43 241 241-241 241Z"/></svg>
+					</span>
+					<div class="navbar-search-results absolute top-[calc(100%+17px)] !start-0 bg-[#fff] shadow-[0_10px_70px_rgba(0,0,0,0.1)] rounded-md w-[100%] max-h-[380px] overflow-y-auto hidden group-[.done-searching]:block dark:!bg-[--tblr-bg-surface] max-lg:top-auto max-lg:bottom-full max-lg:start-0 max-lg:end-0 max-lg:w-auto" id="search_results" style="z-index: 999;">
+						<!-- Search results here -->
+						<h3 class="m-0 py-[0.75rem] px-3 border-solid border-b border-t-0 border-r-0 border-l-0 border-[--tblr-border-color] text-[1rem] font-medium">{{__('Search results')}}</h3>
+						<div class="search-results-container"></div>
+					</div>
+				</div>
+			</form>
+		</div>
+    </div>
+    {{-- <div class="container-xl flex-nowrap !items-stretch">
 		<div class="hidden items-center max-lg:flex max-lg:gap-3">
 			<button class="navbar-toggler collapsed max-lg:!block" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -739,7 +884,7 @@
 				</div>
 			</form>
 		</div>
-    </div>
+    </div> --}}
 
 </header>
 

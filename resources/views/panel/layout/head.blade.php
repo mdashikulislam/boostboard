@@ -32,6 +32,7 @@
     <link href="/assets/css/tabler-vendors.min.css" rel="stylesheet"/>
     <link href="/assets/css/demo.min.css" rel="stylesheet"/>
     <link href="/assets/css/toastr.min.css" rel="stylesheet"/>
+    <link href="/assets/css/user-dashboard.css" rel="stylesheet"/>
 
     {{-- <link rel="stylesheet" href="https://flowbite.com/docs/flowbite.css?v=1.8.1a">
     <link rel="stylesheet" href="https://flowbite.com/docs/docs.css?v=1.8.1a"> --}}
