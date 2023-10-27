@@ -1,9 +1,14 @@
-<span class="navbar-expander inline-flex items-center justify-center w-6 h-6 fixed top-[calc(var(--lqd-header-height)/2)] !start-[--navbar-width] p-0 border-0 bg-[--lqd-header-search-bg] rounded-2xl z-50 transition-all cursor-pointer -translate-x-1/2 -translate-y-1/2 max-lg:hidden hover:bg-[--lqd-faded-out] group-[.navbar-shrinked]/body:!start-[80px]">
+{{-- <span class="navbar-expander inline-flex items-center justify-center w-6 h-6 fixed top-[calc(var(--lqd-header-height)/2)] !start-[--navbar-width] p-0 border-0 bg-[--lqd-header-search-bg] rounded-2xl z-50 transition-all cursor-pointer -translate-x-1/2 -translate-y-1/2 max-lg:hidden hover:bg-[--lqd-faded-out] group-[.navbar-shrinked]/body:!start-[80px]">
 	<svg class="transition-transform translate-x-0 translate-y-0 group-[.navbar-shrinked]/body:-scale-x-100 group-hover:-translate-x-[2px] group-[.navbar-shrinked]/body:group-hover:translate-x-[2px] rtl:-scale-x-100 rtl:group-[.navbar-shrinked]/body:scale-x-100" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="var(--lqd-heading-color)" fill="none" stroke-linecap="round" stroke-linejoin="round">
 		<path d="M15 6l-6 6l6 6"></path>
 	</svg>
+</span> --}}
+<span class="navbar-expander open-close-btn inline-flex items-center justify-center fixed !start-[--navbar-width] p-0 border-0  z-50 transition-all cursor-pointer -translate-y-1/2 max-lg:hidden hover:bg-[--lqd-faded-out] group-[.navbar-shrinked]/body:!start-[80px]">
+	<svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" fill="none">
+		<path d="M7.18189 19.6946V1.27036M7.18189 19.6946H16.1672C17.4546 19.6946 18.0983 19.6946 18.59 19.4436C19.0239 19.2227 19.3766 18.8699 19.5975 18.436C19.8486 17.9443 19.8486 17.3006 19.8486 16.0132V4.95175C19.8486 3.66436 19.8486 3.01951 19.5975 2.52781C19.3764 2.09436 19.0237 1.74205 18.59 1.52139C18.0983 1.27036 17.4534 1.27036 16.1637 1.27036H7.18189M7.18189 19.6946H5.10571C3.81832 19.6946 3.17347 19.6946 2.68177 19.4436C2.24832 19.2224 1.89601 18.8697 1.67535 18.436C1.42432 17.9443 1.42432 17.2994 1.42432 16.0097V4.9552C1.42432 3.66551 1.42432 3.02066 1.67535 2.52781C1.89644 2.09369 2.24765 1.74248 2.68177 1.52139C3.17462 1.27036 3.81947 1.27036 5.10916 1.27036H7.18189" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+	  </svg>
 </span>
-<aside class="navbar navbar-vertical navbar-expand-lg navbar-transparent !overflow-hidden max-lg:absolute max-lg:top-[65px] max-lg:left-0 max-lg:w-full max-lg:z-50 max-lg:!bg-white max-lg:!shadow-xl max-lg:min-h-0 max-lg:p-0 max-lg:max-h-[calc(85vh-2rem)] max-lg:overflow-y-auto max-lg:dark:!bg-[--tblr-body-bg] max-lg:rounded-b-[20px] group-[.navbar-shrinked]/body:!overflow-visible">
+<aside class=" navbar navbar-vertical navbar-expand-lg navbar-transparent !overflow-hidden max-lg:absolute max-lg:top-[65px] max-lg:left-0 max-lg:w-full max-lg:z-50 max-lg:!bg-white max-lg:!shadow-xl max-lg:min-h-0 max-lg:p-0 max-lg:max-h-[calc(85vh-2rem)] max-lg:overflow-y-auto max-lg:dark:!bg-[--tblr-body-bg] max-lg:rounded-b-[20px] group-[.navbar-shrinked]/body:!overflow-visible">
     <div class="navbar-inner h-full overflow-x-hidden overflow-y-auto max-h-[inherit] max-lg:w-full">
         <div class="p-0 container-fluid max-lg:w-full">
             <h1 class="flex items-center ps-[1.25rem] pe-9 min-h-[--lqd-header-height] max-w-full relative max-lg:hidden group-[.navbar-shrinked]/body:w-full group-[.navbar-shrinked]/body:px-0 group-[.navbar-shrinked]/body:text-center group-[.navbar-shrinked]/body:justify-center">
@@ -594,7 +599,7 @@
     </div>
 </aside>
 <!-- Navbar -->
-<header class="relative navbar navbar-expand-md navbar-light flex max-lg:h-[65px]">
+<header class="relative navbar navbar-expand-md navbar-light flex max-lg:h-[65px] dashboard-header-top">
     <div class="container flex-nowrap !items-stretch">
 		<div class="hidden items-center max-lg:flex max-lg:gap-3">
 			<button class="navbar-toggler collapsed max-lg:!block" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
@@ -666,6 +671,7 @@
 				<div class="nav-item dropdown">
 					<a href="#" class="p-0 nav-link d-flex lh-1 text-reset" data-bs-toggle="dropdown" aria-label="Open user menu">
 						<span class="avatar avatar-sm max-lg:w-10 max-lg:h-10" style="background-image: url(@if(!Auth::user()->github_token && !Auth::user()->google_token && !Auth::user()->facebook_token)/@endif{{Auth::user()->avatar}})"></span>
+						<img src="/images/dashboard/drop-down-icon.svg" alt="icon">
 					</a>
 					<div class="dropdown-menu dropdown-menu-end">
 						<div class="dropdown-item disabled">
@@ -718,13 +724,13 @@
             </div>
         </div>
 		<div class="flex items-center lg:-order-1 max-lg:w-full max-lg:fixed max-lg:bottom-16 max-lg:left-0 max-lg:z-50">
-			<form class="navbar-search group !me-2 max-lg:hidden max-lg:[&.show]:flex max-lg:[&.collapsing]:flex max-lg:m-0 max-lg:w-full max-lg:!me-0" id="navbar-search" autocomplete="off" novalidate>
+			<form class="header-search navbar-search group !me-2 max-lg:hidden max-lg:[&.show]:flex max-lg:[&.collapsing]:flex max-lg:m-0 max-lg:w-full max-lg:!me-0" id="navbar-search" autocomplete="off" novalidate>
 				<div class="w-full input-icon max-lg:p-3 max-lg:bg-[#fff] max-lg:dark:bg-zinc-800">
 					<span class="input-icon-addon">
 						<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>
 					</span>
 					<input type="search" class="form-control navbar-search-input peer max-lg:!rounded-md dark:!bg-zinc-900" id="top_search_word" onkeydown="return event.key != 'Enter';" placeholder="{{__('Search for templates and documents...')}}" aria-label="Search in website">
-					<kbd class="inline-block absolute top-1/2 !end-[12px] -translate-y-1/2 bg-[var(--tblr-bg-surface)] transition-all pointer-events-none peer-focus:opacity-0 peer-focus:invisible peer-focus:scale-70 group-[.is-searching]:opacity-0 group-[.is-searching]:invisible max-lg:hidden opacity-0"><span id="search-shortcut-key"></span> + K</kbd>
+					<kbd class="search-kbd inline-block absolute top-1/2 !end-[12px] -translate-y-1/2  transition-all pointer-events-none peer-focus:opacity-0 peer-focus:invisible peer-focus:scale-70 group-[.is-searching]:opacity-0 group-[.is-searching]:invisible max-lg:hidden opacity-0">(<span id="search-shortcut-key"></span> + K)</kbd>
 					<span class="absolute top-1/2 -translate-y-1/2 !end-[20px]">
 						<span class="spinner-border spinner-border-sm text-muted hidden group-[.is-searching]:block" role="status"></span>
 					</span>

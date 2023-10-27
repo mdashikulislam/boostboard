@@ -85,9 +85,20 @@
                         <div class="card-wrapper">
                             <div class="row align-items-center">
                                 <div class="col-12 col-md-6 col-lg-8">
-                                    <div class="card-text">
-                                        <h2>🎥 Getting Started!</h2>
-                                        <p> <span>Hey Student!</span> Welkom bij BoostBoard! Wil je alle ins en outs van BoostBoard leren kennen? Bekijk dan onze handige introductievideo!</p>                                        
+                                    <div class="card-text text-card">
+                                        {{-- <h2>🎥 Getting Started!</h2> --}}
+                                        {{-- <p> <span>Hey Student!</span> Welkom bij BoostBoard! Wil je alle ins en outs van BoostBoard leren kennen? Bekijk dan onze handige introductievideo!</p> --}}
+                                        <h2>Hey 
+                                            <span class="up-icon">
+                                                Student!
+                                                <img class="light-shape" src="/images/dashboard/light-shape.svg" alt="shape">
+                                            </span>
+                                        </h2>
+                                        <p>
+                                            <span>Welkom bij BoostBoard!</span>
+                                             We laten je met veel plezier zien hoe je BoostBoard inzet om nóg betere verslagen en teksten te schrijven! Bespaar tijd en geniet zo nóg meer van de leuke kanten van het studentenleven!
+                                        </p>
+                                        <img class="mike-shape" src="/images/dashboard/mike-shape.svg" alt="mike shape">
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6 col-lg-4">
