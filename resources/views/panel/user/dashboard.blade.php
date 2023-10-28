@@ -2,7 +2,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
-    <style>
+<style>
         /* Style for the closable section */
         #closable {
             position: relative;
@@ -42,6 +42,7 @@
             }
         }
     </style>
+<div>
     <div class="page-header dashboard-header">
         <div class="container">
             <div class="row g-2 items-center justify-between max-md:flex-col max-md:items-start max-md:gap-4">
@@ -53,25 +54,6 @@
                         {{ __('Welcome') }}, {{ \Illuminate\Support\Facades\Auth::user()->name }}.
                     </h2>
                 </div>
-                <div class="col-auto">
-                    <div class="btn-list">
-                        <a href="{{ LaravelLocalization::localizeUrl(route('dashboard.user.openai.documents.all')) }}"
-                            class="btn">
-                            {{ __('My Documents') }}
-                        </a>
-                        <a href="{{ LaravelLocalization::localizeUrl(route('dashboard.user.openai.list')) }}"
-                            class="btn btn-primary items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="!me-2" width="18" height="18"
-                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M12 5l0 14" />
-                                <path d="M5 12l14 0" />
-                            </svg>
-                            {{ __('New') }}
-                        </a>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -80,7 +62,6 @@
         <div class="container">
             <div class="row">
                 <div class="col-12" id="closable">
-                    <div class="cross" id="cross"></div>
                     <div class="single-card">
                         <div class="card-wrapper">
                             <div class="row align-items-center">
@@ -471,13 +452,4 @@
         </div>
     </div>
 </div>
-    <script>
-        // JavaScript to hide the element when the cross icon is clicked
-        const crossIcon = document.getElementById('cross');
-        const closableElement = document.getElementById('closable');
-
-        crossIcon.addEventListener('click', function() {
-            closableElement.style.display = 'none';
-        });
-    </script>
 @endsection

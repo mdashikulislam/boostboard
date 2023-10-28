@@ -10,7 +10,25 @@
 			<div class="progress-bar progress-bar-indeterminate bg-[--tblr-primary] before:[animation-timing-function:ease-in-out] dark:bg-white"></div>
 		</div>
 	</div>
-
+	<style>
+		.nav-link{
+			display: flex;
+			height: 48px;
+			padding: 0 12px 0 16px;
+			align-items: center;
+			gap: 16px;
+			align-self: stretch;
+			font-family: 'Inter';
+			font-size: 14px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 22px;
+		}
+		.nav-link span svg{
+			width: 24px;
+			height: 24px;
+		}
+	</style>
 	<div class="page">
 		<!-- Navbar -->
 		@if(view()->exists('panel.admin.custom.layout.panel.header'))
