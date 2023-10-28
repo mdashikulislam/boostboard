@@ -41,6 +41,9 @@
                 width: 100%;
             }
         }
+        .page-body.user-page-body .single-card .card-wrapper .card-video iframe{
+            height: 300px;
+        }
     </style>
 <div>
     <div class="page-header dashboard-header">
