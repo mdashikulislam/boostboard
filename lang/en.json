@@ -1355,5 +1355,14 @@
     "Payment Failed": "Payment Failed",
     "Token is missing": "Token is missing",
     "Customer could not set": "Customer could not set",
-    "Invite your friends and earn lifelong recurring commissions from every purchase they make": "Invite your friends and earn lifelong recurring commissions from every purchase they make"
+    "Invite your friends and earn lifelong recurring commissions from every purchase they make": "Invite your friends and earn lifelong recurring commissions from every purchase they make",
+    "Tokens bijkopen": "Buy additional token",
+    "Abonnement opzeggen": "Cancel subscription",
+    "You are currently subscribed to it": "You are currently subscribed to it",
+    "subscription": "subscription",
+    "Automatically refreshes after": "Automatically refreshes after",
+    "days": "days",
+    "This one is overflowing": "This one is overflowing",
+    "the day off.":"the day off.",
+    "You currently do not have a subscription. Select a subscription or token package": "You currently do not have a subscription. Select a subscription or token package"
 }

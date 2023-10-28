@@ -2,7 +2,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
-<style>
+    <style>
         /* Style for the closable section */
         #closable {
             position: relative;
@@ -44,184 +44,216 @@
         .page-body.user-page-body .single-card .card-wrapper .card-video iframe{
             height: 300px;
         }
+        .page-body.user-page-body .single-card .card-wrapper.upgrade-card{
+            padding: 39px 40px;
+        }
+        .table-wrapper .avatar{
+            border-radius: 15px;
+        }
     </style>
-<div>
-    <div class="page-header dashboard-header">
-        <div class="container">
-            <div class="row g-2 items-center justify-between max-md:flex-col max-md:items-start max-md:gap-4">
-                <div class="col">
-                    <div class="page-pretitle">
-                        {{ __('User Dashboard') }}
+    <div>
+        <div class="page-header dashboard-header">
+            <div class="container">
+                <div class="row g-2 items-center justify-between max-md:flex-col max-md:items-start max-md:gap-4">
+                    <div class="col">
+                        <div class="page-pretitle">
+                            {{ __('User Dashboard') }}
+                        </div>
+                        <h2 class="mb-2 page-title">
+                            {{ __('Welcome') }}, {{ \Illuminate\Support\Facades\Auth::user()->name }}.
+                        </h2>
                     </div>
-                    <h2 class="mb-2 page-title">
-                        {{ __('Welcome') }}, {{ \Illuminate\Support\Facades\Auth::user()->name }}.
-                    </h2>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Page body -->
-    <div class="page-body user-page-body">
-        <div class="container">
-            <div class="row">
-                <div class="col-12" id="closable">
-                    <div class="single-card">
-                        <div class="card-wrapper">
-                            <div class="row align-items-center">
-                                <div class="col-12 col-md-6 col-lg-8">
-                                    <div class="card-text text-card">
-                                        {{-- <h2>🎥 Getting Started!</h2> --}}
-                                        {{-- <p> <span>Hey Student!</span> Welkom bij BoostBoard! Wil je alle ins en outs van BoostBoard leren kennen? Bekijk dan onze handige introductievideo!</p> --}}
-                                        <h2>Hey 
-                                            <span class="up-icon">
+        <!-- Page body -->
+        <div class="page-body user-page-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12" id="closable">
+                        <div class="single-card">
+                            <div class="card-wrapper">
+                                <div class="row align-items-center">
+                                    <div class="col-12 col-md-6 col-lg-8">
+                                        <div class="card-text text-card">
+                                            {{-- <h2>🎥 Getting Started!</h2> --}}
+                                            {{-- <p> <span>Hey Student!</span> Welkom bij BoostBoard! Wil je alle ins en outs van BoostBoard leren kennen? Bekijk dan onze handige introductievideo!</p> --}}
+                                            <h2>Hey
+                                                <span class="up-icon">
                                                 Student!
                                                 <img class="light-shape" src="/images/dashboard/light-shape.svg" alt="shape">
                                             </span>
-                                        </h2>
-                                        <p>
-                                            <span>Welkom bij BoostBoard!</span>
-                                             We laten je met veel plezier zien hoe je BoostBoard inzet om nóg betere verslagen en teksten te schrijven! Bespaar tijd en geniet zo nóg meer van de leuke kanten van het studentenleven!
-                                        </p>
-                                        <img class="mike-shape" src="/images/dashboard/mike-shape.svg" alt="mike shape">
+                                            </h2>
+                                            <p>
+                                                <span>Welkom bij BoostBoard!</span>
+                                                We laten je met veel plezier zien hoe je BoostBoard inzet om nóg betere verslagen en teksten te schrijven! Bespaar tijd en geniet zo nóg meer van de leuke kanten van het studentenleven!
+                                            </p>
+                                            <img class="mike-shape" src="/images/dashboard/mike-shape.svg" alt="mike shape">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-lg-4">
-                                    <div class="relative card-video">
-                                        <iframe src="https://www.youtube.com/embed/xvEQeuq_wH8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                        <div class="relative card-video">
+                                            <iframe src="https://www.youtube.com/embed/xvEQeuq_wH8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                
 
-                <div class="col-lg-8 col-md-6 col-12">
-                    <div class="single-card">
-                        <div class="card-wrapper overview-card">
-                            <img class="overview-shape" src="/images/dashboard/overview-shape.svg" alt="shape">
-                            <h2 class="title black">{{ __('Overview') }}</h2>
-                            <div class="content-wrap">
-                                <div class="count-wrapper">
-                                    <div class="count-single">
-                                        <p class="count-title">{{ __('Words Left') }}</p>
-                                        <p class="count">
-                                            @if (Auth::user()->remaining_words == -1)
-                                                Unlimited
-                                            @else
-                                                {{ number_format((int) Auth::user()->remaining_words) }}
-                                            @endif
-                                        </p>
-                                    </div>
-                                    @if ($setting->feature_ai_image)
+
+                    <div class="col-lg-8 col-md-6 col-12">
+                        <div class="single-card">
+                            <div class="card-wrapper overview-card">
+                                <img class="overview-shape" src="/images/dashboard/overview-shape.svg" alt="shape">
+                                <h2 class="title black">{{ __('Overview') }}</h2>
+                                <div class="content-wrap">
+                                    <div class="count-wrapper">
                                         <div class="count-single">
-                                            <p class="count-title">{{ __('Images Left') }}</p>
+                                            <p class="count-title">{{ __('Words Left') }}</p>
                                             <p class="count">
-                                                @if (Auth::user()->remaining_images == -1)
+                                                @if (Auth::user()->remaining_words == -1)
                                                     Unlimited
                                                 @else
-                                                    {{ number_format((int) Auth::user()->remaining_images) }}
+                                                    {{ number_format((int) Auth::user()->remaining_words) }}
                                                 @endif
                                             </p>
                                         </div>
-                                    @endif
-                                    <div class="count-single">
-                                        <p class="count-title">{{ __('Hours Saved') }}</p>
-                                        <p class="count">
-                                            {{ number_format(($total_words * 0.5) / 60) }}</p>
-                                    </div>
-                                </div>
-                                <div class="progress-bar-single">
-                                    <h2 class="title black progress-title">{{ __('Your Documents') }}</h2>
-                                    <div class="progress progress-separated">
-                                        @if ($total_documents != 0)
-                                            <div class="progress-bar grow-0 shrink-0 basis-auto bg-primary"
-                                                role="progressbar"
-                                                style="width: {{ (100 * (int) $total_text_documents) / (int) $total_documents }}%"
-                                                aria-label="{{ __('Text') }}"></div>
-                                        @endif
-                                        @if ($setting->feature_ai_image && $total_documents != 0)
-                                            <div class="progress-bar grow-0 shrink-0 basis-auto bg-[#9E9EFF]"
-                                                role="progressbar"
-                                                style="width: {{ (100 * (int) $total_image_documents) / (int) $total_documents }}%"
-                                                aria-label="{{ __('Images') }}"></div>
-                                        @endif
-                                    </div>
-                                    <div class="row report-wrap">
-                                        <div class="col-auto d-flex align-items-center">
-                                            <span class="legend text-legend"></span>
-                                            <span>{{ __('Text') }}</span>
-                                            <span
-                                                class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">{{ $total_text_documents }}</span>
-                                        </div>
                                         @if ($setting->feature_ai_image)
-                                            <div class="col-auto d-flex align-items-center">
-                                                <span class="legend image-legend"></span>
-                                                <span>{{ __('Image') }}</span>
-                                                <span
-                                                    class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">{{ $total_image_documents }}</span>
+                                            <div class="count-single">
+                                                <p class="count-title">{{ __('Images Left') }}</p>
+                                                <p class="count">
+                                                    @if (Auth::user()->remaining_images == -1)
+                                                        Unlimited
+                                                    @else
+                                                        {{ number_format((int) Auth::user()->remaining_images) }}
+                                                    @endif
+                                                </p>
                                             </div>
                                         @endif
-                                        <div class="col-auto d-flex align-items-center">
-                                            <span class="legend bg-success"></span>
-                                            <span>{{ __('Total') }}</span>
-                                            <span
-                                                class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">{{ $total_documents }}</span>
+                                        <div class="count-single">
+                                            <p class="count-title">{{ __('Hours Saved') }}</p>
+                                            <p class="count">
+                                                {{ number_format(($total_words * 0.5) / 60) }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="progress-bar-single">
+                                        <h2 class="title black progress-title">{{ __('Your Documents') }}</h2>
+                                        <div class="progress progress-separated">
+
+                                            @if ($total_documents != 0)
+                                                <div class="progress-bar grow-0 shrink-0 basis-auto bg-primary"
+                                                     role="progressbar"
+                                                     style="width: {{ (100 * (int) $total_text_documents) / (int) $total_documents }}%"
+                                                     aria-label="{{ __('Text') }}"></div>
+                                            @endif
+                                            @if ($setting->feature_ai_image && $total_documents != 0)
+                                                <div class="progress-bar grow-0 shrink-0 basis-auto bg-[#9E9EFF]"
+                                                     role="progressbar"
+                                                     style="width: {{ (100 * (int) $total_image_documents) / (int) $total_documents }}%"
+                                                     aria-label="{{ __('Images') }}"></div>
+                                            @endif
+                                        </div>
+                                        <div class="row report-wrap">
+                                            <div class="col-auto d-flex align-items-center">
+                                                <span class="legend text-legend"></span>
+                                                <span>{{ __('Text') }}</span>
+                                                <span
+                                                        class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">({{ $total_text_documents }})</span>
+                                            </div>
+                                            @if ($setting->feature_ai_image)
+                                                <div class="col-auto d-flex align-items-center">
+                                                    <span class="legend image-legend"></span>
+                                                    <span>{{ __('Image') }}</span>
+                                                    <span
+                                                            class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">({{ $total_image_documents }})</span>
+                                                </div>
+                                            @endif
+                                            <div class="col-auto d-flex align-items-center">
+                                                <span class="legend bg-success"></span>
+                                                <span>{{ __('Total') }}</span>
+                                                <span
+                                                        class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">({{ $total_documents }})</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-lg-4 col-md-6 col-12">
-                    <div class="single-card">
-                        <div class="card-wrapper upgrade-card">
-                            <img class="air-shape" src="/images/dashboard/air-shape.svg" alt="shape">
-                            <h2 class="title white">Upgraden</h2>
-                            <p class="content">Je bent momenteel geabonneerd op het <span>Premium abonnement.</span> Deze wordt automatisch vernieuwd over 30 dagen.</p>
-                            <div class="button-box-plus">
-                                <a href="#" class="upgrade-btn plus-btn">
-                                    <img src="/images/dashboard/plus.svg" alt="plus">
-                                    Tokens bijkopen
-                                </a>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <div class="single-card">
+                            <div class="card-wrapper upgrade-card">
+                                <img class="air-shape" src="/images/dashboard/air-shape.svg" alt="shape">
+                                <h2 class="title white">Upgraden</h2>
+                                @if(Auth::user()->activePlan() != null)
+                                    @php
+                                        $subscription = getSubscription();
+                                    @endphp
+                                    <p class="content">
+                                        {{__('You are currently subscribed to it')}}
+                                        <span>{{ getSubscriptionName() }}</span>
+                                        {{__('subscription')}}.
+                                        @if($subscription->cancel_by_user ==  1)
+                                            {{__('This one is overflowing')}}
+                                        @else
+                                            {{__('Automatically refreshes after')}}
+                                        @endif
+                                        {{ getSubscriptionDaysLeft() }}
+                                        @if($subscription->cancel_by_user ==  1)
+                                            {{__('the day off.')}}
+                                        @else
+                                            {{__('Days.')}}</p>
+                                @endif
+                                {{ checkIfTrial() == true ? __('You are in Trial time.') : '' }}
+                                @else
+                                    <p class="content">{{__('You currently do not have a subscription. Select a subscription or token package')}}.</p>
+                                @endif
+                                <p class="content"></p>
+                                <div class="button-box-plus">
+                                    <a href="{{ LaravelLocalization::localizeUrl(route('dashboard.user.payment.subscription')) }}" class="upgrade-btn plus-btn">
+                                        <img src="/images/dashboard/plus.svg" alt="plus">
+                                        {{__('Tokens bijkopen')}}
+                                    </a>
 
-                            </div>
-                            <div class="button-box-minus">
-                                <a href="#" class="upgrade-btn minus-btn">
-                                    <img src="/images/dashboard/minus.svg" alt="minus">
-                                    Abonnement opzeggen
-                                </a>                                
+                                </div>
+                                @if (getSubscriptionStatus())
+                                    @if(@$isDelete == 0)
+                                        <div class="button-box-minus">
+                                            <a href="{{ LaravelLocalization::localizeUrl(route('dashboard.user.payment.cancelActiveSubscription')) }}" onclick="return confirm('Weet je zeker dat je je abonnement wilt opzeggen? Tot het einde van je abonnementsperiode heb je nog steeds toegang tot alle functies van je abonnement.');" class="upgrade-btn minus-btn">
+                                                <img src="/images/dashboard/minus.svg" alt="minus">
+                                                {{__('Abonnement opzeggen')}}
+                                            </a>
+                                        </div>
+                                    @endif
+                                @endif
                             </div>
                         </div>
                     </div>
-                </div>
-{{-- 
-                <div class="col-12">
-                    @include('panel.user.payment.subscriptionStatus')
-                </div>
 
-                @if ($ongoingPayments != null)
-                    <div class="col-lg-4 col-md-6 col-12">
-                        @include('panel.user.payment.ongoingPayments')
-                    </div> 
-                @endif --}}
-                
-                {{-- <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title text-heading">{{ __('Documents') }}</h3>
+                    {{--                <div class="col-12">--}}
+                    {{--                    @include('panel.user.payment.subscriptionStatus')--}}
+                    {{--                </div>--}}
+
+                    @if ($ongoingPayments != null)
+                        <div class="col-lg-4 col-md-6 col-12">
+                            @include('panel.user.payment.ongoingPayments')
                         </div>
-                        <div class="card-table table-responsive">
-                            <table class="table table-vcenter">
-                                <tbody>
+                    @endif
+
+                    <div class="col-md-6">
+                        <div class="table-wrapper">
+                            <h2 class="table-title mb-0">{{ __('Documents') }}</h2>
+                            <div class="card-table table-responsive">
+                                <table class="table table-vcenter">
+                                    <tbody>
                                     @foreach (Auth::user()->openai()->orderBy('created_at', 'desc')->take(4)->get() as $entry)
                                         @if ($entry->generator != null)
                                             <tr>
                                                 <td class="w-1 !pe-0">
                                                     <span class="avatar w-[43px] h-[43px] [&_svg]:w-[20px] [&_svg]:h-[20px]"
-                                                        style="background: {{ $entry->generator->color }}">
+                                                          style="background: {{ $entry->generator->color }}">
                                                         @if ($entry->generator->image !== 'none')
                                                             {!! html_entity_decode($entry->generator->image) !!}
                                                         @endif
@@ -229,38 +261,36 @@
                                                 </td>
                                                 <td class="td-truncate">
                                                     <a href="{{ LaravelLocalization::localizeUrl(route('dashboard.user.openai.documents.single', $entry->slug)) }}"
-                                                        class="block text-truncate text-heading hover:no-underline">
+                                                       class="block text-truncate text-heading hover:no-underline">
                                                         <span class="font-medium">{{ __($entry->generator->title) }}</span>
                                                         <br>
                                                         <span
-                                                            class="italic text-muted opacity-80 dark:!text-white dark:!opacity-50">{{ __($entry->generator->description) }}</span>
+                                                                class="italic text-muted opacity-80 dark:!text-white dark:!opacity-50">{{ __($entry->generator->description) }}</span>
                                                     </a>
                                                 </td>
                                                 <td class="text-nowrap">
                                                     <span class="text-heading">{{ __('in Workbook') }}</span>
                                                     <br>
                                                     <span
-                                                        class="italic text-muted opacity-80 dark:!text-white dark:!opacity-50">{{ $entry->created_at->format('M d, Y') }}</span>
+                                                            class="italic text-muted opacity-80 dark:!text-white dark:!opacity-50">{{ $entry->created_at->format('M d, Y') }}</span>
                                                 </td>
                                             </tr>
                                         @endif
                                     @endforeach
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
 
 
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title text-heading">{{ __('Favorite Templates') }}</h3>
-                        </div>
-                        <div class="card-table table-responsive">
-                            <table class="table table-vcenter">
-                                <tbody>
-                                    @php 
+                    <div class="col-md-6">
+                        <div class="table-wrapper">
+                            <h2 class="table-title mb-0">{{ __('Favorite Templates') }}</h2>
+                            <div class="card-table table-responsive">
+                                <table class="table table-vcenter">
+                                    <tbody>
+                                    @php
                                         $plan = Auth::user()->activePlan();
                                         $plan_type = 'regular';
 
@@ -278,7 +308,7 @@
                                         <tr class="relative">
                                             <td class="w-1 !pe-0">
                                                 <span class="avatar w-[43px] h-[43px] [&_svg]:w-[20px] [&_svg]:h-[20px]"
-                                                    style="background: {{ $entry->color }}">
+                                                      style="background: {{ $entry->color }}">
                                                     @if ($entry->image !== 'none')
                                                         {!! html_entity_decode($entry->image) !!}
                                                     @endif
@@ -301,14 +331,14 @@
                                                         </a>
                                                     </div>
                                                     <a href="#"
-                                                        class="text-heading hover:no-underline">
+                                                       class="text-heading hover:no-underline">
                                                         <span class="font-medium">{{ __($entry->title) }}</span>
                                                         <br>
                                                         <span class="block italic text-muted opacity-80 text-truncate dark:!text-white dark:!opacity-50">{{ __($entry->description) }}</span>
                                                     </a>
                                                 @elseif ($entry->active == 1)
                                                     <a href="@if ($entry->type == 'voiceover') {{ LaravelLocalization::localizeUrl(route('dashboard.user.openai.generator', $entry->slug)) }}@else {{ LaravelLocalization::localizeUrl(route('dashboard.user.openai.generator.workbook', $entry->slug)) }} @endif"
-                                                        class="text-heading hover:no-underline">
+                                                       class="text-heading hover:no-underline">
                                                         <span class="font-medium">{{ __($entry->title) }}</span>
                                                         <br>
                                                         <span class="block italic text-muted opacity-80 text-truncate dark:!text-white dark:!opacity-50">{{ __($entry->description) }}</span>
@@ -325,134 +355,21 @@
                                                 <span class="text-heading">{{ __('in Workbook') }}</span>
                                                 <br>
                                                 <span
-                                                    class="italic text-muted opacity-80">{{ $entry->created_at->format('M d, Y') }}</span>
+                                                        class="italic text-muted opacity-80">{{ $entry->created_at->format('M d, Y') }}</span>
                                             </td>
                                         </tr>
                                         @if ($loop->iteration == 4)
-                                        @break
-                                    @endif
-                                @endforeach
-                            </tbody>
-                        </table>
+                                            @break
+                                        @endif
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
                     </div>
-                </div> --}}
-                <div class="col-lg-6 col-12">
-                    <div class="table-wrapper">
-                        <h2 class="table-title">Documenten</h2>
-                        <div class="single-content">
-                            <div class="content-details">
-                                <div class="avatar">
-                                    <img class="table-avater" src="/images/dashboard/table-avater.svg" alt="avatar">
-                                </div>
-                                <div class="content">
-                                    <p>Schrijf een samenvatting.</p>
-                                    <span>Creëer een beknopt overzicht van een tekst of materiaal vo...</span>
-                                </div>
-                            </div>
-                            <div class="content-date">
-                                <p class="month">in Documenten</p>
-                                <span class="month date">15 Okt, 2023</span>
-                            </div>
-                        </div>
-                        <div class="single-content">
-                            <div class="content-details">
-                                <div class="avatar">
-                                    <img class="table-avater" src="/images/dashboard/table-avater.svg" alt="avatar">
-                                </div>
-                                <div class="content">
-                                    <p>Schrijf een samenvatting.</p>
-                                    <span>Creëer een beknopt overzicht van een tekst of materiaal vo...</span>
-                                </div>
-                            </div>
-                            <div class="content-date">
-                                <p class="month">in Documenten</p>
-                                <span class="month date">15 Okt, 2023</span>
-                            </div>
-                        </div>
-                        <div class="single-content">
-                            <div class="content-details">
-                                <div class="avatar">
-                                    <img class="table-avater" src="/images/dashboard/av-02.svg" alt="avatar">
-                                </div>
-                                <div class="content">
-                                    <p>Schrijf een samenvatting.</p>
-                                    <span>Creëer een beknopt overzicht van een tekst of materiaal vo...</span>
-                                </div>
-                            </div>
-                            <div class="content-date">
-                                <p class="month">in Documenten</p>
-                                <span class="month date">15 Okt, 2023</span>
-                            </div>
-                        </div>
-                        <div class="single-content">
-                            <div class="content-details">
-                                <div class="avatar">
-                                    <img class="table-avater" src="/images/dashboard/av-04.svg" alt="avatar">
-                                </div>
-                                <div class="content">
-                                    <p>Schrijf een samenvatting.</p>
-                                    <span>Creëer een beknopt overzicht van een tekst of materiaal vo...</span>
-                                </div>
-                            </div>
-                            <div class="content-date">
-                                <p class="month">in Documenten</p>
-                                <span class="month date">15 Okt, 2023</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-12">
-                    <div class="table-wrapper fav-table">
-                        <h2 class="table-title">Favoriete sjablonen</h2>
-                        <div class="single-content">
-                            <div class="content-details">
-                                <div class="avatar">
-                                    <img class="table-avater" src="/images/dashboard/av-2-1.svg" alt="avatar">
-                                </div>
-                                <div class="content">
-                                    <p>Schrijf over een specifieke ervaring in je reflectieverslag</p>
-                                    <span>Schrijf een bepaalde gebeurtenis uit en reflecteer hierop.</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="single-content">
-                            <div class="content-details">
-                                <div class="avatar">
-                                    <img class="table-avater" src="/images/dashboard/av-2-2.svg" alt="avatar">
-                                </div>
-                                <div class="content">
-                                    <p>Schrijf over een specifieke ervaring in je reflectieverslag</p>
-                                    <span>Schrijf een bepaalde gebeurtenis uit en reflecteer hierop.</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="single-content">
-                            <div class="content-details">
-                                <div class="avatar">
-                                    <img class="table-avater" src="/images/dashboard/av-2-3.svg" alt="avatar">
-                                </div>
-                                <div class="content">
-                                    <p>Schrijf over een specifieke ervaring in je reflectieverslag</p>
-                                    <span>Schrijf een bepaalde gebeurtenis uit en reflecteer hierop.</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="single-content">
-                            <div class="content-details">
-                                <div class="avatar">
-                                    <img class="table-avater" src="/images/dashboard/av-2-4.svg" alt="avatar">
-                                </div>
-                                <div class="content">
-                                    <p>Schrijf over een specifieke ervaring in je reflectieverslag</p>
-                                    <span>Schrijf een bepaalde gebeurtenis uit en reflecteer hierop.</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
-
         </div>
-    </div>
-</div>
 @endsection
