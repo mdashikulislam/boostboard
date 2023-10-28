@@ -50,6 +50,9 @@
         .table-wrapper .avatar{
             border-radius: 15px;
         }
+        .page-body.user-page-body .single-card .card-wrapper.upgrade-card{
+            min-height: 380px;
+        }
     </style>
     <div>
         <div class="page-header dashboard-header">
