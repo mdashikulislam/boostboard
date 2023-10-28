@@ -31,6 +31,7 @@ use Illuminate\Support\Facades\Route;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Exception\ClientException;
+use App\Models\Coupon;
 
 
 /**
@@ -96,6 +97,20 @@ class TwoCheckoutController extends Controller
      */
     public static function subscribe($planId, $plan, $incomingException = null)
     {
+        $couponCode = request()->input('coupon');
+        $newDiscountedPrice = $plan->price;
+        if($couponCode){
+            $coupone = Coupon::where('code', $couponCode)->first();
+            if($coupone){
+                $newDiscountedPrice  = $plan->price - ($plan->price * ($coupone->discount / 100));
+                if ($newDiscountedPrice != floor($newDiscountedPrice)) {
+                    $newDiscountedPrice = number_format($newDiscountedPrice, 2);
+                }
+            }
+        }else{
+            $coupone = null;
+        }
+
         $gateway = Gateways::where("code", self::GATEWAY_CODE)->first();
         if ($gateway == null) {
             abort(404);
@@ -106,7 +121,7 @@ class TwoCheckoutController extends Controller
         $key = $gateway->live_client_secret;
         $exception = $incomingException;
 
-        return view('panel.user.payment.subscription.payWithTwoCheckout', compact('merchant_code', 'planId', 'plan' ,'exception'));
+        return view('panel.user.payment.subscription.payWithTwoCheckout', compact('merchant_code', 'newDiscountedPrice','planId', 'plan' ,'exception'));
     }
 
 
@@ -145,7 +160,7 @@ class TwoCheckoutController extends Controller
         // } else {
             $payload = array (
                 "Country" => "us",
-                "Currency" => $plan->currency,
+                "Currency" => $currency,
                 // "CustomerReference" => 'MagicaiUserPrepaid'.$user->id,
                 // "ExternalCustomerReference"   => 'MagicaiUser'.$user->id,
                 "Language" => 'en',
@@ -169,7 +184,7 @@ class TwoCheckoutController extends Controller
                 ],
                 "PaymentDetails" => 
                     array(
-                        "Currency" => $plan->currency,
+                        "Currency" => $currency,
                         "PaymentMethod" => array (
                             "EesToken" => $EEStoken,
                             "RecurringEnabled" => true,
@@ -190,6 +205,7 @@ class TwoCheckoutController extends Controller
                 // Check the response status code
                 if ($response->getStatusCode() == 201) {
                     $order_response = json_decode($response->getBody());
+                    Log::error($response->getBody());
                     $subscription = new SubscriptionsModel();
                     $subscription->user_id = $user->id;
                     $subscription->name = $plan->id;
@@ -256,7 +272,7 @@ class TwoCheckoutController extends Controller
             );
 
             try {
-                $response = $client->delete("rest/6.0/subscriptions/".$activeSub->stripe_id, [
+                $response = $client->get("rest/6.0/subscriptions/".$activeSub->stripe_id, [
                     'json' => $payload
                 ]);
             } catch (Exception $e) {
@@ -278,7 +294,6 @@ class TwoCheckoutController extends Controller
             createActivity($user->id, 'Cancelled', 'Subscription plan', null);
             return back()->with(['message' => 'Your subscription is cancelled succesfully.', 'type' => 'success']);
         }
-        dd('asfasxcv');
         return back()->with(['message' => 'Could not find active subscription. Nothing changed!', 'type' => 'error']);
     }
 
@@ -288,6 +303,20 @@ class TwoCheckoutController extends Controller
      */
     public static function prepaid($planId, $plan, $incomingException = null)
     {
+        $couponCode = request()->input('coupon');
+        $newDiscountedPrice = $plan->price;
+        if($couponCode){
+            $coupone = Coupon::where('code', $couponCode)->first();
+            if($coupone){
+                $newDiscountedPrice  = $plan->price - ($plan->price * ($coupone->discount / 100));
+                if ($newDiscountedPrice != floor($newDiscountedPrice)) {
+                    $newDiscountedPrice = number_format($newDiscountedPrice, 2);
+                }
+            }
+        }else{
+            $coupone = null;
+        }
+
 
         $gateway = Gateways::where("code", self::GATEWAY_CODE)->first();
         if ($gateway == null) {
@@ -300,7 +329,7 @@ class TwoCheckoutController extends Controller
 
         $exception = $incomingException;
 
-        return view('panel.user.payment.prepaid.payWithTwoCheckout', compact('merchant_code', 'planId', 'plan' ,'exception'));
+        return view('panel.user.payment.prepaid.payWithTwoCheckout', compact('merchant_code', 'newDiscountedPrice','planId', 'plan' ,'exception'));
     }
 
 
@@ -311,12 +340,21 @@ class TwoCheckoutController extends Controller
      */
     public function prepaidPay(Request $request)
     {   
+        $previousRequest = app('request')->create(url()->previous());
+
         $EEStoken = $request->token;
         $plan = PaymentPlans::find($request->plan);
         $product = GatewayProducts::where([['plan_id', '=', $request->plan], ['gateway_code','=', self::GATEWAY_CODE]])->first();
         $user = Auth::user();
         $settings = Setting::first();
         $settings_two = SettingTwo::first();
+
+        $gateway = Gateways::where("code", self::GATEWAY_CODE)->first();
+        if ($gateway == null) {
+            abort(404);
+        }
+
+        $currency = Currency::where('id', $gateway->currency)->first()->code;
         
         $server_url = $request->root();
         
@@ -324,7 +362,7 @@ class TwoCheckoutController extends Controller
         
         $payload = array(
             "Country" => "us",
-            "Currency" => $plan->currency,
+            "Currency" => $currency,
             // "CustomerReference" => 'MagicaiUserPrepaid'.$user->id,
             // "ExternalCustomerReference"   => 'MagicaiUser'.$user->id,
             "Language" => 'en',
@@ -349,7 +387,7 @@ class TwoCheckoutController extends Controller
             ],
             "PaymentDetails" => 
                 array(
-                    "Currency" => $plan->currency,
+                    "Currency" => $currency,
                     "PaymentMethod" => array (
                         "EesToken" => $EEStoken,
                         "RecurringEnabled" => false,
@@ -364,8 +402,9 @@ class TwoCheckoutController extends Controller
             abort(404);
         }
 
-        if ($gateway->mode == 'sandbox')
+        if ($gateway->mode == 'sandbox'){
             $payload['PaymentDetails']['Type'] = "TEST";
+        }
         
         try {						
             $response = $client->post('rest/6.0/orders/', [
@@ -374,8 +413,15 @@ class TwoCheckoutController extends Controller
         } catch (ClientException $e) {
             $res = json_decode($e->getResponse()->getBody()->getContents(), true);
             return response()->json(['status' => 'error', 'message' => $res['message']]);
-        } catch(Exception $e){
-            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+        } 
+
+        $newDiscountedPrice  = $plan->price;
+        if ($previousRequest->has('coupon')) {
+            $coupon = Coupon::where('code', $previousRequest->input('coupon'))->first();
+            if($coupon){
+                $coupon->usersUsed()->attach(auth()->user()->id);
+                $newDiscountedPrice  = $plan->price - ($plan->price * ($coupon->discount / 100));
+            }
         }
 
         $payment = new UserOrder();
@@ -384,8 +430,8 @@ class TwoCheckoutController extends Controller
         $payment->type = 'prepaid';
         $payment->user_id = $user->id;
         $payment->payment_type = 'Credit, Debit Card';
-        $payment->price = $plan->price;
-        $payment->affiliate_earnings = ($plan->price * $settings->affiliate_commission_percentage) / 100;
+        $payment->price = $newDiscountedPrice;
+        $payment->affiliate_earnings = ($newDiscountedPrice * $settings->affiliate_commission_percentage) / 100;
         $payment->status = 'Success';
         $payment->country = $user->country ?? 'Unknown';
         $payment->save();
@@ -661,11 +707,9 @@ class TwoCheckoutController extends Controller
         $activeSub = SubscriptionsModel::where([['stripe_status', '=', 'active'], ['user_id', '=', $user->id]])->first();
 
         if($activeSub != null){
-
             if ($activeSub['stripe_status'] == 'active'){
                 return true;
             } else {
-
                 $activeSub->stripe_status = 'cancelled';
                 $activeSub->save();
                 return false;
@@ -745,15 +789,15 @@ class TwoCheckoutController extends Controller
                             // cancel subscription order from gateway
                 
                             try {
-                                $response = $client->delete("rest/6.0/subscriptions/".$sub->stripe_id, [
+                                $response = $client->get("rest/6.0/subscriptions/".$sub->stripe_id, [
                                     'json' => array (
                                         "ChurnReasonOther" => "New plan created by admin."
                                     )
                                 ]);
                             } catch (Exception $e) {
                                 Log::error("2Checkout Subscription disable error : ".$e->getMessage());
-                            }
-
+                            }                    
+        
                             // cancel subscription from our database
                             $sub->stripe_status = 'cancelled';
                             $sub->ends_at = \Carbon\Carbon::now();
@@ -786,7 +830,6 @@ class TwoCheckoutController extends Controller
             $currency = Currency::where('id', $gateway->currency)->first()->code;
             // $user->subscription($planId)->cancelNow();
             // $user->save();
-
             if ($subscription->stripe_status == 'active' && $subscription->stripe_id != null) {
 
                 $client = self::getRequestHeader();
@@ -795,12 +838,10 @@ class TwoCheckoutController extends Controller
                 );
                 
                 try {
-                    $response = $client->delete("rest/6.0/subscriptions/".$subscription->stripe_id, [
+                    $response = $client->get("rest/6.0/subscriptions/".$subscription->stripe_id, [
                         'json' => $payload
                     ]);
-
                     if ($response->getStatusCode() == 200) {
-
                         $subscription->stripe_status = 'cancelled';
                         $subscription->ends_at = \Carbon\Carbon::now();
                         $subscription->save();      

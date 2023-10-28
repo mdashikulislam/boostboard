@@ -85,9 +85,6 @@
             <input type="hidden" id="prompt_prefix" value="">
         @endif
     @endif
-     
-
-           
 
 @endsection
 
@@ -127,13 +124,13 @@
             // @if($chat_completions != null)
             //     @foreach($chat_completions as $item)
             //     message = {
-            //      role: "[[@$item["role"]]]",
-            //      content: "[[@$item["content"]]]"
-            //      };messages.push(message);
+            //     role: "{{$item["role"]}}",
+            //     content: "{{$item["content"]}}"
+            //     };messages.push(message);
             //     @endforeach
-            //  @endif
-            
-             // console.log(messages);
+            // @endif
+
+            // console.log(messages);
         </script>
 
         <script src="/assets/js/panel/openai_chat_low.js"></script>

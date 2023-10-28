@@ -14,6 +14,7 @@ use OpenAI\Laravel\Facades\OpenAI;
 use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
 use Illuminate\Support\Facades\Http;
 use App\Models\PrivacyTerms;
+use Exception;
 
 class SettingsController extends Controller
 {
@@ -64,9 +65,6 @@ class SettingsController extends Controller
                 }
             }
 
-            
-            
-
             $settings->site_name = $request->site_name;
             $settings->site_url = $request->site_url;
             $settings->site_email = $request->site_email;
@@ -85,6 +83,7 @@ class SettingsController extends Controller
             $settings->feature_ai_speech_to_text = $request->feature_ai_speech_to_text;
             $settings->feature_ai_voiceover = $request->feature_ai_voiceover;
             $settings->feature_affilates = $request->feature_affilates;
+            $settings->feature_ai_article_wizard = $request->feature_ai_article_wizard;
             $settings->hosting_type = $request->hosting_type;
             $settings->login_without_confirmation = $request->login_without_confirmation;
             $settings->facebook_active = $request->facebook_active ?? 0;
@@ -166,6 +165,11 @@ class SettingsController extends Controller
 
     public function stablediffusion(){
         return view('panel.admin.settings.stablediffusion');
+    }
+
+    public function unsplashapi(Request $request){
+        $token = "";
+        return view('panel.admin.settings.unsplashapi');
     }
 
     public function openaiTest(){
@@ -254,6 +258,26 @@ class SettingsController extends Controller
             }
         }
     }
+
+    public function unsplashapiTest(){
+        $client = new Client();
+        $settings = SettingTwo::first();
+        if ($settings->unsplash_api_key == "") {
+            echo "You must provide Unsplash API Key.";
+            return;
+        }
+
+        $apiKey = $settings->unsplash_api_key;
+
+        $client = new Client();
+
+        try {
+            $response = $client->get("https://api.unsplash.com/search/photos?query=Google&count=1&client_id=$apiKey");
+            echo ' <br>'.$apiKey.' - SUCCESS <br>';
+        } catch (\Exception $e) {
+            echo $e->getMessage().' - '.$apiKey.' -FAILED <br>';
+        }
+    }
    
     public function openaiSave(Request $request){
         $settings = Setting::first();
@@ -281,6 +305,17 @@ class SettingsController extends Controller
             $settings->stable_diffusion_api_key = $request->stable_diffusion_api_key;
             $settings->stablediffusion_default_language = $request->stablediffusion_default_language;
             $settings->stablediffusion_default_model = $request->stablediffusion_default_model;
+            $settings->save();
+        }
+        return response()->json([], 200);
+    }
+
+    public function unsplashapiSave(Request $request) {
+        $settings = SettingTwo::first();
+        // TODO SETTINGS
+        if (env('APP_STATUS') != 'Demo'){
+            //S6ph-FPeG090WmdKncKaUUfsr7vbyGnTnzqd75AcVE0
+            $settings->unsplash_api_key = $request->unsplash_api_key;
             $settings->save();
         }
         return response()->json([], 200);

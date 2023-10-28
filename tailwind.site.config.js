@@ -70,6 +70,9 @@ module.exports = {
 				oneset: [ 'Oneset', 'sans-serif' ],
 				golos: [ '"Golos Text"', 'sans-serif' ],
 			},
+			aspectRatio: {
+				'4/3': '4 / 3',
+			},
 		},
 	},
 

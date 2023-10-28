@@ -134,7 +134,7 @@ class AIChatController extends Controller
         if ($category->role == 'default') {
             $output =  __('Hi! I am') . ' ' . $category->name . __(', and I\'m here to answer all your questions');
         } else {
-            $output =  __('Hi! I am') . ' ' . $category->human_name . __(', jouw') . ' ' . $category->role . '. ' . $category->helps_with;
+            $output =  __('Hi! I am') . ' ' . $category->human_name . __(', and I\'m') . ' ' . $category->role . '. ' . $category->helps_with;
         }
         $message->output = $output;
         $message->hash = Str::random(256);
@@ -157,7 +157,6 @@ class AIChatController extends Controller
             // $subscribed = $user->subscriptions()->where('stripe_status', 'active')->orWhere('stripe_status', 'trialing')->first();
             $userId = $user->id;
             // Get current active subscription
-
             $subscribed = SubscriptionsModel::where([['stripe_status', '=', 'active'], ['user_id', '=', $userId]])->orWhere([['stripe_status', '=', 'trialing'], ['user_id', '=', $userId]])->first();
             if ($subscribed != null) {
                 $subscription = PaymentPlans::where('id', $subscribed->name)->first();

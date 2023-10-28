@@ -131,7 +131,7 @@
                                             value="{{ env('APP_STATUS') == 'Demo' ? '12345678' : '' }}"
                                             autocomplete="off">
                                         <span class="bg-transparent border-0 input-group-text">
-                                            <a href="#" class="link-secondary show-password" title="Show password"
+                                            <a href="#" class="link-secondary show-password" title="{{__('Show password')}}"
                                                 data-bs-toggle="tooltip">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                                     height="24" viewBox="0 0 24 24" stroke-width="2"

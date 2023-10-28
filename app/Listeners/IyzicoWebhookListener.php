@@ -132,9 +132,8 @@ class IyzicoWebhookListener implements ShouldQueue
             if($event_type == 'subscription.order.failure'){
                 // $resource_id is subscription id in this event.
                 $currentSubscription = SubscriptionsModel::where('stripe_id', $newData->resource_id)->first();
-
                 if($currentSubscription->stripe_status != "cancelled"){
-                   // $currentSubscription->stripe_status = "cancelled";
+                    //$currentSubscription->stripe_status = "cancelled";
                     $currentSubscription->ends_at = Carbon::now();
                     $currentSubscription->save();
                     $newData->status = 'checked';

@@ -17,6 +17,7 @@ use App\Models\HowitWorks;
 use App\Models\User;
 use App\Models\UserAffiliate;
 use App\Models\UserOrder;
+use App\Models\Coupon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -65,7 +66,13 @@ class StripeControllerElements extends Controller
      */
     public static function subscribe($planId, $plan, $incomingException = null)
     {
-
+        $couponCode = request()->input('coupon');
+        if($couponCode){
+            $coupone = Coupon::where('code', $couponCode)->first();
+        }else{
+            $coupone = null;
+        }
+        
         $gateway = Gateways::where("code", "stripe")->first();
         if ($gateway == null) {
             abort(404);
@@ -117,6 +124,7 @@ class StripeControllerElements extends Controller
             $user->save();
         }
 
+
         $email = $user->email();
         $activesubs = $user->subscriptions()->where('stripe_status', 'active')->orWhere('stripe_status', 'trialing')->get();
         $paymentIntent = null;
@@ -132,17 +140,38 @@ class StripeControllerElements extends Controller
                     $exception = "Stripe product ID is not set! Please save Membership Plan again.";
                 }else{
 
+                    $price_id_product = $product->price_id;
+                    $newDiscountedPrice = $plan->price;
+                    $newDiscountedPriceCents = $plan->price* 100;
+
+                    if($coupone){
+                        $newDiscountedPrice  = $plan->price - ($plan->price * ($coupone->discount / 100));
+                        $newDiscountedPriceCents = (int)(((float)$newDiscountedPrice) * 100);
+                       
+                        if ($newDiscountedPrice != floor($newDiscountedPrice)) {
+                            $newDiscountedPrice = number_format($newDiscountedPrice, 2);
+                        }
+                        
+                        $updatedPrice = $stripe->prices->create([
+                            'unit_amount' => $newDiscountedPriceCents,
+                            'currency' => $currency,
+                            'recurring' => ['interval' => $plan->frequency == "monthly" ? 'month' : 'year'],
+                            'product' => $product->product_id,
+                        ]);
+                        $price_id_product = $updatedPrice->id;
+                    }
+                    
                     $subscriptionInfo = [
                         'customer' => $user->stripe_id,
                         'items' => [[
-                            'price' => $product->price_id,
+                            'price' => $price_id_product,
                         ]],
                         'payment_behavior' => 'default_incomplete',
                         'payment_settings' => ['save_default_payment_method' => 'on_subscription'],
                         'expand' => ['latest_invoice.payment_intent'],
                         'metadata' => [
                             'product_id' => $product->product_id,
-                            'price_id' => $product->price_id,
+                            'price_id' => $price_id_product,
                             'plan_id' => $planId
                         ],
                     ];
@@ -151,14 +180,14 @@ class StripeControllerElements extends Controller
                         $subscriptionInfo = [
                             'customer' => $user->stripe_id,
                             'items' => [[
-                                'price' => $product->price_id,
+                                'price' => $price_id_product,
                             ]],
                             'payment_behavior' => 'default_incomplete',
                             'payment_settings' => ['save_default_payment_method' => 'on_subscription'],
                             'expand' => ['latest_invoice.payment_intent'],
                             'metadata' => [
                                 'product_id' => $product->product_id,
-                                'price_id' => $product->price_id,
+                                'price_id' => $price_id_product,
                                 'plan_id' => $planId
                             ],
                             //'trial_period_days' => $plan->trial_days ?? 0,
@@ -172,7 +201,7 @@ class StripeControllerElements extends Controller
 
                     // Create the subscription with the customer ID, price ID, and necessary options.
                     $newSubscription = $stripe->subscriptions->create($subscriptionInfo);
-
+                   
                     //Log::info('StripeController::subscribe() - newSubscription: ' . json_encode($newSubscription));
 
                     $subscription = new SubscriptionsModel();
@@ -180,7 +209,7 @@ class StripeControllerElements extends Controller
                     $subscription->name = $planId;
                     $subscription->stripe_id = $newSubscription->id;
                     $subscription->stripe_status = "AwaitingPayment"; // $plan->trial_days != 0 ? "trialing" : "AwaitingPayment";
-                    $subscription->stripe_price = $product->price_id;
+                    $subscription->stripe_price = $price_id_product;
                     $subscription->quantity = 1;
                     $subscription->trial_ends_at = $plan->trial_days != 0 ? \Carbon\Carbon::now()->addDays($plan->trial_days) : null;
                     $subscription->ends_at = $plan->trial_days != 0 ? \Carbon\Carbon::now()->addDays($plan->trial_days) : \Carbon\Carbon::now()->addDays(30);
@@ -192,15 +221,9 @@ class StripeControllerElements extends Controller
                     $subscriptionItem->subscription_id = $subscription->id;
                     $subscriptionItem->stripe_id = $newSubscription->items->data[0]->id;
                     $subscriptionItem->stripe_product = $product->product_id;
-                    $subscriptionItem->stripe_price = $product->price_id;
+                    $subscriptionItem->stripe_price = $price_id_product;
                     $subscriptionItem->quantity = 1;
                     $subscriptionItem->save();
-
-                    // $paymentIntent = [
-                    //     'subscription_id' => $newSubscription->id,
-                    //     'trial' => $plan->trial_days != 0 ? true : false,
-                    //     'client_secret' => $newSubscription->latest_invoice->payment_intent->client_secret,
-                    // ];
 
                     if($plan->trial_days != 0){
                         $setupIntent = $stripe->setupIntents->retrieve(
@@ -212,20 +235,17 @@ class StripeControllerElements extends Controller
                             'client_secret' => $setupIntent->client_secret,
                             'trial' => true,
                             'currency' => $currency,
-                            'amount' => $plan->price * 100,
+                            'amount' => $newDiscountedPriceCents,
                         ];
                     }else{
                         $paymentIntent = [
-                        'subscription_id' => $newSubscription->id,
-                        'client_secret' => $newSubscription->latest_invoice->payment_intent->client_secret,
-                        'trial' => false,
-                        'currency' => $currency,
-                        'amount' => $plan->price * 100,
-                    ];
-                    }
-
-                    
-
+                            'subscription_id' => $newSubscription->id,
+                            'client_secret' => $newSubscription->latest_invoice->payment_intent->client_secret,
+                            'trial' => false,
+                            'currency' => $currency,
+                            'amount' => $newDiscountedPriceCents,
+                        ];
+                    }                    
                 }
             }else{
                 $exception = "Stripe product is not defined! Please save Membership Plan again.";
@@ -236,7 +256,7 @@ class StripeControllerElements extends Controller
             $exception = Str::before($th->getMessage(), ':');
         }
 
-        return view('panel.user.payment.subscription.payWithStripeElements', compact('plan', 'paymentIntent', 'gateway', 'exception', 'activesubs', 'product', 'email'));
+        return view('panel.user.payment.subscription.payWithStripeElements', compact('plan', 'newDiscountedPrice','paymentIntent', 'gateway', 'exception', 'activesubs', 'product', 'email'));
     }
 
 
@@ -248,6 +268,7 @@ class StripeControllerElements extends Controller
     public function subscribePay(Request $request)
     {
         //Log::info('StripeController::subscribePay() - request: ' . json_encode($request->all()));
+        $previousRequest = app('request')->create(url()->previous());
 
         if($request->has('payment_intent') && $request->has('payment_intent_client_secret') && $request->has('redirect_status')){
 
@@ -256,6 +277,7 @@ class StripeControllerElements extends Controller
             $redirect_status = $request->input('redirect_status');
 
             if($redirect_status == "succeeded"){
+
 
                 $gateway = Gateways::where("code", "stripe")->first();
                 if ($gateway == null) {
@@ -299,10 +321,13 @@ class StripeControllerElements extends Controller
 
                         if($intent->status=="succeeded"){
 
+
+
                             $user = Auth::user();
                             $settings = Setting::first();
 
                             self::cancelAllSubscriptions();
+
                             $subscription = SubscriptionsModel::where(['user_id' => $user->id, 'stripe_status' => "AwaitingPayment"])->latest()->first();
 
                             $planId = $subscription->plan_id;
@@ -311,13 +336,22 @@ class StripeControllerElements extends Controller
                             $subscription->stripe_status = $plan->trial_days != 0 ? "trialing" : "active";
                             $subscription->save();
 
+                            $newDiscountedPrice = $plan->price;
+                            if ($previousRequest->has('coupon')) {
+                                $coupon = Coupon::where('code', $previousRequest->input('coupon'))->first();
+                                if($coupon){
+                                    $newDiscountedPrice = $plan->price - ($plan->price * ($coupon->discount / 100));
+                                    $coupon->usersUsed()->attach(auth()->user()->id);
+                                }
+                            }
+
                             $payment = new UserOrder();
                             $payment->order_id = Str::random(12);
                             $payment->plan_id = $planId;
                             $payment->user_id = $user->id;
                             $payment->payment_type = 'Stripe';
-                            $payment->price = $plan->price;
-                            $payment->affiliate_earnings = ($plan->price * $settings->affiliate_commission_percentage) / 100;
+                            $payment->price = $newDiscountedPrice;
+                            $payment->affiliate_earnings = ($newDiscountedPrice * $settings->affiliate_commission_percentage) / 100;
                             $payment->status = 'Success';
                             $payment->country = Auth::user()->country ?? 'Unknown';
                             $payment->save();
@@ -326,6 +360,7 @@ class StripeControllerElements extends Controller
                             $plan->total_images == -1? ($user->remaining_images = -1) : ($user->remaining_images += $plan->total_images);
 
                             $user->save();
+
                             //check if any other "AwaitingPayment" subscription exists if so cancel it
                             $awaitingPaymentSubscriptions = SubscriptionsModel::where(['user_id' => $user->id, 'stripe_status' => "AwaitingPayment"])->get();
                             if ($awaitingPaymentSubscriptions != null) {
@@ -422,6 +457,8 @@ class StripeControllerElements extends Controller
 
                         if($intent->status=="succeeded"){
 
+                            
+                            
                             $user = Auth::user();
                             $settings = Setting::first();
 
@@ -435,13 +472,23 @@ class StripeControllerElements extends Controller
                             $subscription->stripe_status = $plan->trial_days != 0 ? "trialing" : "active";
                             $subscription->save();
 
+
+                            $newDiscountedPrice = $plan->price;
+                            if ($previousRequest->has('coupon')) {
+                                $coupon = Coupon::where('code', $previousRequest->input('coupon'))->first();
+                                if($coupon){
+                                    $newDiscountedPrice = $plan->price - ($plan->price * ($coupon->discount / 100));
+                                    $coupon->usersUsed()->attach(auth()->user()->id);
+                                }
+                            }
+
                             $payment = new UserOrder();
                             $payment->order_id = Str::random(12);
                             $payment->plan_id = $planId;
                             $payment->user_id = $user->id;
                             $payment->payment_type = 'Stripe';
-                            $payment->price = $plan->price;
-                            $payment->affiliate_earnings = ($plan->price * $settings->affiliate_commission_percentage) / 100;
+                            $payment->price = $newDiscountedPrice;
+                            $payment->affiliate_earnings = ($newDiscountedPrice * $settings->affiliate_commission_percentage) / 100;
                             $payment->status = 'Success';
                             $payment->country = Auth::user()->country ?? 'Unknown';
                             $payment->save();
@@ -612,11 +659,8 @@ class StripeControllerElements extends Controller
         if ($activeSub != null) {
             $plan = PaymentPlans::where('id', $activeSub->plan_id)->first();
 
-//            $recent_words = $user->remaining_words;
-//            $recent_images = $user->remaining_images ;
-
-            //$recent_words = $user->remaining_words - $plan->total_words;
-           // $recent_images = $user->remaining_images - $plan->total_images;
+//            $recent_words = $user->remaining_words - $plan->total_words;
+//            $recent_images = $user->remaining_images - $plan->total_images;
 
             //if($user->subscription($activeSub->stripe_id)){ }
 
@@ -626,9 +670,9 @@ class StripeControllerElements extends Controller
                         //$user->subscription($activeSub->stripe_id)->cancelNow();
                         $subscription = $stripe->subscriptions->retrieve($activeSub->stripe_id);
                         $subscription->delete();
-                       $sub =  Subscription::where(function ($q){
-                           $q->where('stripe_status', 'active')->orWhere('stripe_status', 'trialing');
-                       })->where('user_id',\auth()->id())->first();
+                        $sub =  Subscription::where(function ($q){
+                            $q->where('stripe_status', 'active')->orWhere('stripe_status', 'trialing');
+                        })->where('user_id',\auth()->id())->first();
                         $sub->cancel_by_user = 1;
                         $sub->save();
                     }catch(\Exception $ex){
@@ -647,7 +691,7 @@ class StripeControllerElements extends Controller
                 
            
         }
-        dd('asfsaf');
+
         return back()->with(['message' => 'Could not find active subscription. Nothing changed!', 'type' => 'error']);
     }
 
@@ -657,6 +701,12 @@ class StripeControllerElements extends Controller
      */
     public static function prepaid($planId, $plan, $incomingException = null)
     {
+        $couponCode = request()->input('coupon');
+        if($couponCode){
+            $coupone = Coupon::where('code', $couponCode)->first();
+        }else{
+            $coupone = null;
+        }
 
         $gateway = Gateways::where("code", "stripe")->first();
         if ($gateway == null) {
@@ -684,12 +734,21 @@ class StripeControllerElements extends Controller
         $activesubs = $user->subscriptions()->where('stripe_status', 'active')->orWhere('stripe_status', 'trialing')->get();
         $paymentIntent = null;
 
+        $newDiscountedPriceCents = $plan->price * 100;
+        $newDiscountedPrice = $plan->price;
+
+        if($coupone){
+            $newDiscountedPrice  = $plan->price - ($plan->price * ($coupone->discount / 100));
+            $newDiscountedPriceCents = (int)(((float)$newDiscountedPrice) * 100);
+
+            if ($newDiscountedPrice != floor($newDiscountedPrice)) {
+                    $newDiscountedPrice = number_format($newDiscountedPrice, 2);
+                }
+        }
+
         try {
-            
             \Stripe\Stripe::setApiKey($stripeSecretKey);
-
             $product = GatewayProducts::where(["plan_id" => $planId, "gateway_code" => "stripe"])->first();
-
             $exception = $incomingException;
             if($product != null){
                 if ($product->price_id == null) {
@@ -698,7 +757,7 @@ class StripeControllerElements extends Controller
 
                     // Create a PaymentIntent with amount and currency
                     $paymentIntent = \Stripe\PaymentIntent::create([
-                        'amount' => $plan->price * 100,
+                        'amount' => $newDiscountedPriceCents,
                         'currency' => $currency,
                         'automatic_payment_methods' => [
                             'enabled' => true,
@@ -718,7 +777,7 @@ class StripeControllerElements extends Controller
             $exception = Str::before($th->getMessage(), ':');
         }
 
-        return view('panel.user.payment.prepaid.payWithStripeElements', compact('plan', 'paymentIntent', 'gateway', 'exception', 'activesubs', 'product', 'email'));
+        return view('panel.user.payment.prepaid.payWithStripeElements', compact('plan','newDiscountedPrice','paymentIntent', 'gateway', 'exception', 'activesubs', 'product', 'email'));
     }
 
 
@@ -729,7 +788,8 @@ class StripeControllerElements extends Controller
      */
     public function prepaidPay(Request $request)
     {
-
+        $previousRequest = app('request')->create(url()->previous());
+        
         if($request->has('payment_intent') && $request->has('payment_intent_client_secret') && $request->has('redirect_status')){
 
             $payment_intent = $request->input('payment_intent');
@@ -772,6 +832,16 @@ class StripeControllerElements extends Controller
                             if($plan != null){
                                 if($plan->id != null){
 
+
+                                    $newDiscountedPrice = $plan->price;
+                                    if ($previousRequest->has('coupon')) {
+                                        $coupon = Coupon::where('code', $previousRequest->input('coupon'))->first();
+                                        if($coupon){
+                                            $newDiscountedPrice = $plan->price - ($plan->price * ($coupon->discount / 100));
+                                            $coupon->usersUsed()->attach(auth()->user()->id);
+                                        }
+                                    }
+
                                     $user = Auth::user();
                                     $settings = Setting::first();
 
@@ -781,8 +851,8 @@ class StripeControllerElements extends Controller
                                     $payment->type = 'prepaid';
                                     $payment->user_id = $user->id;
                                     $payment->payment_type = 'Stripe';
-                                    $payment->price = $plan->price;
-                                    $payment->affiliate_earnings = ($plan->price * $settings->affiliate_commission_percentage) / 100;
+                                    $payment->price = $newDiscountedPrice;
+                                    $payment->affiliate_earnings = ($newDiscountedPrice * $settings->affiliate_commission_percentage) / 100;
                                     $payment->status = 'Success';
                                     $payment->country = $user->country ?? 'Unknown';
                                     $payment->save();
@@ -1066,16 +1136,13 @@ class StripeControllerElements extends Controller
 
         $sub = $user->subscriptions()->where('stripe_status', 'active')->orWhere('stripe_status', 'trialing')->first();
         $activeSub = $sub->asStripeSubscription();
-
         $today = Carbon::now();
         $ends = Carbon::parse($sub->ends_at);
-
-        //need to write code here by ashik
         if ($activeSub->status == 'active') {
-           return \Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::createFromTimeStamp($activeSub->current_period_end));
-        }else if ($sub->cancel_by_user == 1  && $ends->gt($today)){
             return \Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::createFromTimeStamp($activeSub->current_period_end));
-        } else {
+        } else if ($sub->cancel_by_user == 1  && $ends->gt($today)){
+            return \Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::createFromTimeStamp($activeSub->current_period_end));
+        }else {
             error_log($sub->trial_ends_at);
             return \Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::parse($sub->trial_ends_at));
         }
@@ -1146,7 +1213,6 @@ class StripeControllerElements extends Controller
         }
 
         $sub = $user->subscriptions()->where('stripe_status', 'active')->orWhere('stripe_status', 'trialing')->first();
-        //here need to change by ashik
         if ($sub != null) {
             if ($sub->paid_with == 'stripe') {
                 $activeSub = $sub->asStripeSubscription();
@@ -1156,7 +1222,7 @@ class StripeControllerElements extends Controller
                     return true;
                 } elseif ($sub->cancel_by_user == 1  && $ends->gt($today)){
                     return true;
-                } else {
+                }else {
                     $sub->stripe_status = 'cancelled';
                     $sub->cancel_by_user = 0;
                     $sub->ends_at = \Carbon\Carbon::now();

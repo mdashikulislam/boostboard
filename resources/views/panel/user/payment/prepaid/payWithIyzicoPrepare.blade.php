@@ -33,6 +33,7 @@
             <div class="col-sm-8 col-lg-8">
                  
                 <div class="flex flex-col justify-content-center text-center">
+                    @include('panel.user.payment.coupon.index')
                     <p class="text-start">
                         {{__('Please enter your billing details')}}
                     </p>
@@ -45,24 +46,39 @@
                                 <div class="max-w-sm flex flex-col gap-3">
                                     <div class="flex flex-col justify-start text-start">
                                         <label class="form-label">{{__('Name')}}</label>
-                                        <input type="text" class="form-control" id="name" name="name" required>
+                                        <input type="text" class="form-control" id="name" name="name" value="{{old('name')}}" required>
                                     </div>
                                     <div class="flex flex-col justify-start text-start">
                                         <label class="form-label">{{__('Surname')}}</label>
-                                        <input type="text" class="form-control" id="surname" name="surname" required>
+                                        <input type="text" class="form-control" id="surname" name="surname" value="{{old('surname')}}" required>
                                     </div>
                                     <div class="flex flex-col justify-start text-start">
                                         <label class="form-label">{{__('Identity Number')}}</label>
-                                        <input type="number" class="form-control" id="identityNumber" name="identityNumber" required>
+                                        <input type="number" class="form-control" id="identityNumber" name="identityNumber" min="100000" value="{{old('identityNumber')}}" required>
                                     </div>
                                     <div class="flex flex-col justify-start text-start">
                                         <label class="form-label">{{__('Email')}}</label>
-                                        <input type="email" class="form-control" id="email" name="email" required>
+                                        <input type="email" class="form-control" id="email" name="email" value="{{old('email')}}" required>
                                     </div>
                                     <div class="flex flex-col justify-start text-start">
                                         <label class="form-label">{{__('Mobile')}}</label>
-                                        <input type="tel" class="form-control" id="gsmNumber" name="gsmNumber" required>
+                                        <input type="tel" class="form-control" id="gsmNumber" name="gsmNumber" value="{{old('gsmNumber')}}" required>
                                     </div>
+                                    
+                                    <script>
+                                        const gsmNumberInput = document.getElementById("gsmNumber");
+                                    
+                                        gsmNumberInput.addEventListener("input", function () {
+                                            const inputValue = gsmNumberInput.value;
+                                    
+                                            // Check if the input starts with "+90"
+                                            if (!inputValue.startsWith("+90")) {
+                                                // If not, clear the input field
+                                                gsmNumberInput.value = "+90";
+                                            }
+                                        });
+                                    </script>
+                                    
                                     
                                 </div>
                             </div>
@@ -71,19 +87,19 @@
                                 <div class="max-w-sm flex flex-col gap-3">
                                     <div class="flex flex-col justify-start text-start">
                                         <label class="form-label">{{__('Country')}}</label>
-                                        <input type="text" class="form-control" id="country" name="country" required>
+                                        <input type="text" class="form-control" id="country" name="country" value="{{old('country')}}" required>
                                     </div>
                                     <div class="flex flex-col justify-start text-start">
                                         <label class="form-label">{{__('City')}}</label>
-                                        <input type="text" class="form-control" id="city" name="city" required>
+                                        <input type="text" class="form-control" id="city" name="city" value="{{old('city')}}" required>
                                     </div>
                                     <div class="flex flex-col justify-start text-start">
                                         <label class="form-label">{{__('Address')}}</label>
-                                        <input type="text" class="form-control" id="registrationAddress" name="registrationAddress" required>
+                                        <input type="text" class="form-control" id="registrationAddress" name="registrationAddress" value="{{old('registrationAddress')}}" required>
                                     </div>
                                     <div class="flex flex-col justify-start text-start">
                                         <label class="form-label">{{__('Zip Code')}}</label>
-                                        <input type="text" class="form-control" id="zipCode" name="zipCode" required>
+                                        <input type="text" class="form-control" id="zipCode" name="zipCode" value="{{old('zipCode')}}" required>
                                     </div>
                                     
                                 </div>
@@ -116,8 +132,28 @@
                     @endif
                     <div class="card-body flex flex-col !p-[45px_50px_50px] text-center">
                         <div class="text-heading flex items-end justify-center mt-0 mb-[15px] w-full text-[60px] leading-none">
-							<small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{currency()->symbol}}</small>
-							{{$plan->price}}
+                            @if (currencyShouldDisplayOnRight(currency()->symbol))
+
+                                @if ($plan->price !== $newDiscountedPrice)
+                                <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]"><span style="text-decoration: line-through;">{{ $plan->price }}</span>{{ currency()->symbol }}</small>
+                                &nbsp;
+                                {{$newDiscountedPrice}}<small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}</small>
+                                @else
+                                {{ $plan->price }}
+                                <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}</small>
+                                @endif
+                                
+                            @else
+
+                                @if ($plan->price !== $newDiscountedPrice)
+                                <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}<span style="text-decoration: line-through;">{{ $plan->price }}</span></small>
+                                &nbsp;
+                                <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}</small>{{$newDiscountedPrice}}
+                                @else
+                                <small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">{{ currency()->symbol }}</small>{{ $plan->price }}
+                                @endif
+
+                            @endif
 							<small class="inline-flex mb-[0.3em] font-normal text-[0.35em]">/ {{__('One time')}}</small>
 						</div>
 						<div class="inline-flex mx-auto p-[0.85em_1.2em] bg-white rounded-full font-medium text-[15px] leading-none text-[#2D3136]">{{$plan->name}}</div>

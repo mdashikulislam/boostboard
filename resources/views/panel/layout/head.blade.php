@@ -24,6 +24,12 @@
 	<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@500;600;700&display=swap" rel="stylesheet">
 
     <link href="/assets/css/fonts.css" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- CSS files -->
     <link href="/assets/css/tabler.min.css" rel="stylesheet"/>
     <link href="/assets/css/tabler-flags.min.css" rel="stylesheet"/>
@@ -31,6 +37,11 @@
     <link href="/assets/css/tabler-vendors.min.css" rel="stylesheet"/>
     <link href="/assets/css/demo.min.css" rel="stylesheet"/>
     <link href="/assets/css/toastr.min.css" rel="stylesheet"/>
+    <link href="/assets/css/user-dashboard.css" rel="stylesheet"/>
+
+    {{-- <link rel="stylesheet" href="https://flowbite.com/docs/flowbite.css?v=1.8.1a">
+    <link rel="stylesheet" href="https://flowbite.com/docs/docs.css?v=1.8.1a"> --}}
+
     @yield('additional_css')
     @stack('css')
     <link href="/assets/css/magic-ai.css" rel="stylesheet"/>

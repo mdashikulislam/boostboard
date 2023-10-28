@@ -96,102 +96,102 @@
 
             const voicesData = {
                 "af-ZA": [
-                    {value:"af-ZA-Standard-A", label: "Ayanda (Female)"}
+                    {value:"af-ZA-Standard-A", label: "Ayanda ({{__('Female')}})"}
                 ],
                 "ar-XA": [
-                    {value:"ar-XA-Standard-A", label: "Fatima (Female)"},
-                    {value:"ar-XA-Standard-B", label: "Ahmed (Male)"},
-                    {value:"ar-XA-Standard-C", label: "Mohammed (Male)"},
-                    {value:"ar-XA-Standard-D", label: "Aisha (Female)"},
-                    {value:"ar-XA-Wavenet-A", label: "Layla (Female)"},
-                    {value:"ar-XA-Wavenet-B", label: "Ali (Male)"},
-                    {value:"ar-XA-Wavenet-C", label: "Omar (Male)"},
-                    {value:"ar-XA-Wavenet-D", label: "Zahra (Female)"}
+                    {value:"ar-XA-Standard-A", label: "Fatima ({{__('Female')}})"},
+                    {value:"ar-XA-Standard-B", label: "Ahmed ({{__('Male')}})"},
+                    {value:"ar-XA-Standard-C", label: "Mohammed ({{__('Male')}})"},
+                    {value:"ar-XA-Standard-D", label: "Aisha ({{__('Female')}})"},
+                    {value:"ar-XA-Wavenet-A", label: "Layla ({{__('Female')}})"},
+                    {value:"ar-XA-Wavenet-B", label: "Ali ({{__('Male')}})"},
+                    {value:"ar-XA-Wavenet-C", label: "Omar ({{__('Male')}})"},
+                    {value:"ar-XA-Wavenet-D", label: "Zahra ({{__('Female')}})"}
                 ],
                 "eu-ES": [
-                    {value:"eu-ES-Standard-A", label: "Ane (Female)"}
+                    {value:"eu-ES-Standard-A", label: "Ane ({{__('Female')}})"}
                 ],
                 "bn-IN": [
-                    {value:"bn-IN-Standard-A", label: "Ananya (Female)"},
-                    {value:"bn-IN-Standard-B", label: "Aryan (Male)"},
-                    {value:"bn-IN-Wavenet-A", label: "Ishita (Female)"},
-                    {value:"bn-IN-Wavenet-B", label: "Arry (Male)"}
+                    {value:"bn-IN-Standard-A", label: "Ananya ({{__('Female')}})"},
+                    {value:"bn-IN-Standard-B", label: "Aryan ({{__('Male')}})"},
+                    {value:"bn-IN-Wavenet-A", label: "Ishita ({{__('Female')}})"},
+                    {value:"bn-IN-Wavenet-B", label: "Arry ({{__('Male')}})"}
                 ],
                 "bg-BG": [
-                    {value:"bg-BG-Standard-A", label: "Elena (Female)"}
+                    {value:"bg-BG-Standard-A", label: "Elena ({{__('Female')}})"}
                 ],
                 "ca-ES": [
-                    {value:"ca-ES-Standard-A", label: "Laia (Female)"}
+                    {value:"ca-ES-Standard-A", label: "Laia ({{__('Female')}})"}
                 ],
                 "yue-HK": [
-                    {value:"yue-HK-Standard-A", label: "Wing (Female)"},
-                    {value:"yue-HK-Standard-B", label: "Ho (Male)"},
-                    {value:"yue-HK-Standard-C", label: "Siu (Female)"},
-                    {value:"yue-HK-Standard-D", label: "Lau (Male)"}
+                    {value:"yue-HK-Standard-A", label: "Wing ({{__('Female')}})"},
+                    {value:"yue-HK-Standard-B", label: "Ho ({{__('Male')}})"},
+                    {value:"yue-HK-Standard-C", label: "Siu ({{__('Female')}})"},
+                    {value:"yue-HK-Standard-D", label: "Lau ({{__('Male')}})"}
                 ],
                 "cs-CZ": [
-                    {value:"cs-CZ-Standard-A", label: "Tereza (Female)"},
-                    {value:"cs-CZ-Wavenet-A", label: "Karolína (Female)"}
+                    {value:"cs-CZ-Standard-A", label: "Tereza ({{__('Female')}})"},
+                    {value:"cs-CZ-Wavenet-A", label: "Karolína ({{__('Female')}})"}
                 ],
                 "da-DK": [
                     //{value:"da-DK-Neural2-D", label: "Neural2 - FEMALE"},
                     //{value:"da-DK-Neural2-F", label: "Neural2 - MALE"},
-                    {value:"da-DK-Standard-A", label: "Emma (Female)"},
-                    {value:"da-DK-Standard-A", label: "Freja (Female)"},
-                    {value:"da-DK-Standard-A", label: "Ida (Female)"},
-                    {value:"da-DK-Standard-C", label: "Noah (Male)"},
-                    {value:"da-DK-Standard-D", label: "Mathilde (Female)"},
-                    {value:"da-DK-Standard-E", label: "Clara (Female)"},
-                    {value:"da-DK-Wavenet-A", label: "Isabella (Female)"},
-                    {value:"da-DK-Wavenet-C", label: "Lucas (Male)"},
-                    {value:"da-DK-Wavenet-D", label: "Olivia (Female)"},
-                    {value:"da-DK-Wavenet-E", label: "Emily (Female)"}
+                    {value:"da-DK-Standard-A", label: "Emma ({{__('Female')}})"},
+                    {value:"da-DK-Standard-A", label: "Freja ({{__('Female')}})"},
+                    {value:"da-DK-Standard-A", label: "Ida ({{__('Female')}})"},
+                    {value:"da-DK-Standard-C", label: "Noah ({{__('Male')}})"},
+                    {value:"da-DK-Standard-D", label: "Mathilde ({{__('Female')}})"},
+                    {value:"da-DK-Standard-E", label: "Clara ({{__('Female')}})"},
+                    {value:"da-DK-Wavenet-A", label: "Isabella ({{__('Female')}})"},
+                    {value:"da-DK-Wavenet-C", label: "Lucas ({{__('Male')}})"},
+                    {value:"da-DK-Wavenet-D", label: "Olivia ({{__('Female')}})"},
+                    {value:"da-DK-Wavenet-E", label: "Emily ({{__('Female')}})"}
                 ],
                 "nl-BE": [
-                    {value:"nl-BE-Standard-A", label: "Emma (Female)"},
-                    {value:"nl-BE-Standard-B", label: "Thomas (Male)"},
-                    {value:"nl-BE-Wavenet-A", label: "Sophie (Female)"},
-                    {value:"nl-BE-Wavenet-B", label: "Lucas (Male)"}
+                    {value:"nl-BE-Standard-A", label: "Emma ({{__('Female')}})"},
+                    {value:"nl-BE-Standard-B", label: "Thomas ({{__('Male')}})"},
+                    {value:"nl-BE-Wavenet-A", label: "Sophie ({{__('Female')}})"},
+                    {value:"nl-BE-Wavenet-B", label: "Lucas ({{__('Male')}})"}
                 ],
                 "nl-NL": [
-                    {value:"nl-NL-Standard-A", label: "Emma (Female)"},
-                    {value:"nl-NL-Standard-B", label: "Daan (Male)"},
-                    {value:"nl-NL-Standard-C", label: "Luuk (Male)"},
-                    {value:"nl-NL-Standard-D", label: "Lotte (Female)"},
-                    {value:"nl-NL-Standard-E", label: "Sophie (Female)"},
-                    {value:"nl-NL-Wavenet-A", label: "Mila (Female)"},
-                    {value:"nl-NL-Wavenet-B", label: "Sem (Male)"},
-                    {value:"nl-NL-Wavenet-C", label: "Stijn (Male)"},
-                    {value:"nl-NL-Wavenet-D", label: "Fenna (Female)"},
-                    {value:"nl-NL-Wavenet-E", label: "Eva (Female)"}
+                    {value:"nl-NL-Standard-A", label: "Emma ({{__('Female')}})"},
+                    {value:"nl-NL-Standard-B", label: "Daan ({{__('Male')}})"},
+                    {value:"nl-NL-Standard-C", label: "Luuk ({{__('Male')}})"},
+                    {value:"nl-NL-Standard-D", label: "Lotte ({{__('Female')}})"},
+                    {value:"nl-NL-Standard-E", label: "Sophie ({{__('Female')}})"},
+                    {value:"nl-NL-Wavenet-A", label: "Mila ({{__('Female')}})"},
+                    {value:"nl-NL-Wavenet-B", label: "Sem ({{__('Male')}})"},
+                    {value:"nl-NL-Wavenet-C", label: "Stijn ({{__('Male')}})"},
+                    {value:"nl-NL-Wavenet-D", label: "Fenna ({{__('Female')}})"},
+                    {value:"nl-NL-Wavenet-E", label: "Eva ({{__('Female')}})"}
                 ],
                 "en-AU": [
                     //{value:"en-AU-Neural2-A", label: "Neural2 - FEMALE"},
                     //{value:"en-AU-Neural2-B", label: "Neural2 - MALE"},
                     //{value:"en-AU-Neural2-C", label: "Neural2 - FEMALE"},
                     //{value:"en-AU-Neural2-D", label: "Neural2 - MALE"},
-                    {value:"en-AU-News-E", label: "Emma (Female)"},
-                    {value:"en-AU-News-F", label: "Olivia (Female)"},
-                    {value:"en-AU-News-G", label: "Liam (Male)"},
-                    //{value:"en-AU-Polyglot-1", label: "Noah (Male)"},
-                    {value:"en-AU-Standard-A", label: "Charlotte (Female)"},
-                    {value:"en-AU-Standard-B", label: "Oliver (Male)"},
-                    {value:"en-AU-Standard-C", label: "Ava (Female)"},
-                    {value:"en-AU-Standard-D", label: "Jack (Male)"},
-                    {value:"en-AU-Wavenet-A", label: "Sophie (Female)"},
-                    {value:"en-AU-Wavenet-B", label: "William (Male)"},
-                    {value:"en-AU-Wavenet-C", label: "Amelia (Female)"},
-                    {value:"en-AU-Wavenet-D", label: "Thomas (Male)"}
+                    {value:"en-AU-News-E", label: "Emma ({{__('Female')}})"},
+                    {value:"en-AU-News-F", label: "Olivia ({{__('Female')}})"},
+                    {value:"en-AU-News-G", label: "Liam ({{__('Male')}})"},
+                    //{value:"en-AU-Polyglot-1", label: "Noah ({{__('Male')}})"},
+                    {value:"en-AU-Standard-A", label: "Charlotte ({{__('Female')}})"},
+                    {value:"en-AU-Standard-B", label: "Oliver ({{__('Male')}})"},
+                    {value:"en-AU-Standard-C", label: "Ava ({{__('Female')}})"},
+                    {value:"en-AU-Standard-D", label: "Jack ({{__('Male')}})"},
+                    {value:"en-AU-Wavenet-A", label: "Sophie ({{__('Female')}})"},
+                    {value:"en-AU-Wavenet-B", label: "William ({{__('Male')}})"},
+                    {value:"en-AU-Wavenet-C", label: "Amelia ({{__('Female')}})"},
+                    {value:"en-AU-Wavenet-D", label: "Thomas ({{__('Male')}})"}
                 ],
                 "en-IN": [
-                    {value: "en-IN-Standard-A", label: "Aditi (Female)"},
-                    {value: "en-IN-Standard-B", label: "Arjun (Male)"},
-                    {value: "en-IN-Standard-C", label: "Rohan (Male)"},
-                    {value: "en-IN-Standard-D", label: "Ananya (Female)"},
-                    {value: "en-IN-Wavenet-A", label: "Alisha (Female)"},
-                    {value: "en-IN-Wavenet-B", label: "Aryan (Male)"},
-                    {value: "en-IN-Wavenet-C", label: "Kabir (Male)"},
-                    {value: "en-IN-Wavenet-D", label: "Diya (Female)"}
+                    {value: "en-IN-Standard-A", label: "Aditi ({{__('Female')}})"},
+                    {value: "en-IN-Standard-B", label: "Arjun ({{__('Male')}})"},
+                    {value: "en-IN-Standard-C", label: "Rohan ({{__('Male')}})"},
+                    {value: "en-IN-Standard-D", label: "Ananya ({{__('Female')}})"},
+                    {value: "en-IN-Wavenet-A", label: "Alisha ({{__('Female')}})"},
+                    {value: "en-IN-Wavenet-B", label: "Aryan ({{__('Male')}})"},
+                    {value: "en-IN-Wavenet-C", label: "Kabir ({{__('Male')}})"},
+                    {value: "en-IN-Wavenet-D", label: "Diya ({{__('Female')}})"}
                 ],
                 "en-GB": [
                     //{value:"en-GB-Neural2-A", label: "Neural2 - FEMALE"},
@@ -199,23 +199,23 @@
                     //{value:"en-GB-Neural2-C", label: "Neural2 - FEMALE"},
                     //{value:"en-GB-Neural2-D", label: "Neural2 - MALE"},
                     //{value:"en-GB-Neural2-F", label: "Neural2 - FEMALE"},
-                    {value:"en-GB-News-G", label:"Amelia (Female)"},
-                    {value:"en-GB-News-H", label:"Elise (Female)"},
-                    {value:"en-GB-News-I", label:"Isabella (Female)"},
-                    {value:"en-GB-News-J", label:"Jessica (Female)"},
-                    {value:"en-GB-News-K", label:"Alexander (Male)"},
-                    {value:"en-GB-News-L", label:"Benjamin (Male)"},
-                    {value:"en-GB-News-M", label:"Charles (Male)"},
-                    {value:"en-GB-Standard-A", label:"Emily (Female)"},
-                    {value:"en-GB-Standard-B", label:"John (Male)"},
-                    {value:"en-GB-Standard-C", label:"Mary (Female)"},
-                    {value:"en-GB-Standard-D", label:"Peter (Male)"},
-                    {value:"en-GB-Standard-F", label:"Sarah (Female)"},
-                    {value:"en-GB-Wavenet-A", label:"Ava (Female)"},
-                    {value:"en-GB-Wavenet-B", label:"David (Male)"},
-                    {value:"en-GB-Wavenet-C", label:"Emily (Female)"},
-                    {value:"en-GB-Wavenet-D", label:"James (Male)"},
-                    {value:"en-GB-Wavenet-F", label:"Sophie (Female)"}
+                    {value:"en-GB-News-G", label:"Amelia ({{__('Female')}})"},
+                    {value:"en-GB-News-H", label:"Elise ({{__('Female')}})"},
+                    {value:"en-GB-News-I", label:"Isabella ({{__('Female')}})"},
+                    {value:"en-GB-News-J", label:"Jessica ({{__('Female')}})"},
+                    {value:"en-GB-News-K", label:"Alexander ({{__('Male')}})"},
+                    {value:"en-GB-News-L", label:"Benjamin ({{__('Male')}})"},
+                    {value:"en-GB-News-M", label:"Charles ({{__('Male')}})"},
+                    {value:"en-GB-Standard-A", label:"Emily ({{__('Female')}})"},
+                    {value:"en-GB-Standard-B", label:"John ({{__('Male')}})"},
+                    {value:"en-GB-Standard-C", label:"Mary ({{__('Female')}})"},
+                    {value:"en-GB-Standard-D", label:"Peter ({{__('Male')}})"},
+                    {value:"en-GB-Standard-F", label:"Sarah ({{__('Female')}})"},
+                    {value:"en-GB-Wavenet-A", label:"Ava ({{__('Female')}})"},
+                    {value:"en-GB-Wavenet-B", label:"David ({{__('Male')}})"},
+                    {value:"en-GB-Wavenet-C", label:"Emily ({{__('Female')}})"},
+                    {value:"en-GB-Wavenet-D", label:"James ({{__('Male')}})"},
+                    {value:"en-GB-Wavenet-F", label:"Sophie ({{__('Female')}})"}
                 ],
                 "en-US": [
                     //{value:"en-US-Neural2-A", label: "Neural2 - MALE"},
@@ -227,63 +227,63 @@
                     //{value:"en-US-Neural2-H", label: "Neural2 - FEMALE"},
                     //{value:"en-US-Neural2-I", label: "Neural2 - MALE"},
                     //{value:"en-US-Neural2-J", label: "Neural2 - MALE"},
-                    {value:"en-US-News-K", label:"Lily (Female)"},
-                    {value:"en-US-News-L", label:"Olivia (Female)"},
-                    {value:"en-US-News-M", label:"Noah (Male)"},
-                    {value:"en-US-News-N", label:"Oliver (Male)"},
-                    //{value:"en-US-Polyglot-1", label:"John (Male)"},
-                    {value:"en-US-Standard-A", label:"Michael (Male)"},
-                    {value:"en-US-Standard-B", label:"David (Male)"},
-                    {value:"en-US-Standard-C", label:"Emma (Female)"},
-                    {value:"en-US-Standard-D", label:"William (Male)"},
-                    {value:"en-US-Standard-E", label:"Ava (Female)"},
-                    {value:"en-US-Standard-F", label:"Sophia (Female)"},
-                    {value:"en-US-Standard-G", label:"Isabella (Female)"},
-                    {value:"en-US-Standard-H", label:"Charlotte (Female)"},
-                    {value:"en-US-Standard-I", label:"James (Male)"},
-                    {value:"en-US-Standard-J", label:"Lucas (Male)"},
-                    {value:"en-US-Studio-M", label:"Benjamin (Male)"},
-                    {value:"en-US-Studio-O", label:"Eleanor (Female)"},
-                    {value:"en-US-Wavenet-A", label:"Alexander (Male)"},
-                    {value:"en-US-Wavenet-B", label:"Benjamin (Male)"},
-                    {value:"en-US-Wavenet-C", label:"Emily (Female)"},
-                    {value:"en-US-Wavenet-D", label:"James (Male)"},
-                    {value:"en-US-Wavenet-E", label:"Ava (Female)"},
-                    {value:"en-US-Wavenet-F", label:"Sophia (Female)"},
-                    {value:"en-US-Wavenet-G", label:"Isabella (Female)"},
-                    {value:"en-US-Wavenet-H", label:"Charlotte (Female)"},
-                    {value:"en-US-Wavenet-I", label:"Alexander (Male)"},
-                    {value:"en-US-Wavenet-J", label:"Lucas (Male)"}
+                    {value:"en-US-News-K", label:"Lily ({{__('Female')}})"},
+                    {value:"en-US-News-L", label:"Olivia ({{__('Female')}})"},
+                    {value:"en-US-News-M", label:"Noah ({{__('Male')}})"},
+                    {value:"en-US-News-N", label:"Oliver ({{__('Male')}})"},
+                    //{value:"en-US-Polyglot-1", label:"John ({{__('Male')}})"},
+                    {value:"en-US-Standard-A", label:"Michael ({{__('Male')}})"},
+                    {value:"en-US-Standard-B", label:"David ({{__('Male')}})"},
+                    {value:"en-US-Standard-C", label:"Emma ({{__('Female')}})"},
+                    {value:"en-US-Standard-D", label:"William ({{__('Male')}})"},
+                    {value:"en-US-Standard-E", label:"Ava ({{__('Female')}})"},
+                    {value:"en-US-Standard-F", label:"Sophia ({{__('Female')}})"},
+                    {value:"en-US-Standard-G", label:"Isabella ({{__('Female')}})"},
+                    {value:"en-US-Standard-H", label:"Charlotte ({{__('Female')}})"},
+                    {value:"en-US-Standard-I", label:"James ({{__('Male')}})"},
+                    {value:"en-US-Standard-J", label:"Lucas ({{__('Male')}})"},
+                    {value:"en-US-Studio-M", label:"Benjamin ({{__('Male')}})"},
+                    {value:"en-US-Studio-O", label:"Eleanor ({{__('Female')}})"},
+                    {value:"en-US-Wavenet-A", label:"Alexander ({{__('Male')}})"},
+                    {value:"en-US-Wavenet-B", label:"Benjamin ({{__('Male')}})"},
+                    {value:"en-US-Wavenet-C", label:"Emily ({{__('Female')}})"},
+                    {value:"en-US-Wavenet-D", label:"James ({{__('Male')}})"},
+                    {value:"en-US-Wavenet-E", label:"Ava ({{__('Female')}})"},
+                    {value:"en-US-Wavenet-F", label:"Sophia ({{__('Female')}})"},
+                    {value:"en-US-Wavenet-G", label:"Isabella ({{__('Female')}})"},
+                    {value:"en-US-Wavenet-H", label:"Charlotte ({{__('Female')}})"},
+                    {value:"en-US-Wavenet-I", label:"Alexander ({{__('Male')}})"},
+                    {value:"en-US-Wavenet-J", label:"Lucas ({{__('Male')}})"}
                 ],
                 "fil-PH": [
-                    {value:"fil-PH-Standard-A", label:"Maria (Female)"},
-                    {value:"fil-PH-Standard-B", label:"Juana (Female)"},
-                    {value:"fil-PH-Standard-C", label:"Juan (Male)"},
-                    {value:"fil-PH-Standard-D", label:"Pedro (Male)"},
-                    {value:"fil-PH-Wavenet-A", label:"Maria (Female)"},
-                    {value:"fil-PH-Wavenet-B", label:"Juana (Female)"},
-                    {value:"fil-PH-Wavenet-C", label:"Juan (Male)"},
-                    {value:"fil-PH-Wavenet-D", label:"Pedro (Male)"}
+                    {value:"fil-PH-Standard-A", label:"Maria ({{__('Female')}})"},
+                    {value:"fil-PH-Standard-B", label:"Juana ({{__('Female')}})"},
+                    {value:"fil-PH-Standard-C", label:"Juan ({{__('Male')}})"},
+                    {value:"fil-PH-Standard-D", label:"Pedro ({{__('Male')}})"},
+                    {value:"fil-PH-Wavenet-A", label:"Maria ({{__('Female')}})"},
+                    {value:"fil-PH-Wavenet-B", label:"Juana ({{__('Female')}})"},
+                    {value:"fil-PH-Wavenet-C", label:"Juan ({{__('Male')}})"},
+                    {value:"fil-PH-Wavenet-D", label:"Pedro ({{__('Male')}})"}
                     //{value:"fil-ph-Neural2-A", label: "Neural2 - FEMALE"},
                     //{value:"fil-ph-Neural2-D", label: "Neural2 - MALE"}
                 ],
                 "fi-FI": [
-                    {value:"fi-FI-Standard-A", label:"Sofia (Female)"},
-                    {value:"fi-FI-Wavenet-A", label:"Sofianna (Female)"}
+                    {value:"fi-FI-Standard-A", label:"Sofia ({{__('Female')}})"},
+                    {value:"fi-FI-Wavenet-A", label:"Sofianna ({{__('Female')}})"}
                 ],
                 "fr-CA": [
                     //{value:"fr-CA-Neural2-A", label: "Neural2 - FEMALE"},
                     //{value:"fr-CA-Neural2-B", label: "Neural2 - MALE"},
                     //{value:"fr-CA-Neural2-C", label: "Neural2 - FEMALE"},
                     //{value:"fr-CA-Neural2-D", label: "Neural2 - MALE"},
-                    {value:"fr-CA-Standard-A", label:"Emma (Female)"},
-                    {value:"fr-CA-Standard-B", label:"Jean (Male)"},
-                    {value:"fr-CA-Standard-C", label:"Gabrielle (Female)"},
-                    {value:"fr-CA-Standard-D", label:"Thomas (Male)"},
-                    {value:"fr-CA-Wavenet-A", label:"Amelie (Female)"},
-                    {value:"fr-CA-Wavenet-B", label:"Antoine (Male)"},
-                    {value:"fr-CA-Wavenet-C", label:"Gabrielle (Female)"},
-                    {value:"fr-CA-Wavenet-D", label:"Thomas (Male)"}
+                    {value:"fr-CA-Standard-A", label:"Emma ({{__('Female')}})"},
+                    {value:"fr-CA-Standard-B", label:"Jean ({{__('Male')}})"},
+                    {value:"fr-CA-Standard-C", label:"Gabrielle ({{__('Female')}})"},
+                    {value:"fr-CA-Standard-D", label:"Thomas ({{__('Male')}})"},
+                    {value:"fr-CA-Wavenet-A", label:"Amelie ({{__('Female')}})"},
+                    {value:"fr-CA-Wavenet-B", label:"Antoine ({{__('Male')}})"},
+                    {value:"fr-CA-Wavenet-C", label:"Gabrielle ({{__('Female')}})"},
+                    {value:"fr-CA-Wavenet-D", label:"Thomas ({{__('Male')}})"}
                 ],
                 "fr-FR": [
                     //{value:"fr-FR-Neural2-A", label: "Neural2 - FEMALE"},
@@ -291,243 +291,243 @@
                     //{value:"fr-FR-Neural2-C", label: "Neural2 - FEMALE"},
                     //{value:"fr-FR-Neural2-D", label: "Neural2 - MALE"},
                     //{value:"fr-FR-Neural2-E", label: "Neural2 - FEMALE"},
-                    //{value:"fr-FR-Polyglot-1", label:"Jean (Male)"},
-                    {value:"fr-FR-Standard-A", label:"Marie (Female)"},
-                    {value:"fr-FR-Standard-B", label:"Pierre (Male)"},
-                    {value:"fr-FR-Standard-C", label:"Sophie (Female)"},
-                    {value:"fr-FR-Standard-D", label:"Paul (Male)"},
-                    {value:"fr-FR-Standard-E", label:"Julie (Female)"},
-                    {value:"fr-FR-Wavenet-A", label:"Elise (Female)"},
-                    {value:"fr-FR-Wavenet-B", label:"Nicolas (Male)"},
-                    {value:"fr-FR-Wavenet-C", label:"Clara (Female)"},
-                    {value:"fr-FR-Wavenet-D", label:"Antoine (Male)"},
-                    {value:"fr-FR-Wavenet-E", label:"Amelie (Female)"}
+                    //{value:"fr-FR-Polyglot-1", label:"Jean ({{__('Male')}})"},
+                    {value:"fr-FR-Standard-A", label:"Marie ({{__('Female')}})"},
+                    {value:"fr-FR-Standard-B", label:"Pierre ({{__('Male')}})"},
+                    {value:"fr-FR-Standard-C", label:"Sophie ({{__('Female')}})"},
+                    {value:"fr-FR-Standard-D", label:"Paul ({{__('Male')}})"},
+                    {value:"fr-FR-Standard-E", label:"Julie ({{__('Female')}})"},
+                    {value:"fr-FR-Wavenet-A", label:"Elise ({{__('Female')}})"},
+                    {value:"fr-FR-Wavenet-B", label:"Nicolas ({{__('Male')}})"},
+                    {value:"fr-FR-Wavenet-C", label:"Clara ({{__('Female')}})"},
+                    {value:"fr-FR-Wavenet-D", label:"Antoine ({{__('Male')}})"},
+                    {value:"fr-FR-Wavenet-E", label:"Amelie ({{__('Female')}})"}
                 ],
                 "gl-ES": [
-                    {value:"gl-ES-Standard-A", label:"Ana (Female)"}
+                    {value:"gl-ES-Standard-A", label:"Ana ({{__('Female')}})"}
                 ],
                 "de-DE": [
                     //{value:"de-DE-Neural2-B", label: "Neural2 - MALE"},
                     //{value:"de-DE-Neural2-C", label: "Neural2 - FEMALE"},
                     //{value:"de-DE-Neural2-D", label: "Neural2 - MALE"},
                     //{value:"de-DE-Neural2-F", label: "Neural2 - FEMALE"},
-                    //{value:"de-DE-Polyglot-1", label:"Johannes (Male)"},
-                    {value:"de-DE-Standard-A", label:"Anna (Female)"},
-                    {value:"de-DE-Standard-B", label:"Max (Male)"},
-                    {value:"de-DE-Standard-C", label:"Sophia (Female)"},
-                    {value:"de-DE-Standard-D", label:"Paul (Male)"},
-                    {value:"de-DE-Standard-E", label:"Erik (Male)"},
-                    {value:"de-DE-Standard-F", label:"Lina (Female)"},
-                    {value:"de-DE-Wavenet-A", label:"Eva (Female)"},
-                    {value:"de-DE-Wavenet-B", label:"Felix (Male)"},
-                    {value:"de-DE-Wavenet-C", label:"Emma (Female)"},
-                    {value:"de-DE-Wavenet-D", label:"Lukas (Male)"},
-                    {value:"de-DE-Wavenet-E", label:"Nico (Male)"},
-                    {value:"de-DE-Wavenet-F", label:"Mia (Female)"}
+                    //{value:"de-DE-Polyglot-1", label:"Johannes ({{__('Male')}})"},
+                    {value:"de-DE-Standard-A", label:"Anna ({{__('Female')}})"},
+                    {value:"de-DE-Standard-B", label:"Max ({{__('Male')}})"},
+                    {value:"de-DE-Standard-C", label:"Sophia ({{__('Female')}})"},
+                    {value:"de-DE-Standard-D", label:"Paul ({{__('Male')}})"},
+                    {value:"de-DE-Standard-E", label:"Erik ({{__('Male')}})"},
+                    {value:"de-DE-Standard-F", label:"Lina ({{__('Female')}})"},
+                    {value:"de-DE-Wavenet-A", label:"Eva ({{__('Female')}})"},
+                    {value:"de-DE-Wavenet-B", label:"Felix ({{__('Male')}})"},
+                    {value:"de-DE-Wavenet-C", label:"Emma ({{__('Female')}})"},
+                    {value:"de-DE-Wavenet-D", label:"Lukas ({{__('Male')}})"},
+                    {value:"de-DE-Wavenet-E", label:"Nico ({{__('Male')}})"},
+                    {value:"de-DE-Wavenet-F", label:"Mia ({{__('Female')}})"}
                 ],
                 "el-GR": [
-                    {value:"el-GR-Standard-A", label:"Ελένη (Female)"},
-                    {value:"el-GR-Wavenet-A", label:"Ελένη (Female)"}
+                    {value:"el-GR-Standard-A", label:"Ελένη ({{__('Female')}})"},
+                    {value:"el-GR-Wavenet-A", label:"Ελένη ({{__('Female')}})"}
                 ],
                 "gu-IN": [
-                    {value:"gu-IN-Standard-A", label:"દિવ્યા (Female)"},
-                    {value:"gu-IN-Standard-B", label:"કિશોર (Male)"},
-                    {value:"gu-IN-Wavenet-A", label:"દિવ્યા (Female)"},
-                    {value:"gu-IN-Wavenet-B", label:"કિશોર (Male)"}
+                    {value:"gu-IN-Standard-A", label:"દિવ્યા ({{__('Female')}})"},
+                    {value:"gu-IN-Standard-B", label:"કિશોર ({{__('Male')}})"},
+                    {value:"gu-IN-Wavenet-A", label:"દિવ્યા ({{__('Female')}})"},
+                    {value:"gu-IN-Wavenet-B", label:"કિશોર ({{__('Male')}})"}
                 ],
                 "he-IL": [
-                    {value:"he-IL-Standard-A", label:"Tamar (Female)"},
-                    {value:"he-IL-Standard-B", label:"David (Male)"},
-                    {value:"he-IL-Standard-C", label:"Michal (Female)"},
-                    {value:"he-IL-Standard-D", label:"Jonathan (Male)"},
-                    {value:"he-IL-Wavenet-A", label:"Yael (Female)"},
-                    {value:"he-IL-Wavenet-B", label:"Eli (Male)"},
-                    {value:"he-IL-Wavenet-C", label:"Abigail (Female)"},
-                    {value:"he-IL-Wavenet-D", label:"Alex (Male)"}
+                    {value:"he-IL-Standard-A", label:"Tamar ({{__('Female')}})"},
+                    {value:"he-IL-Standard-B", label:"David ({{__('Male')}})"},
+                    {value:"he-IL-Standard-C", label:"Michal ({{__('Female')}})"},
+                    {value:"he-IL-Standard-D", label:"Jonathan ({{__('Male')}})"},
+                    {value:"he-IL-Wavenet-A", label:"Yael ({{__('Female')}})"},
+                    {value:"he-IL-Wavenet-B", label:"Eli ({{__('Male')}})"},
+                    {value:"he-IL-Wavenet-C", label:"Abigail ({{__('Female')}})"},
+                    {value:"he-IL-Wavenet-D", label:"Alex ({{__('Male')}})"}
                 ],
                 "hi-IN": [
                     //{value:"hi-IN-Neural2-A", label: "Neural2 - FEMALE"},
                     //{value:"hi-IN-Neural2-B", label: "Neural2 - MALE"},
                     //{value:"hi-IN-Neural2-C", label: "Neural2 - MALE"},
                     //{value:"hi-IN-Neural2-D", label: "Neural2 - FEMALE"},
-                    {value:"hi-IN-Standard-A", label:"Aditi (Female)"},
-                    {value:"hi-IN-Standard-B", label:"Abhishek (Male)"},
-                    {value:"hi-IN-Standard-C", label:"Aditya (Male)"},
-                    {value:"hi-IN-Standard-D", label:"Anjali (Female)"},
-                    {value:"hi-IN-Wavenet-A", label:"Kiara (Female)"},
-                    {value:"hi-IN-Wavenet-B", label:"Rohan (Male)"},
-                    {value:"hi-IN-Wavenet-C", label:"Rishabh (Male)"},
-                    {value:"hi-IN-Wavenet-D", label:"Srishti (Female)"}
+                    {value:"hi-IN-Standard-A", label:"Aditi ({{__('Female')}})"},
+                    {value:"hi-IN-Standard-B", label:"Abhishek ({{__('Male')}})"},
+                    {value:"hi-IN-Standard-C", label:"Aditya ({{__('Male')}})"},
+                    {value:"hi-IN-Standard-D", label:"Anjali ({{__('Female')}})"},
+                    {value:"hi-IN-Wavenet-A", label:"Kiara ({{__('Female')}})"},
+                    {value:"hi-IN-Wavenet-B", label:"Rohan ({{__('Male')}})"},
+                    {value:"hi-IN-Wavenet-C", label:"Rishabh ({{__('Male')}})"},
+                    {value:"hi-IN-Wavenet-D", label:"Srishti ({{__('Female')}})"}
                 ],
                 "hu-HU": [
-                    {value:"hu-HU-Standard-A", label:"Eszter (Female)"},
-                    {value:"hu-HU-Wavenet-A", label:"Lilla (Female)"}
+                    {value:"hu-HU-Standard-A", label:"Eszter ({{__('Female')}})"},
+                    {value:"hu-HU-Wavenet-A", label:"Lilla ({{__('Female')}})"}
                 ],
                 "is-IS": [
-                    {value:"is-IS-Standard-A", label:"Guðrún (Female)"}
+                    {value:"is-IS-Standard-A", label:"Guðrún ({{__('Female')}})"}
                 ],
                 "id-ID": [
-                    {value:"id-ID-Standard-A", label:"Amelia (Female)"},
-                    {value:"id-ID-Standard-B", label:"Fajar (Male)"},
-                    {value:"id-ID-Standard-C", label:"Galih (Male)"},
-                    {value:"id-ID-Standard-D", label:"Kiara (Female)"},
-                    {value:"id-ID-Wavenet-A", label:"Nadia (Female)"},
-                    {value:"id-ID-Wavenet-B", label:"Reza (Male)"},
-                    {value:"id-ID-Wavenet-C", label:"Satria (Male)"},
-                    {value:"id-ID-Wavenet-D", label:"Vania (Female)"}
+                    {value:"id-ID-Standard-A", label:"Amelia ({{__('Female')}})"},
+                    {value:"id-ID-Standard-B", label:"Fajar ({{__('Male')}})"},
+                    {value:"id-ID-Standard-C", label:"Galih ({{__('Male')}})"},
+                    {value:"id-ID-Standard-D", label:"Kiara ({{__('Female')}})"},
+                    {value:"id-ID-Wavenet-A", label:"Nadia ({{__('Female')}})"},
+                    {value:"id-ID-Wavenet-B", label:"Reza ({{__('Male')}})"},
+                    {value:"id-ID-Wavenet-C", label:"Satria ({{__('Male')}})"},
+                    {value:"id-ID-Wavenet-D", label:"Vania ({{__('Female')}})"}
                 ],
                 "it-IT": [
                     //{value:"it-IT-Neural2-A", label: "Neural2 - FEMALE"},
                     //{value:"it-IT-Neural2-C", label: "Neural2 - MALE"},
-                    {value:"it-IT-Standard-A", label:"Chiara (Female)"},
-                    {value:"it-IT-Standard-B", label:"Elisa (Female)"},
-                    {value:"it-IT-Standard-C", label:"Matteo (Male)"},
-                    {value:"it-IT-Standard-D", label:"Riccardo (Male)"},
-                    {value:"it-IT-Wavenet-A", label:"Valentina (Female)"},
-                    {value:"it-IT-Wavenet-B", label:"Vittoria (Female)"},
-                    {value:"it-IT-Wavenet-C", label:"Andrea (Male)"},
-                    {value:"it-IT-Wavenet-D", label:"Luca (Male)"}
+                    {value:"it-IT-Standard-A", label:"Chiara ({{__('Female')}})"},
+                    {value:"it-IT-Standard-B", label:"Elisa ({{__('Female')}})"},
+                    {value:"it-IT-Standard-C", label:"Matteo ({{__('Male')}})"},
+                    {value:"it-IT-Standard-D", label:"Riccardo ({{__('Male')}})"},
+                    {value:"it-IT-Wavenet-A", label:"Valentina ({{__('Female')}})"},
+                    {value:"it-IT-Wavenet-B", label:"Vittoria ({{__('Female')}})"},
+                    {value:"it-IT-Wavenet-C", label:"Andrea ({{__('Male')}})"},
+                    {value:"it-IT-Wavenet-D", label:"Luca ({{__('Male')}})"}
                 ],
                 "ja-JP": [
                     //{value:"ja-JP-Neural2-B", label: "Neural2 - FEMALE"},
                     //{value:"ja-JP-Neural2-C", label: "Neural2 - MALE"},
                     //{value:"ja-JP-Neural2-D", label: "Neural2 - MALE"},
-                    {value:"ja-JP-Standard-A", label:"Akane (Female)"},
-                    {value:"ja-JP-Standard-B", label:"Emi (Female)"},
-                    {value:"ja-JP-Standard-C", label:"Daisuke (Male)"},
-                    {value:"ja-JP-Standard-D", label:"Kento (Male)"},
-                    {value:"ja-JP-Wavenet-A", label:"Haruka (Female)"},
-                    {value:"ja-JP-Wavenet-B", label:"Rin (Female)"},
-                    {value:"ja-JP-Wavenet-C", label:"Shun (Male)"},
-                    {value:"ja-JP-Wavenet-D", label:"Yuta (Male)"}
+                    {value:"ja-JP-Standard-A", label:"Akane ({{__('Female')}})"},
+                    {value:"ja-JP-Standard-B", label:"Emi ({{__('Female')}})"},
+                    {value:"ja-JP-Standard-C", label:"Daisuke ({{__('Male')}})"},
+                    {value:"ja-JP-Standard-D", label:"Kento ({{__('Male')}})"},
+                    {value:"ja-JP-Wavenet-A", label:"Haruka ({{__('Female')}})"},
+                    {value:"ja-JP-Wavenet-B", label:"Rin ({{__('Female')}})"},
+                    {value:"ja-JP-Wavenet-C", label:"Shun ({{__('Male')}})"},
+                    {value:"ja-JP-Wavenet-D", label:"Yuta ({{__('Male')}})"}
                 ],
                 "kn-IN": [
-                    {value:"kn-IN-Standard-A", label:"Dhanya (Female)"},
-                    {value:"kn-IN-Standard-B", label:"Keerthi (Male)"},
-                    {value:"kn-IN-Wavenet-A", label:"Meena (Female)"},
-                    {value:"kn-IN-Wavenet-B", label:"Nandini (Male)"}
+                    {value:"kn-IN-Standard-A", label:"Dhanya ({{__('Female')}})"},
+                    {value:"kn-IN-Standard-B", label:"Keerthi ({{__('Male')}})"},
+                    {value:"kn-IN-Wavenet-A", label:"Meena ({{__('Female')}})"},
+                    {value:"kn-IN-Wavenet-B", label:"Nandini ({{__('Male')}})"}
                 ],
                 "ko-KR": [
                     //{value:"ko-KR-Neural2-A", label: "Neural2 - FEMALE"},
                     //{value:"ko-KR-Neural2-B", label: "Neural2 - FEMALE"},
                     //{value:"ko-KR-Neural2-C", label: "Neural2 - MALE"},
-                    {value:"ko-KR-Standard-A", label:"So-young (Female)"},
-                    {value:"ko-KR-Standard-B", label:"Se-yeon (Female)"},
-                    {value:"ko-KR-Standard-C", label:"Min-soo (Male)"},
-                    {value:"ko-KR-Standard-D", label:"Seung-woo (Male)"},
-                    {value:"ko-KR-Wavenet-A", label:"Ji-soo (Female)"},
-                    {value:"ko-KR-Wavenet-B", label:"Yoon-a (Female)"},
-                    {value:"ko-KR-Wavenet-C", label:"Tae-hyun (Male)"},
-                    {value:"ko-KR-Wavenet-D", label:"Jun-ho (Male)"}
+                    {value:"ko-KR-Standard-A", label:"So-young ({{__('Female')}})"},
+                    {value:"ko-KR-Standard-B", label:"Se-yeon ({{__('Female')}})"},
+                    {value:"ko-KR-Standard-C", label:"Min-soo ({{__('Male')}})"},
+                    {value:"ko-KR-Standard-D", label:"Seung-woo ({{__('Male')}})"},
+                    {value:"ko-KR-Wavenet-A", label:"Ji-soo ({{__('Female')}})"},
+                    {value:"ko-KR-Wavenet-B", label:"Yoon-a ({{__('Female')}})"},
+                    {value:"ko-KR-Wavenet-C", label:"Tae-hyun ({{__('Male')}})"},
+                    {value:"ko-KR-Wavenet-D", label:"Jun-ho ({{__('Male')}})"}
                 ],
                 "lv-LV": [
-                    {value:"lv-LV-Standard-A", label:"Raivis (Male)"}
+                    {value:"lv-LV-Standard-A", label:"Raivis ({{__('Male')}})"}
                 ],
                 "lv-LT": [
-                    {value:"lv-LT-Standard-A", label: "Raivis (Male)"}
+                    {value:"lv-LT-Standard-A", label: "Raivis ({{__('Male')}})"}
                 ],
                 "ms-MY": [
-                    {value:"ms-MY-Standard-A", label:"Amira (Female)"},
-                    {value:"ms-MY-Standard-B", label:"Danial (Male)"},
-                    {value:"ms-MY-Standard-C", label:"Eira (Female)"},
-                    {value:"ms-MY-Standard-D", label:"Farhan (Male)"},
-                    {value:"ms-MY-Wavenet-A", label:"Hana (Female)"},
-                    {value:"ms-MY-Wavenet-B", label:"Irfan (Male)"},
-                    {value:"ms-MY-Wavenet-C", label:"Janna (Female)"},
-                    {value:"ms-MY-Wavenet-D", label:"Khairul (Male)"}
+                    {value:"ms-MY-Standard-A", label:"Amira ({{__('Female')}})"},
+                    {value:"ms-MY-Standard-B", label:"Danial ({{__('Male')}})"},
+                    {value:"ms-MY-Standard-C", label:"Eira ({{__('Female')}})"},
+                    {value:"ms-MY-Standard-D", label:"Farhan ({{__('Male')}})"},
+                    {value:"ms-MY-Wavenet-A", label:"Hana ({{__('Female')}})"},
+                    {value:"ms-MY-Wavenet-B", label:"Irfan ({{__('Male')}})"},
+                    {value:"ms-MY-Wavenet-C", label:"Janna ({{__('Female')}})"},
+                    {value:"ms-MY-Wavenet-D", label:"Khairul ({{__('Male')}})"}
                 ],
                 "ml-IN": [
-                    {value:"ml-IN-Standard-A", label:"Aishwarya (Female)"},
-                    {value:"ml-IN-Standard-B", label:"Dhruv (Male)"},
-                    {value:"ml-IN-Wavenet-A", label:"Deepthi (Female)"},
-                    {value:"ml-IN-Wavenet-B", label:"Gautam (Male)"},
-                    {value:"ml-IN-Wavenet-C", label:"Isha (Female)"},
-                    {value:"ml-IN-Wavenet-D", label:"Kabir (Male)"}
+                    {value:"ml-IN-Standard-A", label:"Aishwarya ({{__('Female')}})"},
+                    {value:"ml-IN-Standard-B", label:"Dhruv ({{__('Male')}})"},
+                    {value:"ml-IN-Wavenet-A", label:"Deepthi ({{__('Female')}})"},
+                    {value:"ml-IN-Wavenet-B", label:"Gautam ({{__('Male')}})"},
+                    {value:"ml-IN-Wavenet-C", label:"Isha ({{__('Female')}})"},
+                    {value:"ml-IN-Wavenet-D", label:"Kabir ({{__('Male')}})"}
                 ],
                 "cmn-CN": [
-                    {value:"cmn-CN-Standard-A", label:"Xiaomei (Female)"},
-                    {value:"cmn-CN-Standard-B", label:"Lijun (Male)"},
-                    {value:"cmn-CN-Standard-C", label:"Minghao (Male)"},
-                    {value:"cmn-CN-Standard-D", label:"Yingying (Female)"},
-                    {value:"cmn-CN-Wavenet-A", label:"Shanshan (Female)"},
-                    {value:"cmn-CN-Wavenet-B", label:"Chenchen (Male)"},
-                    {value:"cmn-CN-Wavenet-C", label:"Jiahao (Male)"},
-                    {value:"cmn-CN-Wavenet-D", label:"Yueyu (Female)"}
+                    {value:"cmn-CN-Standard-A", label:"Xiaomei ({{__('Female')}})"},
+                    {value:"cmn-CN-Standard-B", label:"Lijun ({{__('Male')}})"},
+                    {value:"cmn-CN-Standard-C", label:"Minghao ({{__('Male')}})"},
+                    {value:"cmn-CN-Standard-D", label:"Yingying ({{__('Female')}})"},
+                    {value:"cmn-CN-Wavenet-A", label:"Shanshan ({{__('Female')}})"},
+                    {value:"cmn-CN-Wavenet-B", label:"Chenchen ({{__('Male')}})"},
+                    {value:"cmn-CN-Wavenet-C", label:"Jiahao ({{__('Male')}})"},
+                    {value:"cmn-CN-Wavenet-D", label:"Yueyu ({{__('Female')}})"}
                 ],
                 "cmn-TW": [
-                    {value:"cmn-TW-Standard-A", label:"Jingwen (Female)"},
-                    {value:"cmn-TW-Standard-B", label:"Jinghao (Male)"},
-                    {value:"cmn-TW-Standard-C", label:"Tingting (Female)"},
-                    {value:"cmn-TW-Wavenet-A", label:"Yunyun (Female)"},
-                    {value:"cmn-TW-Wavenet-B", label:"Zhenghao (Male)"},
-                    {value:"cmn-TW-Wavenet-C", label:"Yuehan (Female)"}
+                    {value:"cmn-TW-Standard-A", label:"Jingwen ({{__('Female')}})"},
+                    {value:"cmn-TW-Standard-B", label:"Jinghao ({{__('Male')}})"},
+                    {value:"cmn-TW-Standard-C", label:"Tingting ({{__('Female')}})"},
+                    {value:"cmn-TW-Wavenet-A", label:"Yunyun ({{__('Female')}})"},
+                    {value:"cmn-TW-Wavenet-B", label:"Zhenghao ({{__('Male')}})"},
+                    {value:"cmn-TW-Wavenet-C", label:"Yuehan ({{__('Female')}})"}
                 ],
                 "mr-IN": [
-                    {value:"mr-IN-Standard-A", label:"Anjali (Female)"},
-                    {value:"mr-IN-Standard-B", label:"Aditya (Male)"},
-                    {value:"mr-IN-Standard-C", label:"Dipti (Female)"},
-                    {value:"mr-IN-Wavenet-A", label:"Gauri (Female)"},
-                    {value:"mr-IN-Wavenet-B", label:"Harsh (Male)"},
-                    {value:"mr-IN-Wavenet-C", label:"Ishita (Female)"}
+                    {value:"mr-IN-Standard-A", label:"Anjali ({{__('Female')}})"},
+                    {value:"mr-IN-Standard-B", label:"Aditya ({{__('Male')}})"},
+                    {value:"mr-IN-Standard-C", label:"Dipti ({{__('Female')}})"},
+                    {value:"mr-IN-Wavenet-A", label:"Gauri ({{__('Female')}})"},
+                    {value:"mr-IN-Wavenet-B", label:"Harsh ({{__('Male')}})"},
+                    {value:"mr-IN-Wavenet-C", label:"Ishita ({{__('Female')}})"}
                 ],
                 "nb-NO": [
-                    {value:"nb-NO-Standard-A", label:"Ingrid (Female)"},
-                    {value:"nb-NO-Standard-B", label:"Jonas (Male)"},
-                    {value:"nb-NO-Standard-C", label:"Marit (Female)"},
-                    {value:"nb-NO-Standard-D", label:"Olav (Male)"},
-                    {value:"nb-NO-Standard-E", label:"Silje (Female)"},
-                    {value:"nb-NO-Wavenet-A", label:"Astrid (Female)"},
-                    {value:"nb-NO-Wavenet-B", label:"Eirik (Male)"},
-                    {value:"nb-NO-Wavenet-C", label:"Inger (Female)"},
-                    {value:"nb-NO-Wavenet-D", label:"Kristian (Male)"},
-                    {value:"nb-NO-Wavenet-E", label:"Trine (Female)"}
+                    {value:"nb-NO-Standard-A", label:"Ingrid ({{__('Female')}})"},
+                    {value:"nb-NO-Standard-B", label:"Jonas ({{__('Male')}})"},
+                    {value:"nb-NO-Standard-C", label:"Marit ({{__('Female')}})"},
+                    {value:"nb-NO-Standard-D", label:"Olav ({{__('Male')}})"},
+                    {value:"nb-NO-Standard-E", label:"Silje ({{__('Female')}})"},
+                    {value:"nb-NO-Wavenet-A", label:"Astrid ({{__('Female')}})"},
+                    {value:"nb-NO-Wavenet-B", label:"Eirik ({{__('Male')}})"},
+                    {value:"nb-NO-Wavenet-C", label:"Inger ({{__('Female')}})"},
+                    {value:"nb-NO-Wavenet-D", label:"Kristian ({{__('Male')}})"},
+                    {value:"nb-NO-Wavenet-E", label:"Trine ({{__('Female')}})"}
                 ],
                 "pl-PL": [
-                    {value:"pl-PL-Standard-A", label:"Agata (Female)"},
-                    {value:"pl-PL-Standard-B", label:"Bartosz (Male)"},
-                    {value:"pl-PL-Standard-C", label:"Kamil (Male)"},
-                    {value:"pl-PL-Standard-D", label:"Julia (Female)"},
-                    {value:"pl-PL-Standard-E", label:"Magdalena (Female)"},
-                    {value:"pl-PL-Wavenet-A", label:"Natalia (Female)"},
-                    {value:"pl-PL-Wavenet-B", label:"Paweł (Male)"},
-                    {value:"pl-PL-Wavenet-C", label:"Tomasz (Male)"},
-                    {value:"pl-PL-Wavenet-D", label:"Zofia (Female)"},
-                    {value:"pl-PL-Wavenet-E", label:"Wiktoria (Female)"}
+                    {value:"pl-PL-Standard-A", label:"Agata ({{__('Female')}})"},
+                    {value:"pl-PL-Standard-B", label:"Bartosz ({{__('Male')}})"},
+                    {value:"pl-PL-Standard-C", label:"Kamil ({{__('Male')}})"},
+                    {value:"pl-PL-Standard-D", label:"Julia ({{__('Female')}})"},
+                    {value:"pl-PL-Standard-E", label:"Magdalena ({{__('Female')}})"},
+                    {value:"pl-PL-Wavenet-A", label:"Natalia ({{__('Female')}})"},
+                    {value:"pl-PL-Wavenet-B", label:"Paweł ({{__('Male')}})"},
+                    {value:"pl-PL-Wavenet-C", label:"Tomasz ({{__('Male')}})"},
+                    {value:"pl-PL-Wavenet-D", label:"Zofia ({{__('Female')}})"},
+                    {value:"pl-PL-Wavenet-E", label:"Wiktoria ({{__('Female')}})"}
                 ],
                 "pt-BR": [
                     //{value:"pt-BR-Neural2-A", label: "Neural2 - FEMALE"},
                     //{value:"pt-BR-Neural2-B", label: "Neural2 - MALE"},
                     //{value:"pt-BR-Neural2-C", label: "Neural2 - FEMALE"},
-                    {value:"pt-BR-Standard-A", label:"Ana (Female)"},
-                    {value:"pt-BR-Standard-B", label:"Carlos (Male)"},
-                    {value:"pt-BR-Standard-C", label:"Maria (Female)"},
-                    {value:"pt-BR-Wavenet-A", label:"Julia (Female)"},
-                    {value:"pt-BR-Wavenet-B", label:"João (Male)"},
-                    {value:"pt-BR-Wavenet-C", label:"Fernanda (Female)"}
+                    {value:"pt-BR-Standard-A", label:"Ana ({{__('Female')}})"},
+                    {value:"pt-BR-Standard-B", label:"Carlos ({{__('Male')}})"},
+                    {value:"pt-BR-Standard-C", label:"Maria ({{__('Female')}})"},
+                    {value:"pt-BR-Wavenet-A", label:"Julia ({{__('Female')}})"},
+                    {value:"pt-BR-Wavenet-B", label:"João ({{__('Male')}})"},
+                    {value:"pt-BR-Wavenet-C", label:"Fernanda ({{__('Female')}})"}
                 ],
                 "pt-PT": [
-                    {value:"pt-PT-Standard-A", label:"Maria (Female)"},
-                    {value:"pt-PT-Standard-B", label:"José (Male)"},
-                    {value:"pt-PT-Standard-C", label:"Luís (Male)"},
-                    {value:"pt-PT-Standard-D", label:"Ana (Female)"},
-                    {value:"pt-PT-Wavenet-A", label:"Catarina (Female)"},
-                    {value:"pt-PT-Wavenet-B", label:"Miguel (Male)"},
-                    {value:"pt-PT-Wavenet-C", label:"João (Male)"},
-                    {value:"pt-PT-Wavenet-D", label:"Marta (Female)"}
+                    {value:"pt-PT-Standard-A", label:"Maria ({{__('Female')}})"},
+                    {value:"pt-PT-Standard-B", label:"José ({{__('Male')}})"},
+                    {value:"pt-PT-Standard-C", label:"Luís ({{__('Male')}})"},
+                    {value:"pt-PT-Standard-D", label:"Ana ({{__('Female')}})"},
+                    {value:"pt-PT-Wavenet-A", label:"Catarina ({{__('Female')}})"},
+                    {value:"pt-PT-Wavenet-B", label:"Miguel ({{__('Male')}})"},
+                    {value:"pt-PT-Wavenet-C", label:"João ({{__('Male')}})"},
+                    {value:"pt-PT-Wavenet-D", label:"Marta ({{__('Female')}})"}
                 ],
                 "pa-IN": [
-                    {value:"pa-IN-Standard-A", label:"Harpreet (Female)"},
-                    {value:"pa-IN-Standard-B", label:"Gurpreet (Male)"},
-                    {value:"pa-IN-Standard-C", label:"Jasmine (Female)"},
-                    {value:"pa-IN-Standard-D", label:"Rahul (Male)"},
-                    {value:"pa-IN-Wavenet-A", label:"Simran (Female)"},
-                    {value:"pa-IN-Wavenet-B", label:"Amardeep (Male)"},
-                    {value:"pa-IN-Wavenet-C", label:"Kiran (Female)"},
-                    {value:"pa-IN-Wavenet-D", label:"Raj (Male)"}
+                    {value:"pa-IN-Standard-A", label:"Harpreet ({{__('Female')}})"},
+                    {value:"pa-IN-Standard-B", label:"Gurpreet ({{__('Male')}})"},
+                    {value:"pa-IN-Standard-C", label:"Jasmine ({{__('Female')}})"},
+                    {value:"pa-IN-Standard-D", label:"Rahul ({{__('Male')}})"},
+                    {value:"pa-IN-Wavenet-A", label:"Simran ({{__('Female')}})"},
+                    {value:"pa-IN-Wavenet-B", label:"Amardeep ({{__('Male')}})"},
+                    {value:"pa-IN-Wavenet-C", label:"Kiran ({{__('Female')}})"},
+                    {value:"pa-IN-Wavenet-D", label:"Raj ({{__('Male')}})"}
                 ],
                 "ro-RO": [
-                    {value:"ro-RO-Standard-A", label:"Maria (Female)"},
-                    {value:"ro-RO-Wavenet-A", label:"Ioana (Female)"}
+                    {value:"ro-RO-Standard-A", label:"Maria ({{__('Female')}})"},
+                    {value:"ro-RO-Wavenet-A", label:"Ioana ({{__('Female')}})"}
                 ],
                 "ru-RU": [
                     {value:"ru-RU-Standard-A", label:"Anastasia"},
@@ -545,8 +545,8 @@
                     {value:"sr-RS-Standard-A", label:"Ana"}
                 ],
                 "sk-SK": [
-                    {value:"sk-SK-Standard-A", label:"Mária (Female)"},
-                    {value:"sk-SK-Wavenet-A", label:"Zuzana (Female)"}
+                    {value:"sk-SK-Standard-A", label:"Mária ({{__('Female')}})"},
+                    {value:"sk-SK-Wavenet-A", label:"Zuzana ({{__('Female')}})"}
                 ],
                 "es-ES": [
                     //{value:"es-ES-Neural2-A", label: "Neural2 - FEMALE"},
@@ -555,90 +555,90 @@
                     //{value:"es-ES-Neural2-D", label: "Neural2 - FEMALE"},
                     //{value:"es-ES-Neural2-E", label: "Neural2 - FEMALE"},
                     //{value:"es-ES-Neural2-F", label: "Neural2 - MALE"},
-                    //{value: "es-ES-Polyglot-1", label: "Juan (Male)"},
-                    {value: "es-ES-Standard-A", label: "María (Female)"},
-                    {value: "es-ES-Standard-B", label: "José (Male)"},
-                    {value: "es-ES-Standard-C", label: "Ana (Female)"},
-                    {value: "es-ES-Standard-D", label: "Isabel (Female)"},
-                    {value: "es-ES-Wavenet-B", label: "Pedro (Male)"},
-                    {value: "es-ES-Wavenet-C", label: "Laura (Female)"},
-                    {value: "es-ES-Wavenet-D", label: "Julia (Female)"}
+                    //{value: "es-ES-Polyglot-1", label: "Juan ({{__('Male')}})"},
+                    {value: "es-ES-Standard-A", label: "María ({{__('Female')}})"},
+                    {value: "es-ES-Standard-B", label: "José ({{__('Male')}})"},
+                    {value: "es-ES-Standard-C", label: "Ana ({{__('Female')}})"},
+                    {value: "es-ES-Standard-D", label: "Isabel ({{__('Female')}})"},
+                    {value: "es-ES-Wavenet-B", label: "Pedro ({{__('Male')}})"},
+                    {value: "es-ES-Wavenet-C", label: "Laura ({{__('Female')}})"},
+                    {value: "es-ES-Wavenet-D", label: "Julia ({{__('Female')}})"}
 
                 ],
                 "es-US": [
                     //{value:"es-US-Neural2-A", label: "Neural2 - FEMALE"},
                     //{value:"es-US-Neural2-B", label: "Neural2 - MALE"},
                     //{value:"es-US-Neural2-C", label: "Neural2 - MALE"},
-                    {value:"es-US-News-D", label: "Diego (Male)"},
-                    {value:"es-US-News-E", label: "Eduardo (Male)"},
-                    {value:"es-US-News-F", label: "Fátima (Female)"},
-                    {value:"es-US-News-G", label: "Gabriela (Female)"},
-                    //{value:"es-US-Polyglot-1", label: "Juan (Male)"},
-                    {value:"es-US-Standard-A", label: "Ana (Female)"},
-                    {value:"es-US-Standard-B", label: "José (Male)"},
-                    {value:"es-US-Standard-C", label: "Carlos (Male)"},
-                    {value:"es-US-Studio-B", label: "Miguel (Male)"},
-                    {value:"es-US-Wavenet-A", label: "Laura (Female)"},
-                    {value:"es-US-Wavenet-B", label: "Pedro (Male)"},
-                    {value:"es-US-Wavenet-C", label: "Pablo (Male)"}
+                    {value:"es-US-News-D", label: "Diego ({{__('Male')}})"},
+                    {value:"es-US-News-E", label: "Eduardo ({{__('Male')}})"},
+                    {value:"es-US-News-F", label: "Fátima ({{__('Female')}})"},
+                    {value:"es-US-News-G", label: "Gabriela ({{__('Female')}})"},
+                    //{value:"es-US-Polyglot-1", label: "Juan ({{__('Male')}})"},
+                    {value:"es-US-Standard-A", label: "Ana ({{__('Female')}})"},
+                    {value:"es-US-Standard-B", label: "José ({{__('Male')}})"},
+                    {value:"es-US-Standard-C", label: "Carlos ({{__('Male')}})"},
+                    {value:"es-US-Studio-B", label: "Miguel ({{__('Male')}})"},
+                    {value:"es-US-Wavenet-A", label: "Laura ({{__('Female')}})"},
+                    {value:"es-US-Wavenet-B", label: "Pedro ({{__('Male')}})"},
+                    {value:"es-US-Wavenet-C", label: "Pablo ({{__('Male')}})"}
                 ],
                 "sv-SE": [
-                    {value:"sv-SE-Standard-A", label: "Ebba (Female)"},
-                    {value:"sv-SE-Standard-B", label: "Saga (Female)"},
-                    {value:"sv-SE-Standard-C", label: "Linnea (Female)"},
-                    {value:"sv-SE-Standard-D", label: "Erik (Male)"},
-                    {value:"sv-SE-Standard-E", label: "Anton (Male)"},
-                    {value:"sv-SE-Wavenet-A", label: "Astrid (Female)"},
-                    {value:"sv-SE-Wavenet-B", label: "Elin (Female)"},
-                    {value:"sv-SE-Wavenet-C", label: "Oskar (Male)"},
-                    {value:"sv-SE-Wavenet-D", label: "Hanna (Female)"},
-                    {value:"sv-SE-Wavenet-E", label: "Felix (Male)"}
+                    {value:"sv-SE-Standard-A", label: "Ebba ({{__('Female')}})"},
+                    {value:"sv-SE-Standard-B", label: "Saga ({{__('Female')}})"},
+                    {value:"sv-SE-Standard-C", label: "Linnea ({{__('Female')}})"},
+                    {value:"sv-SE-Standard-D", label: "Erik ({{__('Male')}})"},
+                    {value:"sv-SE-Standard-E", label: "Anton ({{__('Male')}})"},
+                    {value:"sv-SE-Wavenet-A", label: "Astrid ({{__('Female')}})"},
+                    {value:"sv-SE-Wavenet-B", label: "Elin ({{__('Female')}})"},
+                    {value:"sv-SE-Wavenet-C", label: "Oskar ({{__('Male')}})"},
+                    {value:"sv-SE-Wavenet-D", label: "Hanna ({{__('Female')}})"},
+                    {value:"sv-SE-Wavenet-E", label: "Felix ({{__('Male')}})"}
                 ],
                 "ta-IN": [
-                    {value:"ta-IN-Standard-A", label: "Anjali (Female)"},
-                    {value:"ta-IN-Standard-B", label: "Karthik (Male)"},
-                    {value:"ta-IN-Standard-C", label: "Priya (Female)"},
-                    {value:"ta-IN-Standard-D", label: "Ravi (Male)"},
-                    {value:"ta-IN-Wavenet-A", label: "Lakshmi (Female)"},
-                    {value:"ta-IN-Wavenet-B", label: "Suresh (Male)"},
-                    {value:"ta-IN-Wavenet-C", label: "Uma (Female)"},
-                    {value:"ta-IN-Wavenet-D", label: "Venkatesh (Male)"}
+                    {value:"ta-IN-Standard-A", label: "Anjali ({{__('Female')}})"},
+                    {value:"ta-IN-Standard-B", label: "Karthik ({{__('Male')}})"},
+                    {value:"ta-IN-Standard-C", label: "Priya ({{__('Female')}})"},
+                    {value:"ta-IN-Standard-D", label: "Ravi ({{__('Male')}})"},
+                    {value:"ta-IN-Wavenet-A", label: "Lakshmi ({{__('Female')}})"},
+                    {value:"ta-IN-Wavenet-B", label: "Suresh ({{__('Male')}})"},
+                    {value:"ta-IN-Wavenet-C", label: "Uma ({{__('Female')}})"},
+                    {value:"ta-IN-Wavenet-D", label: "Venkatesh ({{__('Male')}})"}
                 ],
                 "te-IN": [
-                    {value:"-IN-Standard-A", label: "Anjali - (Female)"},
-                    {value:"-IN-Standard-B", label: "Karthik - (Male)"}
+                    {value:"-IN-Standard-A", label: "Anjali - ({{__('Female')}})"},
+                    {value:"-IN-Standard-B", label: "Karthik - ({{__('Male')}})"}
                 ],
                 "th-TH": [
                     //{value:"th-TH-Neural2-C", label: "Neural2 - FEMALE"},
-                    {value:"th-TH-Standard-A", label: "Ariya - (Female)"}
+                    {value:"th-TH-Standard-A", label: "Ariya - ({{__('Female')}})"}
                 ],
                 "tr-TR": [
-                    {value:"tr-TR-Standard-A", label: "Ayşe (Female)"},
-                    {value:"tr-TR-Standard-B", label: "Berk (Male)"},
-                    {value:"tr-TR-Standard-C", label: "Cansu (Female)"},
-                    {value:"tr-TR-Standard-D", label: "Deniz (Female)"},
-                    {value:"tr-TR-Standard-E", label: "Emre (Male)"},
-                    {value:"tr-TR-Wavenet-A", label: "Gül (Female)"},
-                    {value:"tr-TR-Wavenet-B", label: "Mert (Male)"},
-                    {value:"tr-TR-Wavenet-C", label: "Nilay (Female)"},
-                    {value:"tr-TR-Wavenet-D", label: "Selin (Female)"},
-                    {value:"tr-TR-Wavenet-E", label: "Tolga (Male)"}
+                    {value:"tr-TR-Standard-A", label: "Ayşe ({{__('Female')}})"},
+                    {value:"tr-TR-Standard-B", label: "Berk ({{__('Male')}})"},
+                    {value:"tr-TR-Standard-C", label: "Cansu ({{__('Female')}})"},
+                    {value:"tr-TR-Standard-D", label: "Deniz ({{__('Female')}})"},
+                    {value:"tr-TR-Standard-E", label: "Emre ({{__('Male')}})"},
+                    {value:"tr-TR-Wavenet-A", label: "Gül ({{__('Female')}})"},
+                    {value:"tr-TR-Wavenet-B", label: "Mert ({{__('Male')}})"},
+                    {value:"tr-TR-Wavenet-C", label: "Nilay ({{__('Female')}})"},
+                    {value:"tr-TR-Wavenet-D", label: "Selin ({{__('Female')}})"},
+                    {value:"tr-TR-Wavenet-E", label: "Tolga ({{__('Male')}})"}
                 ],
                 "uk-UA": [
-                    {value:"uk-UA-Standard-A", label: "Anya - (Female)"},
-                    {value:"uk-UA-Wavenet-A", label: "Dasha - (Female)"}
+                    {value:"uk-UA-Standard-A", label: "Anya - ({{__('Female')}})"},
+                    {value:"uk-UA-Wavenet-A", label: "Dasha - ({{__('Female')}})"}
                 ],
                 "vi-VN": [
                     //{value:"vi-VN-Neural2-A", label: "Neural2 - FEMALE"},
                     //{value:"vi-VN-Neural2-D", label: "Neural2 - MALE"},
-                    {value:"vi-VN-Standard-A", label: "Mai (Female)"},
-                    {value:"vi-VN-Standard-B", label: "Nam (Male)"},
-                    {value:"vi-VN-Standard-C", label: "Hoa (Female)"},
-                    {value:"vi-VN-Standard-D", label: "Huy (Male)"},
-                    {value:"vi-VN-Wavenet-A", label: "Lan (Female)"},
-                    {value:"vi-VN-Wavenet-B", label: "Son (Male)"},
-                    {value:"vi-VN-Wavenet-C", label: "Thao (Female)"},
-                    {value:"vi-VN-Wavenet-D", label: "Tuan (Male)"}
+                    {value:"vi-VN-Standard-A", label: "Mai ({{__('Female')}})"},
+                    {value:"vi-VN-Standard-B", label: "Nam ({{__('Male')}})"},
+                    {value:"vi-VN-Standard-C", label: "Hoa ({{__('Female')}})"},
+                    {value:"vi-VN-Standard-D", label: "Huy ({{__('Male')}})"},
+                    {value:"vi-VN-Wavenet-A", label: "Lan ({{__('Female')}})"},
+                    {value:"vi-VN-Wavenet-B", label: "Son ({{__('Male')}})"},
+                    {value:"vi-VN-Wavenet-C", label: "Thao ({{__('Female')}})"},
+                    {value:"vi-VN-Wavenet-D", label: "Tuan ({{__('Male')}})"}
                 ]
             }
 
@@ -914,11 +914,11 @@
                     break;
                     case 'image-to-image':
                         formData.append("stable_description", $("#img2img_description").val());
-                        formData.append("image_src", $('#img2img_src')[0].files[0]);
+                        formData.append("image_src", resizedImage);
                     break;
                     case 'upscale':
                         formData.append("stable_description", "upscale");
-                        formData.append("image_src", $('#upscale_src')[0].files[0]);
+                        formData.append("image_src", resizedImage);
                     break;
                     case 'multi-prompt':
                         $('.multi_prompts_description').each(function(idx, e) { 
@@ -1001,6 +1001,10 @@
                 },
                 error: function (data) {
                     console.log(data);
+                    document.getElementById("openai_generator_button").disabled = false;
+                    document.getElementById("openai_generator_button").innerHTML = "Genarate";
+					document.querySelector('#app-loading-indicator')?.classList?.add('opacity-0');
+					document.querySelector('#workbook_regenerate')?.classList?.add('hidden');
                     if ( data.responseJSON.errors ) {
 						$.each(data.responseJSON.errors, function(index, value) {
 							toastr.error(value);
@@ -1008,10 +1012,6 @@
 					} else if ( data.responseJSON.message ) {
 						toastr.error(data.responseJSON.message);
 					}
-                    document.getElementById("openai_generator_button").disabled = false;
-                    document.getElementById("openai_generator_button").innerHTML = "Genarate";
-					document.querySelector('#app-loading-indicator')?.classList?.add('opacity-0');
-					document.querySelector('#workbook_regenerate')?.classList?.add('hidden');
                 }
             });
             return false;

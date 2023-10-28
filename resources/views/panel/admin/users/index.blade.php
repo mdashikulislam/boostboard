@@ -123,11 +123,12 @@
                         @endif
 						</tbody>
 						<tfoot>
-
+                          
 						</tfoot>
 					</table>
                     <div class="flex items-center border-solid border-t border-r-0 border-b-0 border-l-0 border-[--tblr-border-color] px-[--tblr-card-cap-padding-x] py-[--tblr-card-cap-padding-y] [&_.rounded-md]:rounded-full">
-						<ul class="pagination m-0 ms-auto p-0"></ul>
+						{{-- <ul class="pagination m-0 ms-auto p-0"></ul> --}}
+                        <div class="m-0 ms-auto p-0">{{ $users->links() }}</div>
                     </div>
 				</div>
             </div>

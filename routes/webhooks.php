@@ -11,6 +11,7 @@ use App\Http\Controllers\Gateways\PaypalController;
 use App\Http\Controllers\Gateways\YokassaController;
 use App\Http\Controllers\Gateways\TwoCheckoutController;
 use App\Http\Controllers\Gateways\IyzicoController;
+use App\Http\Controllers\Gateways\PaystackController;
 
 Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]], function() {
 
@@ -20,6 +21,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [ 'l
         Route::post('/yokassa', [YokassaController::class, 'handleWebhook']);
         Route::match(['get', 'post'], '/twocheckout', [TwoCheckoutController::class, 'handleWebhook']);
         Route::post('/iyzico', [IyzicoController::class, 'handleWebhook']);
+        Route::post('/paystack', [PaystackController::class, 'handleWebhook']);
 
         Route::get('/simulate', [PaypalController::class, 'simulateWebhookEvent']); // This is specific to Paypal
     });

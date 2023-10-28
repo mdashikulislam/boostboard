@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
 use App\Models\PaystackPaymentInfo;
+use App\Models\Coupon;
 use App\Events\PaystackWebhookEvent;
 
 /**
@@ -291,7 +292,43 @@ class PaystackController extends Controller
     public static function subscribe($planId, $plan, $incomingException = null)
     {
         $gateway = Gateways::where("code", "paystack")->first();
+        $currency = Currency::where('id', $gateway->currency)->first()->code;
         if($gateway == null) { abort(404); } 
+
+        if ($gateway->mode == 'sandbox') {
+            $key = $gateway->sandbox_client_secret;
+        } else {
+            $key = $gateway->live_client_secret;
+        }
+        
+
+        $newDiscountedPrice = $plan->price;
+        $couponCode = request()->input('coupon');
+
+        if($couponCode){
+            $coupone = Coupon::where('code', $couponCode)->first();
+            if($coupone){
+
+                $newDiscountedPrice  = $plan->price - ($plan->price * ($coupone->discount / 100));  
+                if ($newDiscountedPrice != floor($newDiscountedPrice)) {
+                    $newDiscountedPrice = number_format($newDiscountedPrice, 2);
+                } 
+               
+                $interval = $plan->frequency == "monthly" ?'monthly' : 'annually';
+                $billingPlan = self::curl_req(self::$plan_endpoint, $key, [
+                    'name' => "discount_item_" . time(),
+                    'interval' => $interval, 
+                    'amount' => (int)(((float)$newDiscountedPrice) * 100),
+                    'description' => "coupon_". $coupone->code . "_user_" . auth()->user()->id . "_plan_" . $plan->id ,
+                    'currency' => $currency,
+                ]);
+                $billingPlanId = $billingPlan['data']['plan_code'];
+               
+            }
+        }else{
+            $billingPlanId = self::getPaystackPriceId($planId);
+        }
+        
 
         $settings = Setting::first();
 
@@ -301,8 +338,7 @@ class PaystackController extends Controller
         $exception = $incomingException;
         $orderId = Str::random(12);
         $productId = self::getPaystackProductId($planId);
-        $billingPlanId = self::getPaystackPriceId($planId);
-
+        
         try {
             if($productId == null){
                 $exception = "Product ID is not set! Please save Membership Plan again.";
@@ -319,8 +355,8 @@ class PaystackController extends Controller
                 $payment->plan_id = $planId;
                 $payment->user_id = $user->id;
                 $payment->payment_type = 'Paystack';
-                $payment->price = $plan->price;
-                $payment->affiliate_earnings = ($plan->price*$settings->affiliate_commission_percentage)/100;
+                $payment->price = $newDiscountedPrice;
+                $payment->affiliate_earnings = ($newDiscountedPrice*$settings->affiliate_commission_percentage)/100;
                 $payment->status = 'Waiting';
                 $payment->country = $user->country ?? 'Unknown';
                 $payment->save();
@@ -330,7 +366,7 @@ class PaystackController extends Controller
             $exception = Str::before($th->getMessage(),':');
         }
 
-        return view('panel.user.payment.subscription.payWithPaystack', compact('plan', 'billingPlanId', 'exception', 'orderId', 'productId', 'gateway', 'planId'));
+        return view('panel.user.payment.subscription.payWithPaystack', compact('plan','newDiscountedPrice', 'billingPlanId', 'exception', 'orderId', 'productId', 'gateway', 'planId'));
     }
     /**
      * Handles payment action of Stripe.
@@ -340,6 +376,8 @@ class PaystackController extends Controller
     public function subscribePay(Request $request)
     {
         try{
+            $previousRequest = app('request')->create(url()->previous());
+
             $gateway = Gateways::where("code", "paystack")->first();
             if ($gateway == null) {
                 abort(404);
@@ -405,6 +443,15 @@ class PaystackController extends Controller
             $subscription_billing_code = $subscription_billing['data'][0]['subscription_code'];
 
             if($payment != null){
+
+                if ($previousRequest->has('coupon')) {
+                    $coupon = Coupon::where('code', $previousRequest->input('coupon'))->first();
+                    if($coupon){
+                        $coupon->usersUsed()->attach(auth()->user()->id);
+                    }
+                }
+
+
                 $subscription = new SubscriptionsModel();
                 $subscription->user_id = $user->id;
                 $subscription->name = $planId;
@@ -584,7 +631,6 @@ class PaystackController extends Controller
         $user = Auth::user();
         $userId=$user->id;
         // Get current active subscription
-
         $activeSub = SubscriptionsModel::where([['stripe_status', '=', 'active'], ['user_id', '=', $userId], ['paid_with', '=', 'paystack']])->orWhere([['stripe_status', '=', 'trialing'], ['user_id', '=', $userId], ['paid_with', '=', 'paystack']])->first();
 
         if($activeSub != null){
@@ -637,18 +683,33 @@ class PaystackController extends Controller
 
 
         }
-        dd('sdfsdg');
+
         return back()->with(['message' => 'Could not find active subscription. Nothing changed!', 'type' => 'error']);
     }
     /**
      * Displays Payment Page of Paystack gateway for prepaid plans.
      */
     public static function prepaid($planId, $plan, $incomingException = null){
+
+        $newDiscountedPrice = $plan->price;
+
+        $couponCode = request()->input('coupon');
+        if($couponCode){
+            $coupone = Coupon::where('code', $couponCode)->first();
+            if($coupone){
+                $newDiscountedPrice  = $plan->price - ($plan->price * ($coupone->discount / 100));   
+                if ($newDiscountedPrice != floor($newDiscountedPrice)) {
+                    $newDiscountedPrice = number_format($newDiscountedPrice, 2);
+                }
+            }
+        }
+        
         $gateway = Gateways::where("code", "paystack")->first();
         if($gateway == null) { abort(404); } 
         $currency = Currency::where('id', $gateway->currency)->first()->code;
         $orderId = null;
         $exception = $incomingException;
+
         try {
             if(self::getPaystackProductId($planId) == null){
                 $exception = "Product ID is not set! Please save Membership Plan again.";
@@ -656,7 +717,7 @@ class PaystackController extends Controller
         } catch (\Exception $th) {
             $exception = Str::before($th->getMessage(),':');
         }
-        return view('panel.user.payment.prepaid.payWithPaystack', compact('plan', 'orderId', 'gateway', 'exception', 'currency', 'planId'));
+        return view('panel.user.payment.prepaid.payWithPaystack', compact('plan', 'newDiscountedPrice','orderId', 'gateway', 'exception', 'currency', 'planId'));
     }
     /**
      * Handles payment action of Stripe.
@@ -665,6 +726,7 @@ class PaystackController extends Controller
      */
     public function prepaidPay(Request $request)
     {
+        $previousRequest = app('request')->create(url()->previous());
 
         $payment_response = json_decode($request->response, true);
         $payment_response_reference = $payment_response['reference'];
@@ -690,6 +752,8 @@ class PaystackController extends Controller
         }
 
 
+
+
         # log the transaction data to database
         $info = new PaystackPaymentInfo();
         $info->user_id = Auth::user()->id;
@@ -712,14 +776,25 @@ class PaystackController extends Controller
         $user = Auth::user();
         $settings = Setting::first();
 
+
+        $newDiscountedPrice = $plan->price;
+        if ($previousRequest->has('coupon')) {
+            $coupon = Coupon::where('code', $previousRequest->input('coupon'))->first();
+            if($coupon){
+                $newDiscountedPrice = $plan->price - ($plan->price * ($coupon->discount / 100));
+                $coupon->usersUsed()->attach(auth()->user()->id);
+            }
+        }
+
+
         $payment = new UserOrder();
         $payment->order_id = Str::random(12);
         $payment->plan_id = $plan->id;
         $payment->type = 'prepaid';
         $payment->user_id = $user->id;
         $payment->payment_type = 'Credit, Debit Card';
-        $payment->price = $plan->price;
-        $payment->affiliate_earnings = ($plan->price * $settings->affiliate_commission_percentage) / 100;
+        $payment->price = $newDiscountedPrice;
+        $payment->affiliate_earnings = ($newDiscountedPrice * $settings->affiliate_commission_percentage) / 100;
         $payment->status = 'Success';
         $payment->country = $user->country ?? 'Unknown';
         $payment->save();
@@ -730,7 +805,7 @@ class PaystackController extends Controller
 
         createActivity($user->id, 'Purchased', $plan->name . ' Token Pack', null);
 
-        return redirect()->route('dashboard.index')->with(['message' => 'Thank you for your purchase. Enjoy your remaining words and images.', 'type' => 'success']);
+        return redirect()->route('dashboard.index')->with(['message' => __('Thank you for your purchase. Enjoy your remaining words and images.'), 'type' => 'success']);
     }
     public static function getSubscriptionDaysLeft(){
 
@@ -771,7 +846,6 @@ class PaystackController extends Controller
 
         $userId=Auth::user()->id;
         // Get current active subscription
-
         $activeSub = SubscriptionsModel::where([['stripe_status', '=', 'active'], ['user_id', '=', $userId], ['paid_with', '=', 'paystack']])->orWhere([['stripe_status', '=', 'trialing'], ['user_id', '=', $userId], ['paid_with', '=', 'paystack']])->first();
         if($activeSub != null){
             $reqs = self::curl_req_get(self::$subscription_endpoint. "/" .$activeSub->stripe_id , $key);
@@ -800,7 +874,6 @@ class PaystackController extends Controller
 
         $userId=Auth::user()->id;
         // Get current active subscription
-
         $activeSub = SubscriptionsModel::where([['stripe_status', '=', 'active'], ['user_id', '=', $userId], ['paid_with', '=', 'paystack']])->orWhere([['stripe_status', '=', 'trialing'], ['user_id', '=', $userId], ['paid_with', '=', 'paystack']])->first();
         if($activeSub != null){
             $reqs = self::curl_req_get(self::$subscription_endpoint. "/" .$activeSub->stripe_id , $key);
@@ -811,7 +884,6 @@ class PaystackController extends Controller
             if(isset($reqs['data']['next_payment_date'])){
                 return \Carbon\Carbon::parse($reqs['data']['next_payment_date'])->format('F jS, Y');
             }else{
-
                 $activeSub->stripe_status = "cancelled";
                 $activeSub->ends_at = \Carbon\Carbon::now();
                 $activeSub->save();
@@ -927,24 +999,15 @@ class PaystackController extends Controller
 
 
 
-
-
-
-
-
-    # TODO: webhook functions
     function verifyIncomingJson(Request $request){
+
+        if ((strtoupper($_SERVER['REQUEST_METHOD']) != 'POST' ) || !array_key_exists('HTTP_X_PAYSTACK_SIGNATURE', $_SERVER) ){exit();}
 
         try{
             $gateway = Gateways::where("code", "paystack")->first();
 
-            if($gateway->mode == 'sandbox'){
-                // Paystack does not support verification on sandbox mode
-                return true;
-            }
-
-            if($request->hasHeader('x-paystack-signature') == true){
-                $signature = $request->header('x-paystack-signature');
+            if($request->hasHeader('HTTP_X_PAYSTACK_SIGNATURE') == true){ //x-paystack-signature
+                $signature = $request->header('HTTP_X_PAYSTACK_SIGNATURE');
             }else{
                 return false;
             }
@@ -953,7 +1016,7 @@ class PaystackController extends Controller
             if($payload == null){return false;}
             if(isJson($payload) == false){return false;}
 
-            $secret_key = $gateway->live_client_secret;
+            $secret_key = ($gateway->mode == "sandbox" ? $gateway->sandbox_client_secret:$gateway->live_client_secret);
             if($secret_key == null){return false;}
 
             if($signature !== hash_hmac('sha512', $payload, $secret_key))
@@ -990,8 +1053,9 @@ class PaystackController extends Controller
         }
 
     }
-    public static function createWebhook(){
-        try{
+
+    // public static function createWebhook(){
+    //     try{
 
             // $user = Auth::user();
 
@@ -1023,11 +1087,10 @@ class PaystackController extends Controller
             // $gateway->save();
 
 
-        } catch (\Exception $th) {
-            error_log("PaypalController::createWebhook(): ".$th->getMessage());
-            return back()->with(['message' => $th->getMessage(), 'type' => 'error']);
-        }
-
-    }
+    //     } catch (\Exception $th) {
+    //         error_log("PaypalController::createWebhook(): ".$th->getMessage());
+    //         return back()->with(['message' => $th->getMessage(), 'type' => 'error']);
+    //     }
+    // }
 
 }

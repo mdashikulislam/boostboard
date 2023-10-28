@@ -60,7 +60,7 @@
 									<span class="inline-flex items-center justify-center w-[20px] h-[20px] mr-1 bg-[rgba(var(--tblr-primary-rgb),0.1)] text-primary rounded-xl align-middle">
 									<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10" /></svg>
 								</span>
-								{{ number_format($plan->trial_days)." ".__('Days of free trial.') }}
+								{{ number_format($plan->trial_days)." ".__('Days of free trial.') }} 
 								</li>
 								@endif
 								<li class="mb-3">
@@ -117,7 +117,7 @@
 							<div class="mt-auto -mx-[1rem] -mb-[1rem] text-center">
 								@if($is_active_gateway == 1)
 								@php($planid=$plan->id)
-								<a class="btn rounded-3xl py-[0.75rem] -mx-px -mb-px w-full border border-[--tblr-border-color] text-[15px] font-semibold shadow-none hover:bg-[--tblr-primary] hover:text-white"
+								<a class="btn rounded-3xl py-[0.75rem] -mx-px -mb-px w-full border border-[--tblr-border-color] text-[15px] font-semibold shadow-none hover:bg-[--tblr-primary] hover:text-white" 
 								href = "#" role="button" data-bs-toggle="modal" data-bs-target="#gatewayModal_{{ $planid }}">{{__('Choose plan')}}</a>
 								<div class="modal fade" id="gatewayModal_{{ $planid }}" tabindex="-1" aria-labelledby="gatewayModalLabel_{{ $planid }}" aria-hidden="true">
 									<div class="modal-dialog modal-sm modal-dialog-centered">
@@ -129,9 +129,9 @@
 											<div class="modal-body vstack gap-3">
 											@foreach($activeGateways as $gateway)
 												@php($data=$gatewayControls->gatewayData($gateway->code))
-													<a href="{{ LaravelLocalization::localizeUrl( route('dashboard.user.payment.startSubscriptionProcess',['planId' => $planid, 'gatewayCode' => $data['code'] ]) ) }}"
+													<a href="{{ LaravelLocalization::localizeUrl( route('dashboard.user.payment.startSubscriptionProcess',['planId' => $planid, 'gatewayCode' => $data['code'] ]) ) }}" 
 													class="btn rounded-3xl px-3 py-0 -mx-px -mb-px w-full h-[36px] flex items-center border border-[--tblr-border-color] text-[15px] font-semibold shadow-none hover:bg-[--tblr-primary] hover:text-white">
-														<div class="flex justify-between w-100 align-middle items-center h-[36px] m-0 p-0">
+														<div class="flex justify-between w-100 align-middle items-center h-[36px] m-0 p-0"> 
 															@if($data['whiteLogo'] == 1)
 															<img src="{{ $data['img'] }}" style="max-height:24px;" alt="{{ $data['title'] }}"  class="rounded-3xl bg-[--tblr-primary] "/>
 															@else
@@ -179,7 +179,7 @@
 										@else
 											{{ currency()->symbol }} / {{__('One time')}}
 										@endif
-
+										
 										@if($plan->is_featured == 1)
 											<div class="inline-flex rounded-full py-[0.25rem] px-[0.75rem] bg-gradient-to-r from-[#ece7f7] via-[#e7c5e6] to-[#e7ebf9] text-[11px] text-black">
 												{{__('Popular pack')}}
@@ -190,7 +190,7 @@
 								<p class="font-medium text-[15px] leading-none text-muted">{{$plan->name}}</p>
 
 								<ul class="list-none p-0 my-6 text-[15px] text-heading">
-									<li class="mb-3 hideMe">
+									<li class="mb-3">
 										<span class="inline-flex items-center justify-center w-[20px] h-[20px] mr-1 bg-[rgba(var(--tblr-primary-rgb),0.1)] text-primary rounded-xl align-middle">
 											<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10" /></svg>
 										</span>
@@ -232,7 +232,7 @@
 								<div class="mt-auto -mx-[1rem] -mb-[1rem] text-center">
 									@if($is_active_gateway == 1)
 									@php($planid=$plan->id)
-									<a class="btn rounded-3xl py-[0.75rem] -mx-px -mb-px w-full border border-[--tblr-border-color] text-[15px] font-semibold shadow-none hover:bg-[--tblr-primary] hover:text-white"
+									<a class="btn rounded-3xl py-[0.75rem] -mx-px -mb-px w-full border border-[--tblr-border-color] text-[15px] font-semibold shadow-none hover:bg-[--tblr-primary] hover:text-white" 
 									href="#" role="button" data-bs-toggle="modal" data-bs-target="#gatewayPrepaidModal_{{ $planid }}" >{{__('Choose pack')}}</a>
 									<div class="modal fade" id="gatewayPrepaidModal_{{ $planid }}" tabindex="-1" aria-labelledby="gatewayPrepaidModalLabel_{{ $planid }}" aria-hidden="true">
 										<div class="modal-dialog modal-sm modal-dialog-centered">
@@ -244,9 +244,9 @@
 												<div class="modal-body vstack gap-3">
 												@foreach($activeGateways as $gateway)
 												@php($data=$gatewayControls->gatewayData($gateway->code))
-												<a href="{{ LaravelLocalization::localizeUrl( route('dashboard.user.payment.startPrepaidPaymentProcess',['planId' => $planid, 'gatewayCode' => $data['code'] ]) ) }}"
+												<a href="{{ LaravelLocalization::localizeUrl( route('dashboard.user.payment.startPrepaidPaymentProcess',['planId' => $planid, 'gatewayCode' => $data['code'] ]) ) }}" 
 												class="btn rounded-3xl px-3 py-0 -mx-px -mb-px w-full h-[36px] flex items-center border border-[--tblr-border-color] text-[15px] font-semibold shadow-none hover:bg-[--tblr-primary] hover:text-white">
-													<div class="flex justify-between w-100 align-middle items-center h-[36px] m-0 p-0">
+													<div class="flex justify-between w-100 align-middle items-center h-[36px] m-0 p-0"> 
 														@if($data['whiteLogo'] == 1)
 														<img src="{{ $data['img'] }}" style="max-height:24px;" alt="{{ $data['title'] }}"  class="rounded-3xl bg-[--tblr-primary] "/>
 														@else

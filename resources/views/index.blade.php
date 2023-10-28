@@ -4,7 +4,7 @@
 
 
 
-<section class="site-section flex items-center justify-center min-h-screen text-center text-white relative py-52 max-md:pb-16 max-md:pt-48 overflow-hidden bg-gradient-to-br from-[#3655df] via-[#A068FA] via-70% to-[#327BD1]" id="banner">
+<section class="site-section flex items-center justify-center min-h-screen text-center text-white relative py-52 max-md:pb-16 max-md:pt-48 overflow-hidden" id="banner">
 	<div class="banner-bg w-[150%] h-[200%] absolute -top-[50%] -left-[25%]"></div>
 	<div class="container relative">
 		<div class="max-lg:w-2/3 max-md:w-full flex flex-col items-center w-1/2 mx-auto">

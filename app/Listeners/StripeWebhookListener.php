@@ -29,7 +29,7 @@ class StripeWebhookListener implements ShouldQueue
     }
 
     use InteractsWithQueue;
-
+ 
     public $afterCommit = true;
 
     // /**
@@ -38,14 +38,14 @@ class StripeWebhookListener implements ShouldQueue
     //  * @var string|null
     //  */
     // public $connection = 'sqs';
-
+ 
     /**
      * The name of the queue the job should be sent to.
      *
      * @var string|null
      */
     public $queue = 'default';
-
+ 
     /**
      * The time (seconds) before the job should be processed.
      *
@@ -83,7 +83,7 @@ class StripeWebhookListener implements ShouldQueue
                 $summary = $incomingJson->data->object->cancellation_details->reason;
                 $resource_state = 'cancelled'; // $incomingJson->data->object->items->status;
             }
-
+            
             // save incoming data
 
             $newData = new WebhookHistory();
@@ -109,7 +109,7 @@ class StripeWebhookListener implements ShouldQueue
             if($event_type == 'customer.subscription.deleted'){
                 // $resource_id is subscription id in this event.
                 $currentSubscription = SubscriptionsModel::where('stripe_id', $resource_id)->first();
-                if($currentSubscription->stripe_status != "cancelled" && $currentSubscription->cancel_by_user == 0 ){
+                if($currentSubscription->stripe_status != "cancelled" && $currentSubscription->cancel_by_user == 0){
                     $currentSubscription->stripe_status = "cancelled";
                     $currentSubscription->ends_at = Carbon::now();
                     $currentSubscription->save();
@@ -127,8 +127,8 @@ class StripeWebhookListener implements ShouldQueue
 
                     if($plan != null){
                         // Check status from gateway first
-                        $currentStripeStatus = StripeController::getSubscriptionStatus($activeSub->user_id);
-
+                        $currentStripeStatus = StripeController::getSubscriptionStatus($activeSub->user_id); 
+                        
                         if($currentStripeStatus == true){ // active or trial at stripe side
 
                             // check for duplication
@@ -169,6 +169,7 @@ class StripeWebhookListener implements ShouldQueue
                     }
 
                 }else{ // plan id is null at subscription database table.
+                    $currentSubscription = SubscriptionsModel::where('stripe_id', $resource_id)->first();
                     if($activeSub->stripe_status != "cancelled" && $currentSubscription->cancel_by_user == 0){
                         $activeSub->stripe_status = "cancelled";
                         $activeSub->ends_at = Carbon::now();
@@ -178,7 +179,7 @@ class StripeWebhookListener implements ShouldQueue
                     }
                     Log::error('Payment on a deleted plan. Please check: '.$resource_id.' with incoming webhook : '.json_encode($incomingJson));
                 }
-
+                
 
             }
 

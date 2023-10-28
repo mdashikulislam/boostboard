@@ -78,8 +78,16 @@
 				</div>
 			</div>
 			@endif
-			<x-button link="{{ LaravelLocalization::localizeUrl( route('login') ) }}" label="{!! __($fSetting->sign_in) !!}" type="outline" border="border-[2px] border-white !border-opacity-10 group-[.lqd-is-sticky]/header:border-black" text="text-white group-[.lqd-is-sticky]/header:text-black group-[.lqd-is-sticky]/header:hover:text-white" />
-			<x-button link="{{ LaravelLocalization::localizeUrl( route('register') ) }}" label="{!! __($fSetting->join_hub) !!}" border="border-[2px] border-white !border-opacity-0" bg="bg-white !bg-opacity-10 hover:!bg-opacity-100 group-[.lqd-is-sticky]/header:bg-black group-[.lqd-is-sticky]/header:hover:!bg-opacity-100" text="text-white group-[.lqd-is-sticky]/header:text-black group-[.lqd-is-sticky]/header:hover:text-white" />
+
+			@auth
+				<div class="mx-3">
+					<x-button link="{{ LaravelLocalization::localizeUrl( route('dashboard.index') ) }}" label="{!! __('Dashboard') !!}" border="border-[2px] border-white !border-opacity-0" bg="bg-white !bg-opacity-10 hover:!bg-opacity-100 group-[.lqd-is-sticky]/header:bg-black group-[.lqd-is-sticky]/header:hover:!bg-opacity-100" text="text-white group-[.lqd-is-sticky]/header:text-black group-[.lqd-is-sticky]/header:hover:text-white" />
+				</div>
+			@else
+				<x-button link="{{ LaravelLocalization::localizeUrl( route('login') ) }}" label="{!! __($fSetting->sign_in) !!}" type="outline" border="border-[2px] border-white !border-opacity-10 group-[.lqd-is-sticky]/header:border-black" text="text-white group-[.lqd-is-sticky]/header:text-black group-[.lqd-is-sticky]/header:hover:text-white" />
+				<x-button link="{{ LaravelLocalization::localizeUrl( route('register') ) }}" label="{!! __($fSetting->join_hub) !!}" border="border-[2px] border-white !border-opacity-0" bg="bg-white !bg-opacity-10 hover:!bg-opacity-100 group-[.lqd-is-sticky]/header:bg-black group-[.lqd-is-sticky]/header:hover:!bg-opacity-100" text="text-white group-[.lqd-is-sticky]/header:text-black group-[.lqd-is-sticky]/header:hover:text-white" />
+			@endauth
+
 			<button class="flex items-center justify-center w-10 h-10 bg-white rounded-full mobile-nav-trigger shrink-0 !bg-opacity-10 group lg:hidden group-[.lqd-is-sticky]/header:bg-black">
 				<span class="flex flex-col w-4 gap-1">
 					@for ($i = 0; $i <= 1; $i++)

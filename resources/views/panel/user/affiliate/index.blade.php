@@ -27,7 +27,7 @@
 						<div class="card-body p-10">
 							<div class="row">
 								<div class="col-12 col-md-5">
-									<h4 class="w-10/12 mb-10 text-[20px] leading-[1.3em]">{{__('Invite your friends and earn commision from their first purchase')}}.🎁</h4>
+									<h4 class="w-10/12 mb-10 text-[20px] leading-[1.3em]">{{__('Invite your friends and earn lifelong recurring commissions from every purchase they make')}}.🎁</h4>
 									<p class="mb-2 text-heading text-[13px]">{{__('Affiliate Link')}}</p>
 									<div class="flex items-center relative">
 										<input id="ref-code" class="form-control h-10 bg-white border-0 dark:!border-[1px] dark:!border-solid dark:!border-[#243049] dark:!bg-transparent dark:text-white" type="text" disabled value="{{LaravelLocalization::localizeUrl( url('/'). "/register?aff=". \Illuminate\Support\Facades\Auth::user()->affiliate_code) }}">
@@ -76,7 +76,7 @@
 									<span class="inline-flex items-center justify-center w-[26px] h-[26px] me-[1em] bg-[rgba(var(--tblr-primary-rgb),0.2)] text-primary rounded-2xl">
 										<svg width="10" height="13" viewBox="0 0 10 13" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M4.80047 12.208C3.85114 12.208 3.05114 12.0373 2.40047 11.696C1.76047 11.3546 1.28047 10.8853 0.960469 10.288C0.640469 9.69065 0.480469 9.00798 0.480469 8.23998H3.36047C3.36047 8.76265 3.4778 9.15731 3.71247 9.42398C3.9578 9.67998 4.35247 9.80798 4.89647 9.80798C5.34447 9.80798 5.67514 9.69598 5.88847 9.47198C6.11247 9.23731 6.22447 8.92798 6.22447 8.54398C6.22447 8.13865 6.11247 7.82931 5.88847 7.61598C5.66447 7.40265 5.3018 7.29598 4.80047 7.29598H3.85647V5.18398H4.80047C5.22714 5.18398 5.5418 5.08798 5.74447 4.89598C5.9578 4.70398 6.06447 4.42131 6.06447 4.04798C6.06447 3.71731 5.96314 3.46131 5.76047 3.27998C5.5578 3.08798 5.2698 2.99198 4.89647 2.99198C4.42714 2.99198 4.08047 3.10931 3.85647 3.34398C3.63247 3.57865 3.52047 3.93065 3.52047 4.39998H0.640469C0.640469 3.59998 0.800469 2.91731 1.12047 2.35198C1.44047 1.78665 1.9098 1.35465 2.52847 1.05598C3.1578 0.746647 3.91514 0.59198 4.80047 0.59198C5.6858 0.59198 6.4378 0.725314 7.05647 0.991981C7.67514 1.24798 8.14447 1.61065 8.46447 2.07998C8.79514 2.54931 8.96047 3.08798 8.96047 3.69598C8.96047 4.30398 8.7898 4.82131 8.44847 5.24798C8.10714 5.67465 7.64847 5.97865 7.07247 6.15998C7.74447 6.34131 8.25113 6.65065 8.59247 7.08798C8.94447 7.52531 9.12047 8.09598 9.12047 8.79998C9.12047 9.47198 8.94447 10.0693 8.59247 10.592C8.24047 11.104 7.73914 11.504 7.08847 11.792C6.44847 12.0693 5.6858 12.208 4.80047 12.208Z" fill="#7A63DF"/> </svg>
 									</span>
-									{!! __('You <strong>start earning commision</strong> from their first purchase.') !!}
+									{!! __('From their first purchase, you will begin <strong>earning recurring commissions</strong>.') !!}
 								</li>
 							</ol>
 							<p class="mb-2 mt-auto text-heading text-[13px]">{{__('Affiliate Link')}}</p>

@@ -175,7 +175,7 @@ class InstallationController extends Controller
 
     public function updateManual()
     {
-        $version = "2.50";
+        $version = "2.60";
 
         /*
         Yeni gelen tabloları migrate ediyoruz.
@@ -263,6 +263,14 @@ class InstallationController extends Controller
             if (count(\App\Models\Ad::all()) == 0) {
                 $path15 = resource_path('/dev_tools/ads.sql');
                 DB::unprepared(file_get_contents($path15));
+            }
+        }
+
+        if (Schema::hasTable('openai')) {
+            if (\App\Models\OpenAIGenerator::where('slug', 'ai_article_wizard_generator')->count() == 0) {
+                   // There are no records with title "ai_wizard," so you can add records from the SQL file. (choose your one title
+                   $path16 = resource_path('/dev_tools/ai_wizard.sql');
+                   DB::unprepared(file_get_contents($path16));
             }
         }
 

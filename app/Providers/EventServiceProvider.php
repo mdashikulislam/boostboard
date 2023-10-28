@@ -12,12 +12,14 @@ use App\Events\StripeWebhookEvent;
 use App\Events\YokassaWebhookEvent;
 use App\Events\TwoCheckoutWebhookEvent;
 use App\Events\IyzicoWebhookEvent;
+use App\Events\PaystackWebhookEvent;
 
 use App\Listeners\PaypalWebhookListener;
 use App\Listeners\StripeWebhookListener;
 use App\Listeners\YokassaWebhookListener;
 use App\Listeners\TwoCheckoutWebhookListener;
 use App\Listeners\IyzicoWebhookListener;
+use App\Listeners\PaystackWebhookListener;
 
 
 class EventServiceProvider extends ServiceProvider
@@ -45,6 +47,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         IyzicoWebhookEvent::class => [
             IyzicoWebhookListener::class,
+        ],
+        PaystackWebhookEvent::class => [
+            PaystackWebhookListener::class,
         ],
     ];
 

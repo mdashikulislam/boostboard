@@ -61,7 +61,6 @@ class YokassaWebhookListener implements ShouldQueue
     public function handle(StripeWebhookEvent $event): void
     {
         try{
-            
             Log::info(json_encode($event->payload));
 
             $settings = Setting::first();
@@ -110,7 +109,6 @@ class YokassaWebhookListener implements ShouldQueue
             if($event_type == 'customer.subscription.deleted'){
                 // $resource_id is subscription id in this event.
                 $currentSubscription = SubscriptionsModel::where('stripe_id', $resource_id)->first();
-
                 if($currentSubscription->stripe_status != "cancelled"){
                     $currentSubscription->stripe_status = "cancelled";
                     $currentSubscription->ends_at = Carbon::now();
@@ -171,9 +169,7 @@ class YokassaWebhookListener implements ShouldQueue
                     }
 
                 }else{ // plan id is null at subscription database table.
-
                     if($activeSub->stripe_status != "cancelled"){
-
                         $activeSub->stripe_status = "cancelled";
                         $activeSub->ends_at = Carbon::now();
                         $activeSub->save();

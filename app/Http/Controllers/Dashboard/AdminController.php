@@ -38,6 +38,8 @@ use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Laravel\Cashier\Subscription;
+use App\Models\Coupon;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -109,7 +111,10 @@ class AdminController extends Controller
                 ->groupBy('days')
                 ->get();
             Cache::put('daily_usages', json_encode($daily_usages), now()->addMinutes(360));
-            $total_usage = UserOpenai::all()->sum('credits');
+            $total_usage = 0;
+            UserOpenai::chunk(1000, function ($users) use (&$total_usage) {
+                $total_usage += $users->sum('credits');
+            });
             Cache::put('total_usage', $total_usage, now()->addMinutes(360));
             //Top Countries
             $top_countries = User::select('country', DB::raw('count(*) as total'))
@@ -147,7 +152,8 @@ class AdminController extends Controller
 
     //USER MANAGEMENT
     public function users(){
-        $users = User::all();
+        // $users = User::all();
+        $users = User::paginate(25);
         return view('panel.admin.users.index', compact('users'));
     }
 
@@ -534,7 +540,6 @@ class AdminController extends Controller
     // Testimonials End
 
     // How it Works
-
     public function howitWorksDefaults(){
         $values = json_decode('{"option": TRUE, "html": ""}');
         $default_html = 'Want to see? <a class="text-[#FCA7FF]" href="https://codecanyon.net/item/magicai-openai-content-text-image-chat-code-generator-as-saas/45408109" target="_blank">'.__('Join').' Magic</a>';
@@ -684,6 +689,113 @@ class AdminController extends Controller
         $item->save();
         return back();
     }
+
+    //Coupons
+    public function couponsList(){
+        $list = Coupon::get();
+        return view('panel.admin.coupons.index', compact('list'));
+    }
+    public function couponsListUsed($id){
+        $coupon = Coupon::find($id);
+        return view('panel.admin.coupons.used', compact('coupon'));
+    }
+    public function couponsDelete($id){
+        $coup = Coupon::find($id);
+        if($coup){
+            $coup->delete();
+            return back()->with('success', 'Coupon deleted successfully');
+        }
+        return back()->with('error', 'Something went wrong!');
+    }
+    public function couponsAdd(Request $request){
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'discount' => 'required|numeric|min:0|max:100',
+            'limit' => 'required|integer|min:-1',
+            'code' => 'required|in:auto,manual',
+            'codeInput' => 'required_if:code,manual|max:20',
+        ]);
+        
+        $newCoupon = new Coupon();
+        $newCoupon->name = $request->input('name');
+        $newCoupon->discount = $request->input('discount');
+        $newCoupon->limit = $request->input('limit');
+        $newCoupon->created_by = auth()->user()->id;
+
+        
+        // Check if the "code" field is set to "manual" and set the "codeInput" attribute accordingly.
+        if ($request->input('code') === 'manual') {
+            if (Coupon::where('code', $request->input('codeInput'))->exists()) {
+                $newCoupon->code = $this->generateUniqueCode(); 
+            }else{
+                $newCoupon->code = $request->input('codeInput');
+            }
+        }else{
+            $newCoupon->code = $this->generateUniqueCode();
+        }
+        
+        $newCoupon->save();
+        return redirect()->back()->with('success', 'Coupon created successfully.');
+    }
+    public function couponsEdit(Request $request, $id){
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'discount' => 'required|numeric|min:0|max:100',
+            'limit' => 'required|integer|min:-1'
+        ]);
+
+        $newCoupon = Coupon::find($id);
+        $newCoupon->name = $request->input('name');
+        $newCoupon->discount = $request->input('discount');
+        $newCoupon->limit = $request->input('limit');
+
+        $newCoupon->save();
+        return redirect()->back()->with('success', 'Coupon created successfully.');
+    }
+    public function couponsValidate(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'code' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'valid' => false,
+                'errors' => $validator->errors(),
+            ]);
+        }
+
+        $isValidCoupon = $this->checkCouponValidity($request->input('code'));
+        return response()->json(['valid' => $isValidCoupon]);
+    }
+
+    private function checkCouponValidity($code)
+    {
+        $exist = Coupon::where('code',$code)->first();
+        if ($exist && (!($exist->usersUsed->count() >= $exist->limit) || $exist->limit == -1)) {
+            return true;
+        }
+        return false; 
+    }
+    private function generateUniqueCode() {
+        $code = $this->generateRandomCode(); // Generate a random code initially.
+        // Check if the generated code already exists in the database.
+        while (Coupon::where('code', $code)->exists()) {
+            $code = $this->generateRandomCode(); // Generate a new code if it already exists.
+        }
+        return $code;
+    }
+    private function generateRandomCode($length = 7) {
+        $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $code = '';
+    
+        for ($i = 0; $i < $length; $i++) {
+            $code .= $characters[rand(0, strlen($characters) - 1)];
+        }
+    
+        return $code;
+    }
+
     //Frontend
     public function frontendSettings(){
         return view('panel.admin.frontend.settings');

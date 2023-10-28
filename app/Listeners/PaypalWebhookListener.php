@@ -97,9 +97,8 @@ class PaypalWebhookListener implements ShouldQueue
             if($event_type == 'BILLING.SUBSCRIPTION.CANCELLED'){
                 // $resource_id is subscription id in this event.
                 $currentSubscription = SubscriptionsModel::where('stripe_id', $resource_id)->first();
-
                 if($currentSubscription->stripe_status != "cancelled"){
-                   // $currentSubscription->stripe_status = "cancelled";
+                    //$currentSubscription->stripe_status = "cancelled";
                     $currentSubscription->ends_at = Carbon::now();
                     $currentSubscription->save();
                     $newData->status = 'checked';
@@ -189,7 +188,6 @@ class PaypalWebhookListener implements ShouldQueue
                                                             }
 
                                                             if($trial == false){
-
                                                                 $activeSub->stripe_status = 'active';
                                                                 $activeSub->save();
                                                             }
@@ -214,7 +212,6 @@ class PaypalWebhookListener implements ShouldQueue
                                                             $newData->save();
 
                                                         }else{
-
                                                             $activeSub->stripe_status = 'cancelled';
                                                             $activeSub->ends_at = \Carbon\Carbon::now();
                                                             $activeSub->save();
@@ -267,7 +264,6 @@ class PaypalWebhookListener implements ShouldQueue
                                                             $newData->save();
 
                                                         }else{
-
                                                             $activeSub->stripe_status = 'cancelled';
                                                             $activeSub->ends_at = \Carbon\Carbon::now();
                                                             $activeSub->save();

@@ -51,7 +51,6 @@ class PaymentController extends Controller
         $user = Auth::user();
         $userId=Auth::user()->id;
         // Get current active subscription
-
         $activeSub = SubscriptionsModel::where([['stripe_status', '=', 'active'], ['user_id', '=', $userId]])->orWhere([['stripe_status', '=', 'trialing'], ['user_id', '=', $userId]])->first();
         if($activeSub != null){
             $activesubid = $activeSub->id;

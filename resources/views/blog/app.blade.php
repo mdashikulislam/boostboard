@@ -4,12 +4,17 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	@if(isset($setting->meta_description))
-        <meta name="description" content="{{$setting->meta_description}}">
-    @endif
-	@if(isset($setting->meta_keywords))
-        <meta name="keywords" content="{{$setting->meta_keywords}}">
-    @endif
+	@if( isset($hero['type']) ) 
+		@if(isset($setting->meta_description))
+			<meta name="description" content="{{$setting->meta_description}}">
+		@endif
+		@if(isset($setting->meta_keywords))
+			<meta name="keywords" content="{{$setting->meta_keywords}}">
+		@endif
+	@else 
+		<meta name="description" content="{{$post?->seo_title}}">
+		<meta name="keywords" content="{{$post?->seo_description}}">
+	@endif
     <link rel="icon" href="/{{$setting->favicon_path ?? "assets/favicon.ico"}}">
     <title>
 		@if( isset($hero['type']) ) 
