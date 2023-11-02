@@ -34,9 +34,14 @@
 						</div>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link {{activeRoute('dashboard.user.index')}}" href="{{route('dashboard.user.index')}}" >
+						<a class="nav-link {{activeRoute('dashboard.user.index')}}"
+						   href="{{route('dashboard.user.index')}}">
 							<span class="nav-link-icon">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path d="M4 4h6v6h-6z"></path> <path d="M14 4h6v6h-6z"></path> <path d="M4 14h6v6h-6z"></path> <path d="M17 17m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path> </svg>
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+									 stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path
+											d="M4 4h6v6h-6z"></path> <path d="M14 4h6v6h-6z"></path> <path
+											d="M4 14h6v6h-6z"></path> <path
+											d="M17 17m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path> </svg>
 							</span>
 							<span class="flex items-center transition-[opacity,transform] nav-link-title grow">
 								{{__('Dashboard')}}
@@ -44,13 +49,14 @@
 						</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link {{activeRoute('dashboard.user.openai.documents.all')}}" href="{{route('dashboard.user.openai.documents.all')}}">
+						<a class="nav-link {{activeRoute('dashboard.user.openai.documents.all')}}"
+						   href="{{route('dashboard.user.openai.documents.all')}}">
 							<span class="nav-link-icon">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-									<path d="M7 18H14M7 14H8M7 10H10M7 2H16.5L21 6.5V19" stroke="#637381" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-									<path d="M3 20.5V6.5C3 6.10218 3.15804 5.72064 3.43934 5.43934C3.72064 5.15804 4.10218 5 4.5 5H14.252C14.4111 5.00014 14.5636 5.06345 14.676 5.176L17.824 8.324C17.88 8.3799 17.9243 8.44632 17.9545 8.51943C17.9847 8.59254 18.0002 8.6709 18 8.75V20.5C18 20.8978 17.842 21.2794 17.5607 21.5607C17.2794 21.842 16.8978 22 16.5 22H4.5C4.10218 22 3.72064 21.842 3.43934 21.5607C3.15804 21.2794 3 20.8978 3 20.5Z" stroke="#637381" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-									<path d="M14 5V8.4C14 8.55913 14.0632 8.71174 14.1757 8.82426C14.2883 8.93679 14.4409 9 14.6 9H18" stroke="#637381" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-								</svg>
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+									 stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path
+											d="M3 4m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path> <path
+											d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10"></path> <path
+											d="M10 12l4 0"></path> </svg>
 							</span>
 							<span class="flex items-center transition-[opacity,transform] nav-link-title grow">
 								{{__('Documents')}}
@@ -59,11 +65,13 @@
 					</li>
 					@if ( $setting->feature_ai_writer )
 						<li class="nav-item">
-							<a class="nav-link {{activeRoute('dashboard.user.openai.list')}}" href="{{route('dashboard.user.openai.list')}}" >
+							<a class="nav-link {{activeRoute('dashboard.user.openai.list')}}"
+							   href="{{route('dashboard.user.openai.list')}}">
 							<span class="nav-link-icon">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-								  <path d="M21.3113 6.87842L17.1216 2.68967C16.9823 2.55035 16.8169 2.43983 16.6349 2.36443C16.4529 2.28902 16.2578 2.25021 16.0608 2.25021C15.8638 2.25021 15.6687 2.28902 15.4867 2.36443C15.3047 2.43983 15.1393 2.55035 15 2.68967L3.43969 14.25C3.2998 14.3888 3.18889 14.554 3.11341 14.736C3.03792 14.918 2.99938 15.1132 3.00001 15.3103V19.5C3.00001 19.8978 3.15804 20.2793 3.43935 20.5606C3.72065 20.842 4.10218 21 4.50001 21H8.68969C8.88675 21.0006 9.08196 20.9621 9.26399 20.8866C9.44602 20.8111 9.61122 20.7002 9.75001 20.5603L17.5941 12.7172L17.9203 14.0203L14.4703 17.4694C14.3296 17.61 14.2505 17.8007 14.2504 17.9997C14.2503 18.1986 14.3292 18.3894 14.4699 18.5301C14.6105 18.6709 14.8012 18.75 15.0001 18.7501C15.1991 18.7502 15.3899 18.6712 15.5306 18.5306L19.2806 14.7806C19.3724 14.6891 19.4388 14.5753 19.4734 14.4504C19.5081 14.3256 19.5098 14.1938 19.4784 14.0681L18.8316 11.4797L21.3113 8.99999C21.4506 8.86069 21.5611 8.69532 21.6365 8.51331C21.7119 8.3313 21.7507 8.13622 21.7507 7.93921C21.7507 7.74219 21.7119 7.54711 21.6365 7.3651C21.5611 7.18309 21.4506 7.01772 21.3113 6.87842ZM4.50001 16.8103L7.18969 19.5H4.50001V16.8103ZM9.00001 19.1897L4.81032 15L12.75 7.0603L16.9397 11.25L9.00001 19.1897ZM18 10.1897L13.8113 5.99999L16.0613 3.74999L20.25 7.93967L18 10.1897Z" fill="#637381"/>
-								</svg>
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+									 stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path
+											d="M5 3m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z"></path> <path
+											d="M9 7l6 0"></path> <path d="M9 11l6 0"></path> <path d="M9 15l4 0"></path> </svg>
 							</span>
 								<span class="flex items-center transition-[opacity,transform] nav-link-title grow">
 								{{__('AI Writer')}}
@@ -73,15 +81,15 @@
 					@endif
 					@if ( $setting->feature_ai_image )
 						<li class="nav-item">
-							<a class="nav-link {{ route('dashboard.user.openai.generator', 'ai_image_generator') == url()->current() ? 'active' : '' }}" href="{{route('dashboard.user.openai.generator', 'ai_image_generator')}}" >
+							<a class="nav-link {{ route('dashboard.user.openai.generator', 'ai_image_generator') == url()->current() ? 'active' : '' }}"
+							   href="{{route('dashboard.user.openai.generator', 'ai_image_generator')}}">
 							<span class="nav-link-icon">
-								<svg xmlns="http://www.w3.org/2000/svg"  width="23" height="24" viewBox="0 0 23 24" fill="none">
-								  <path d="M19 1.49994H4.00012C2.3432 1.49994 1 2.84314 1 4.50006V19.5C1 21.1569 2.3432 22.5001 4.00012 22.5001H19C20.6569 22.5001 22.0001 21.1569 22.0001 19.5V4.50006C22.0001 2.84314 20.6569 1.49994 19 1.49994Z" stroke="#637381" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-								  <path d="M8.50013 12.0001C4.00012 12.0001 2.50012 15.0001 1.00012 15.0001" stroke="#637381" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-								  <path d="M8.50012 12.0001C13.0001 12.0001 14.7303 15.0001 17.5001 15.0001" stroke="#637381" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-								  <path d="M22.0001 13.5001C16.7501 13.5001 16.0001 18.0001 13.0001 18.0001" stroke="#637381" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-								  <path d="M16.0002 10.5003C17.6572 10.5003 19.0004 9.1571 19.0004 7.50018C19.0004 5.84326 17.6572 4.50006 16.0002 4.50006C14.3433 4.50006 13.0001 5.84326 13.0001 7.50018C13.0001 9.1571 14.3433 10.5003 16.0002 10.5003Z" stroke="#637381" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-								</svg>
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+									 stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path
+											d="M15 8h.01"></path> <path
+											d="M3 6a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v12a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3v-12z"></path> <path
+											d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l5 5"></path> <path
+											d="M14 14l1 -1c.928 -.893 2.072 -.893 3 0l3 3"></path> </svg>
 							</span>
 								<span class="flex items-center transition-[opacity,transform] nav-link-title grow">
 								{{__('AI Image')}}
@@ -89,32 +97,16 @@
 							</a>
 						</li>
 					@endif
-					@if ( $setting->feature_ai_article_wizard )
-						<li class="nav-item">
-							<a class="nav-link {{ route('dashboard.user.openai.articlewizard.new') == url()->current() ? 'active' : '' }}" href="{{route('dashboard.user.openai.articlewizard.new')}}">
-							<span class="nav-link-icon">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
-									<path d="M11.933,5H5V21H18V13" />
-									<path d="M14,17H9"/>
-									<path d="M9,13h5V9H9Z"/>
-									<path d="M15,5V3"/>
-									<path d="M18,6l2-2"/>
-									<path d="M19,9h2"/>
-								</svg>
-							</span>
-								<span class="flex items-center transition-[opacity,transform] nav-link-title grow">
-								{{__('AI Article Wizard')}}
-							</span>
-							</a>
-						</li>
-					@endif
 					@if ( $setting->feature_ai_chat )
 						<li class="nav-item">
-							<a class="nav-link {{ route('dashboard.user.openai.chat.list') == url()->current() ? 'active' : '' }}" href="{{route('dashboard.user.openai.chat.list')}}">
+							<a class="nav-link {{ route('dashboard.user.openai.chat.list') == url()->current() ? 'active' : '' }}"
+							   href="{{route('dashboard.user.openai.chat.list')}}">
 							<span class="nav-link-icon">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-									<path d="M12 2C17.523 2 22 6.477 22 12C22 17.523 17.523 22 12 22C10.404 22.0022 8.83083 21.6208 7.41301 20.888L3.58701 21.955C3.37355 22.0146 3.14809 22.0163 2.93373 21.9601C2.71937 21.9038 2.52382 21.7916 2.36712 21.6349C2.21041 21.4782 2.09818 21.2826 2.04194 21.0683C1.98569 20.8539 1.98744 20.6285 2.04701 20.415L3.11501 16.592C2.38036 15.1729 1.99793 13.5979 2.00001 12C2.00001 6.477 6.47701 2 12 2ZM12 3.5C9.74567 3.5 7.58366 4.39553 5.9896 5.98959C4.39554 7.58365 3.50001 9.74566 3.50001 12C3.50001 13.47 3.87301 14.883 4.57301 16.137L4.72301 16.407L3.61101 20.391L7.59801 19.279L7.86801 19.429C9.00239 20.0597 10.2661 20.4222 11.5624 20.4888C12.8586 20.5554 14.1528 20.3242 15.3458 19.8131C16.5389 19.3019 17.599 18.5244 18.445 17.54C19.2909 16.5556 19.9002 15.3906 20.2261 14.1343C20.552 12.8779 20.5858 11.5636 20.325 10.2922C20.0643 9.02073 19.5158 7.82589 18.7216 6.79927C17.9275 5.77264 16.9088 4.94152 15.7437 4.36962C14.5786 3.79773 13.2979 3.50025 12 3.5ZM8.75001 13H13.248C13.438 13.0001 13.6209 13.0722 13.7598 13.202C13.8987 13.3317 13.9831 13.5093 13.996 13.6989C14.009 13.8885 13.9495 14.0759 13.8296 14.2233C13.7097 14.3707 13.5383 14.4671 13.35 14.493L13.248 14.5H8.75001C8.55999 14.4999 8.37707 14.4278 8.23822 14.298C8.09937 14.1683 8.01493 13.9907 8.00198 13.8011C7.98903 13.6115 8.04852 13.4241 8.16844 13.2767C8.28836 13.1293 8.45976 13.0329 8.64801 13.007L8.75001 13ZM8.75001 9.5H15.255C15.4449 9.50031 15.6277 9.57267 15.7664 9.70248C15.905 9.83229 15.9893 10.0099 16.0021 10.1994C16.0149 10.3889 15.9553 10.5762 15.8354 10.7235C15.7155 10.8708 15.5442 10.9671 15.356 10.993L15.255 11H8.75001C8.55999 10.9999 8.37707 10.9278 8.23822 10.798C8.09937 10.6683 8.01493 10.4907 8.00198 10.3011C7.98903 10.1115 8.04852 9.92411 8.16844 9.7767C8.28836 9.62929 8.45976 9.5329 8.64801 9.507L8.75001 9.5Z" fill="#637381"/>
-								</svg>
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+									 stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path
+											d="M3 20l1.3 -3.9a9 8 0 1 1 3.4 2.9l-4.7 1"></path> <path
+											d="M12 12l0 .01"></path> <path d="M8 12l0 .01"></path> <path
+											d="M16 12l0 .01"></path> </svg>
 							</span>
 								<span class="flex items-center transition-[opacity,transform] nav-link-title grow">
 								{{__('AI Chat')}}
@@ -124,12 +116,13 @@
 					@endif
 					@if ( $setting->feature_ai_code )
 						<li class="nav-item">
-							<a class="nav-link {{ route('dashboard.user.openai.generator.workbook', 'ai_code_generator') == url()->current() ? 'active' : '' }}" href="{{route('dashboard.user.openai.generator.workbook', 'ai_code_generator')}}">
+							<a class="nav-link {{ route('dashboard.user.openai.generator.workbook', 'ai_code_generator') == url()->current() ? 'active' : '' }}"
+							   href="{{route('dashboard.user.openai.generator.workbook', 'ai_code_generator')}}">
 							<span class="nav-link-icon">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-								  <path d="M15.5 9L15.672 9.172C17.005 10.505 17.672 11.172 17.672 12C17.672 12.828 17.005 13.495 15.672 14.828L15.5 15M13.294 7.17L12 12L10.706 16.83M8.49998 9L8.32898 9.172C6.99498 10.505 6.32898 11.172 6.32898 12C6.32898 12.828 6.99498 13.495 8.32898 14.828L8.49998 15" stroke="#637381" stroke-width="1.5" stroke-linecap="round"/>
-								  <path d="M2 12C2 7.286 2 4.929 3.464 3.464C4.93 2 7.286 2 12 2C16.714 2 19.071 2 20.535 3.464C22 4.93 22 7.286 22 12C22 16.714 22 19.071 20.535 20.535C19.072 22 16.714 22 12 22C7.286 22 4.929 22 3.464 20.535C2 19.072 2 16.714 2 12Z" stroke="#637381" stroke-width="1.5"/>
-								</svg>
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+									 stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path
+											d="M8 9l3 3l-3 3"></path> <path d="M13 15l3 0"></path> <path
+											d="M3 4m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path> </svg>
 							</span>
 								<span class="flex items-center transition-[opacity,transform] nav-link-title grow">
 								{{__('AI Code')}}
@@ -139,11 +132,14 @@
 					@endif
 					@if ( $setting->feature_ai_speech_to_text )
 						<li class="nav-item">
-							<a class="nav-link {{ route('dashboard.user.openai.generator', 'ai_speech_to_text') == url()->current() ? 'active' : '' }}" href="{{route('dashboard.user.openai.generator', 'ai_speech_to_text')}}">
+							<a class="nav-link {{ route('dashboard.user.openai.generator', 'ai_speech_to_text') == url()->current() ? 'active' : '' }}"
+							   href="{{route('dashboard.user.openai.generator', 'ai_speech_to_text')}}">
 							<span class="nav-link-icon">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-									<path d="M8 7C8.53043 7 9.03914 7.21071 9.41421 7.58579C9.78929 7.96086 10 8.46957 10 9V14C10 14.5304 9.78929 15.0391 9.41421 15.4142C9.03914 15.7893 8.53043 16 8 16C7.46957 16 6.96086 15.7893 6.58579 15.4142C6.21071 15.0391 6 14.5304 6 14V9C6 8.46957 6.21071 7.96086 6.58579 7.58579C6.96086 7.21071 7.46957 7 8 7ZM14 14C14 16.97 11.84 19.44 9 19.92V22H7V19.92C4.16 19.44 2 16.97 2 14H4C4 15.0609 4.42143 16.0783 5.17157 16.8284C5.92172 17.5786 6.93913 18 8 18C9.06087 18 10.0783 17.5786 10.8284 16.8284C11.5786 16.0783 12 15.0609 12 14H14ZM21.41 9.41L17.17 13.66L18.18 10H14C13.4696 10 12.9609 9.78929 12.5858 9.41421C12.2107 9.03914 12 8.53043 12 8V4C12 3.46957 12.2107 2.96086 12.5858 2.58579C12.9609 2.21071 13.4696 2 14 2H20C20.5304 2 21.0391 2.21071 21.4142 2.58579C21.7893 2.96086 22 3.46957 22 4V8C22 8.55 21.78 9.05 21.41 9.41Z" fill="#637381"/>
-								</svg>
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+									 stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path
+											d="M9 2m0 3a3 3 0 0 1 3 -3h0a3 3 0 0 1 3 3v5a3 3 0 0 1 -3 3h0a3 3 0 0 1 -3 -3z"></path> <path
+											d="M5 10a7 7 0 0 0 14 0"></path> <path d="M8 21l8 0"></path> <path
+											d="M12 17l0 4"></path> </svg>
 							</span>
 								<span class="flex items-center transition-[opacity,transform] nav-link-title grow">
 								{{__('AI Speech to Text')}}
@@ -153,9 +149,13 @@
 					@endif
 					@if ( $setting->feature_ai_voiceover )
 						<li class="nav-item">
-							<a class="nav-link {{ route('dashboard.user.openai.generator', 'ai_voiceover') == url()->current() ? 'active' : '' }}" href="{{route('dashboard.user.openai.generator', 'ai_voiceover')}}">
+							<a class="nav-link {{ route('dashboard.user.openai.generator', 'ai_voiceover') == url()->current() ? 'active' : '' }}"
+							   href="{{route('dashboard.user.openai.generator', 'ai_voiceover')}}">
 							<span class="nav-link-icon">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path d="M15 8a5 5 0 0 1 0 8"></path> <path d="M17.7 5a9 9 0 0 1 0 14"></path> <path d="M6 15h-2a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h2l3.5 -4.5a.8 .8 0 0 1 1.5 .5v14a.8 .8 0 0 1 -1.5 .5l-3.5 -4.5"></path> </svg>
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+									 stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path
+											d="M15 8a5 5 0 0 1 0 8"></path> <path d="M17.7 5a9 9 0 0 1 0 14"></path> <path
+											d="M6 15h-2a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h2l3.5 -4.5a.8 .8 0 0 1 1.5 .5v14a.8 .8 0 0 1 -1.5 .5l-3.5 -4.5"></path> </svg>
 							</span>
 								<span class="flex items-center transition-[opacity,transform] nav-link-title grow">
 								{{__('AI Voiceover')}}
@@ -165,44 +165,40 @@
 					@endif
 					@if ( $setting->feature_affilates )
 						<li class="nav-item">
-							<a class="nav-link {{activeRoute('dashboard.user.affiliates.index')}}" href="{{route('dashboard.user.affiliates.index')}}" >
+							<a class="nav-link {{activeRoute('dashboard.user.affiliates.index')}}"
+							   href="{{route('dashboard.user.affiliates.index')}}">
 							<span class="nav-link-icon">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2"></path> <path d="M12 3v3m0 12v3"></path> </svg>
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+									 stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path
+											d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2"></path> <path
+											d="M12 3v3m0 12v3"></path> </svg>
 							</span>
 								<span class="flex items-center transition-[opacity,transform] nav-link-title grow">
 								{{__('Affiliates')}}
 							</span>
 							</a>
 						</li>
-					@endif
 
+					@endif
 					<li class="nav-item">
-						<a class="nav-link {{activeRoute('dashboard.support.list')}}" href="{{route('dashboard.support.list')}}" >
+						<a class="nav-link {{activeRoute('dashboard.support.list')}}"
+						   href="{{route('dashboard.support.list')}}">
 						<span class="nav-link-icon">
-							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path> <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path> <path d="M15 15l3.35 3.35"></path> <path d="M9 15l-3.35 3.35"></path> <path d="M5.65 5.65l3.35 3.35"></path> <path d="M18.35 5.65l-3.35 3.35"></path> </svg>
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+								 stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path
+										d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path> <path
+										d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path> <path
+										d="M15 15l3.35 3.35"></path> <path d="M9 15l-3.35 3.35"></path> <path
+										d="M5.65 5.65l3.35 3.35"></path> <path d="M18.35 5.65l-3.35 3.35"></path> </svg>
 						</span>
 							<span class="flex items-center transition-[opacity,transform] nav-link-title grow">
 							{{__('Support')}}
 						</span>
 						</a>
 					</li>
-
-
-					{{-- <li class="nav-item">
-                        <a class="nav-link {{activeRoute('dashboard.admin.advertis.index')}}" href="{{route('dashboard.admin.advertis.index')}}" >
-                        <span class="nav-link-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path> <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path> <path d="M15 15l3.35 3.35"></path> <path d="M9 15l-3.35 3.35"></path> <path d="M5.65 5.65l3.35 3.35"></path> <path d="M18.35 5.65l-3.35 3.35"></path> </svg>
-                        </span>
-                            <span class="flex items-center transition-[opacity,transform] nav-link-title grow">
-                            {{__('Advertis')}}
-                        </span>
-                        </a>
-                    </li> --}}
-
 					<li>
 						<hr>
 					</li>
-
 					<li>
 						<div class="nav-link-label transition-all">
 						<span class="inline-block text-[10px] font-medium uppercase tracking-widest px-[0.5em] py-[0.35em] rounded-[3px]">
@@ -211,31 +207,21 @@
 						</div>
 					</li>
 					<li>
-						<a class="nav-link {{activeRoute('dashboard.user.openai.list.favorites')}}" href="{{route('dashboard.user.openai.list.favorites')}}">
-						<span class="nav-link-icon">
-							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-							<path fill-rule="evenodd" clip-rule="evenodd" d="M6.86 1.25H6.987C7.338 1.25 7.564 1.25 7.785 1.27C8.73662 1.35895 9.63928 1.73291 10.375 2.343C10.545 2.485 10.705 2.645 10.954 2.893L11.53 3.47C12.376 4.315 12.701 4.631 13.077 4.84C13.295 4.961 13.526 5.057 13.766 5.126C14.179 5.243 14.632 5.25 15.828 5.25H16.253C17.526 5.25 18.553 5.25 19.364 5.352C20.205 5.458 20.92 5.684 21.508 6.212C21.606 6.3 21.7 6.394 21.788 6.492C22.317 7.08 22.542 7.795 22.648 8.636C22.75 9.448 22.75 10.474 22.75 11.747V14.057C22.75 15.894 22.75 17.35 22.597 18.489C22.439 19.661 22.107 20.61 21.359 21.359C20.61 22.107 19.661 22.439 18.489 22.597C17.349 22.75 15.894 22.75 14.056 22.75H9.944C8.106 22.75 6.65 22.75 5.511 22.597C4.339 22.439 3.39 22.107 2.641 21.359C1.893 20.61 1.561 19.661 1.403 18.489C1.25 17.349 1.25 15.894 1.25 14.056V6.86C1.25 6.063 1.25 5.557 1.332 5.12C1.50884 4.18062 1.96499 3.31646 2.6408 2.64046C3.31662 1.96446 4.18067 1.50809 5.12 1.331C5.558 1.249 6.064 1.249 6.86 1.249V1.25ZM6.95 2.75C6.033 2.75 5.679 2.753 5.397 2.806C4.75483 2.92739 4.16417 3.23957 3.70213 3.70179C3.2401 4.16401 2.92815 4.75478 2.807 5.397C2.753 5.679 2.75 6.033 2.75 6.95V14C2.75 15.907 2.752 17.262 2.89 18.29C3.025 19.295 3.279 19.875 3.702 20.298C4.125 20.721 4.705 20.975 5.711 21.11C6.739 21.248 8.093 21.25 10 21.25H14C15.907 21.25 17.262 21.248 18.29 21.11C19.295 20.975 19.875 20.721 20.298 20.298C20.721 19.875 20.975 19.295 21.11 18.289C21.248 17.262 21.25 15.907 21.25 14V11.798C21.25 10.462 21.249 9.53 21.16 8.823C21.073 8.134 20.914 7.763 20.673 7.495C20.62 7.43607 20.5639 7.37999 20.505 7.327C20.237 7.086 19.865 6.927 19.177 6.84C19.035 6.82268 18.8927 6.80901 18.75 6.799V10.88C18.75 10.999 18.75 11.16 18.73 11.297C18.7137 11.4364 18.6667 11.5703 18.5923 11.6893C18.518 11.8083 18.4181 11.9093 18.3 11.985C18.1794 12.0569 18.0444 12.101 17.9047 12.1143C17.7649 12.1277 17.624 12.1098 17.492 12.062C17.3609 12.015 17.2332 11.9589 17.11 11.894L17.086 11.881L16 11.338L14.914 11.881L14.89 11.894C14.784 11.947 14.64 12.019 14.508 12.062C14.3762 12.1096 14.2354 12.1274 14.0959 12.1141C13.9563 12.1008 13.8215 12.0567 13.701 11.985C13.5827 11.9094 13.4827 11.8085 13.4081 11.6895C13.3336 11.5705 13.2864 11.4364 13.27 11.297C13.25 11.16 13.25 10.999 13.25 10.88V6.537C12.9368 6.43981 12.6345 6.31046 12.348 6.151C11.766 5.827 11.288 5.35 10.548 4.608L10.47 4.53L9.92 3.98C9.75939 3.81213 9.59156 3.65131 9.417 3.498C8.9139 3.08083 8.29671 2.82503 7.646 2.764C7.41431 2.74927 7.18209 2.7446 6.95 2.75ZM14.75 6.743V10.286L15.486 9.919L15.493 9.915C15.539 9.89 15.753 9.774 16 9.774C16.247 9.774 16.46 9.89 16.507 9.914C16.5093 9.91571 16.5116 9.91738 16.514 9.919L17.25 10.286V6.753C16.93 6.751 16.583 6.751 16.202 6.751H15.718C15.355 6.751 15.038 6.75 14.75 6.743Z" fill="#637381"/>
-							</svg>
+						<a class="nav-link {{activeRoute('dashboard.user.openai.list.favorites')}}"
+						   href="{{route('dashboard.user.openai.list.favorites')}}">
+						<span class="nav-link-icon inline-flex items-center justify-center w-[24px] h-[24px] shrink-0 rounded-[6px] bg-[#7A8193] text-white text-[10px] font-normal">
+							{{mb_substr(__('Favorites'), 0, 1)}}
 						</span>
 							<span class="flex items-center transition-[opacity,transform] nav-link-title grow">
 							{{__('Favorites')}}
+						</span>
 						</a>
 					</li>
 					<li>
-						<a class="nav-link {{activeRoute('dashboard.user.openai.documents.all')}}" href="{{route('dashboard.user.openai.documents.all')}}">
-						<span class="nav-link-icon">
-							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-								 fill="none">
-							<g clip-path="url(#clip0_23_504)">
-							<path d="M2.39998 0.8V0C2.1878 0 1.98432 0.0842855 1.83429 0.234315C1.68426 0.384344 1.59998 0.587827 1.59998 0.8H2.39998ZM2.39998 21.6H1.59998C1.59998 21.8122 1.68426 22.0157 1.83429 22.1657C1.98432 22.3157 2.1878 22.4 2.39998 22.4V21.6ZM6.39998 0V24H7.99998V0H6.39998ZM2.39998 1.6H18.4V0H2.39998V1.6ZM20.8 4V18.4H22.4V4H20.8ZM18.4 20.8H2.39998V22.4H18.4V20.8ZM3.19998 21.6V0.8H1.59998V21.6H3.19998ZM20.8 18.4C20.8 19.0365 20.5471 19.647 20.097 20.0971C19.6469 20.5471 19.0365 20.8 18.4 20.8V22.4C19.4608 22.4 20.4783 21.9786 21.2284 21.2284C21.9785 20.4783 22.4 19.4609 22.4 18.4H20.8ZM18.4 1.6C19.0365 1.6 19.6469 1.85286 20.097 2.30294C20.5471 2.75303 20.8 3.36348 20.8 4H22.4C22.4 2.93913 21.9785 1.92172 21.2284 1.17157C20.4783 0.421427 19.4608 0 18.4 0V1.6ZM11.2 8H17.6V6.4H11.2V8Z"
-								  fill="#637381"/>
-							</g>
-							<defs>
-							<clipPath id="clip0_23_504">
-							<rect width="24" height="24" fill="white"/>
-							</clipPath>
-							</defs>
-							</svg>
+						<a class="nav-link {{activeRoute('dashboard.user.openai.documents.all')}}"
+						   href="{{route('dashboard.user.openai.documents.all')}}">
+						<span class="nav-link-icon inline-flex items-center justify-center w-[24px] h-[24px] shrink-0 rounded-[6px] bg-[#658C8E] text-white text-[10px] font-normal">
+							{{mb_substr(__('Workbook'), 0, 1)}}
 						</span>
 							<span class="flex items-center transition-[opacity,transform] nav-link-title grow">
 							{{__('Workbook')}}
