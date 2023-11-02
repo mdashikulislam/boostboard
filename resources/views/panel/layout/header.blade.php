@@ -1,13 +1,9 @@
-{{-- <span class="navbar-expander inline-flex items-center justify-center w-6 h-6 fixed top-[calc(var(--lqd-header-height)/2)] !start-[--navbar-width] p-0 border-0 bg-[--lqd-header-search-bg] rounded-2xl z-50 transition-all cursor-pointer -translate-x-1/2 -translate-y-1/2 max-lg:hidden hover:bg-[--lqd-faded-out] group-[.navbar-shrinked]/body:!start-[80px]">
+<span class="navbar-expander inline-flex items-center justify-center w-6 h-6 fixed top-[calc(var(--lqd-header-height)/2)] !start-[--navbar-width] p-0 border-0 bg-[--lqd-header-search-bg] rounded-2xl z-50 transition-all cursor-pointer -translate-x-1/2 -translate-y-1/2 max-lg:hidden hover:bg-[--lqd-faded-out] group-[.navbar-shrinked]/body:!start-[80px]">
 	<svg class="transition-transform translate-x-0 translate-y-0 group-[.navbar-shrinked]/body:-scale-x-100 group-hover:-translate-x-[2px] group-[.navbar-shrinked]/body:group-hover:translate-x-[2px] rtl:-scale-x-100 rtl:group-[.navbar-shrinked]/body:scale-x-100" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="var(--lqd-heading-color)" fill="none" stroke-linecap="round" stroke-linejoin="round">
 		<path d="M15 6l-6 6l6 6"></path>
 	</svg>
-</span> --}}
-<span class="navbar-expander open-close-btn inline-flex items-center justify-center fixed !start-[--navbar-width] p-0 border-0  z-50 transition-all cursor-pointer -translate-y-1/2 max-lg:hidden hover:bg-[--lqd-faded-out] group-[.navbar-shrinked]/body:!start-[80px]">
-	<svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" fill="none">
-		<path d="M7.18189 19.6946V1.27036M7.18189 19.6946H16.1672C17.4546 19.6946 18.0983 19.6946 18.59 19.4436C19.0239 19.2227 19.3766 18.8699 19.5975 18.436C19.8486 17.9443 19.8486 17.3006 19.8486 16.0132V4.95175C19.8486 3.66436 19.8486 3.01951 19.5975 2.52781C19.3764 2.09436 19.0237 1.74205 18.59 1.52139C18.0983 1.27036 17.4534 1.27036 16.1637 1.27036H7.18189M7.18189 19.6946H5.10571C3.81832 19.6946 3.17347 19.6946 2.68177 19.4436C2.24832 19.2224 1.89601 18.8697 1.67535 18.436C1.42432 17.9443 1.42432 17.2994 1.42432 16.0097V4.9552C1.42432 3.66551 1.42432 3.02066 1.67535 2.52781C1.89644 2.09369 2.24765 1.74248 2.68177 1.52139C3.17462 1.27036 3.81947 1.27036 5.10916 1.27036H7.18189" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-	  </svg>
 </span>
+
 <aside class=" navbar navbar-vertical navbar-expand-lg navbar-transparent !overflow-hidden max-lg:absolute max-lg:top-[65px] max-lg:left-0 max-lg:w-full max-lg:z-50 max-lg:!bg-white max-lg:!shadow-xl max-lg:min-h-0 max-lg:p-0 max-lg:max-h-[calc(85vh-2rem)] max-lg:overflow-y-auto max-lg:dark:!bg-[--tblr-body-bg] max-lg:rounded-b-[20px] group-[.navbar-shrinked]/body:!overflow-visible">
 	<div class="navbar-inner h-full overflow-x-hidden overflow-y-auto max-h-[inherit] max-lg:w-full">
 		<div class="p-0 container-fluid max-lg:w-full">
