@@ -146,9 +146,9 @@
 .page-body.user-page-body .single-card .card-wrapper .card-text p {
     color: #fff;
     font-family: Poppins;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 500;
-    line-height: 29px;
+    line-height: 22px;
     max-width: 624px
 }
 
@@ -210,7 +210,7 @@
 
 .page-body.user-page-body .single-card .card-wrapper .title {
     font-family: Poppins;
-    font-size: 32px;
+    font-size: 30px;
     font-weight: 600;
     line-height: 24px;
     margin-bottom: 50px
@@ -322,7 +322,7 @@
 .page-body.user-page-body .single-card .card-wrapper .content-wrap .count-wrapper .count-single .count-title {
     color: #836de8;
     font-family: Poppins;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     line-height: 24px;
     margin-bottom: 20px
@@ -405,9 +405,9 @@
 .page-body.user-page-body .single-card .card-wrapper.upgrade-card .content {
     color: #fff;
     font-family: Poppins;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 500;
-    line-height: 30.5px;
+    line-height: 24px;
     margin-bottom: 20px
 }
 
@@ -529,7 +529,7 @@
     border-radius: 12px;
     background: #fff;
     box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, .05);
-    padding: 40px 0 30px
+    padding: 30px 0 30px
 }
 
 @media (max-width: 991px) {
@@ -541,7 +541,7 @@
 .page-body.user-page-body .table-wrapper .table-title {
     color: #172635;
     font-family: Poppins;
-    font-size: 32px;
+    font-size: 30px;
     font-weight: 600;
     line-height: 24px;
     border-bottom: 1px solid #f5eded;

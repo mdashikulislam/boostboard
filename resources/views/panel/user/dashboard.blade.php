@@ -42,7 +42,7 @@
             }
         }
         .page-body.user-page-body .single-card .card-wrapper .card-video iframe{
-            height: 300px;
+            height: 250px;
         }
         .page-body.user-page-body .single-card .card-wrapper.upgrade-card{
             padding: 39px 40px;
@@ -52,6 +52,14 @@
         }
         .page-body.user-page-body .single-card .card-wrapper.upgrade-card{
             min-height: 380px;
+        }
+        @media screen and (max-width:450px){
+            .page-body.user-page-body .single-card .card-wrapper .content-wrap .progress-bar-single .report-wrap .legend{
+                margin-right: 5px;
+            }
+            .page-body.user-page-body .single-card .card-wrapper.overview-card .overview-shape{
+                max-width: 100px;
+            }
         }
     </style>
     <div>
